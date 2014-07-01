@@ -1,0 +1,5 @@
+# Testing Markdown syntax
+
+- Each script should be executable
+- Let's iterate on each one
+- No fussing around
