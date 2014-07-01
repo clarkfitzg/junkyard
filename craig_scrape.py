@@ -2,11 +2,10 @@
 Scrape Davis housing data from Craigslist.
 '''
 
-# Import modules from standard library first
 import csv
+import multiprocessing
 from urllib.robotparser import RobotFileParser
 
-# Third party libraries second
 import requests
 import bs4
 
@@ -72,3 +71,6 @@ def get_one(page):
 
     # Apply the extract function to every element in ptags
     return map(extract, ptags)
+
+
+craig_pool = multiprocessing.Pool(processes=4)
