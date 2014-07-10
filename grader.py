@@ -6,7 +6,6 @@ Utilities for grading programming assignments using Github
 
 import os
 import subprocess
-import collections
 import requests
 
 
@@ -54,7 +53,7 @@ class grader(object):
 
     '''
 
-    def __init__(self, user, repo, branch='master', filename, topdir=topdir):
+    def __init__(self, user, repo, filename, branch='master', topdir=topdir):
 
         self.topdir = topdir
         self.user = user
@@ -65,19 +64,17 @@ class grader(object):
 
         # Github URL where file is downloaded from
         self.url = '/'.join(['https://raw.githubusercontent.com', user, repo,
-                   branch, filename])
+                            branch, filename])
 
         # The directory where the file will be downloaded to
-        self.path = os.sep.join([self.topdir, 'github', self.user, 
+        self.path = os.sep.join([self.topdir, 'github', self.user,
                                  self.assignment])
-
 
     def mkdir(self):
         '''
         Make the assignment directory
         '''
         os.mkdir(self.path)
-
 
     def download(self):
         '''
@@ -87,7 +84,6 @@ class grader(object):
 
         with open(self.path + os.sep + self.filename, 'w') as f:
             f.writelines(self.response.text)
-
 
     def shell_commands(self, commands=commands):
         '''
@@ -99,10 +95,9 @@ class grader(object):
             with open(logpath, 'w') as logfile:
                 subprocess.call([command, self.filename], stdout=logfile)
 
-
     def process_all(self):
         '''
-        Run all processing steps: 
+        Run all processing steps:
 
         1) Make a new directory
         2) Download file
@@ -113,5 +108,5 @@ class grader(object):
         self.shell_commands()
 
 
-clark = grader(user='clarkfitzg', repo='junkyard', branch='master', 
+clark = grader(user='clarkfitzg', repo='junkyard', branch='master',
                filename='dirty.py')
