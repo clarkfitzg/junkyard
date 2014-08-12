@@ -1,7 +1,7 @@
 '''
-anova.py
+gamma.py
 
-Learning what anova does
+Learning what gamma function does
 '''
 
 import math
@@ -47,7 +47,9 @@ print('Minimum for the gamma function on the real line is at {}, '
       'with a value of {}'.format(m.x[0], m.fun))
 
 norm = np.random.randn(100, 3)
-ttest = ttest_1samp(norm, 0)
+norm_ttest = ttest_1samp(norm, 0)
+
+
 
 # Check the t-test 
 # t (Student) distribution
