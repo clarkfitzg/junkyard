@@ -13,44 +13,41 @@ from matplotlib import pyplot as plt
 from scipy.stats import t, ttest_1samp
 
 
-
-def plot_cont(rv, n=100, left=-3, right=3):
+def plot_rv_cont(rv, nsamp=100, nruns=5):
     '''
-    Plot a continuous probability distribution.
-    The line is the probability density function, the histogram is a
-    realization with n samples.
+    Plot probability distribution for a continous random variable.
+    The line is the probability density function, the histograms are
+    realizations with `nsamp` samples.
 
     Parameters
     ----------
     rv : frozen continuous random variable from scipy.stats
-    n  : number of samples
-    left, right : bounds of plot
+    nsamp  : number of samples for each run
+    nruns  : number of times to draw nsamp and plot histogram
     
     '''
-    samps = rv.rvs(n)
-    plt.hist(samps, normed=True, histtype='stepfilled', alpha=0.2)
+    # For shading
+    alpha = 1.0 / nruns
+
+    left = rv.median()
+    right = rv.median()
+
+    for i in range(nruns):
+        samps = rv.rvs(nsamp)
+        left = min(left, min(samps))
+        right = max(right, max(samps))
+        plt.hist(samps, normed=True, histtype='stepfilled', alpha=alpha, color='green')
 
     # Plot pdf only where samples were realized
-    x = np.linspace(min(samps), max(samps))
+    x = np.linspace(left, right, num=100)
     y = rv.pdf(x)
+    plt.plot(x, y, linewidth=4)
 
-    plt.plot(x, y)
-    plt.title('t distribution')
+    plt.title('{} distribution'.format(rv.dist.name))
     plt.show()
+    
+    return plt
 
 
 rv = t(10)
-plot_cont(rv)
-
-
-
-norm = np.random.randn(100, 3)
-norm_ttest = ttest_1samp(norm, 0)
-
-
-
-# Check the t-test 
-# t (Student) distribution
-#t1 = 
-
-# Generalizes the t-test
+a = plot_rv_cont(rv)

@@ -14,6 +14,10 @@ class moddict(dict):
         print('Someone just looked up {}'.format(key))
         return super(moddict, self).__getitem__(key)
 
+    def __getattribute__(self, name):
+        print('I own the dot!!!')
+        return super(moddict, self).__getattribute__(name)
+
     def __f__(self):
         print('Called f on moddict')
         return 37
@@ -21,6 +25,13 @@ class moddict(dict):
     def __len__(slef):
         print('wicked long')
         return 'twenty'
+
+    @property
+    def shape(self):
+        '''
+        Property docstring
+        '''
+        return (32, 23)
 
 
 def f(x):
