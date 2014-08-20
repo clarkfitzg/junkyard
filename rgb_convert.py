@@ -1,31 +1,48 @@
 '''
-Basically, I want to load an image and then for each x,y coordinate know the rgb numbers.
+Command line usage:
 
-e.g.a filename IMG_4843.JPG
+    $ python rgb_convert.py catpics.png
 
-then as output I would like a flat file of the form ....
+This will create the file catpics.csv containing rows as below:
 
-x | y | r | g| b
-0|0|149|95|31
-...
-1208|725|137|49|1
+    x, y, red, green, blue
 
-where x and y are the pixel coordinate and r,g,b is the, well you know, lol ...
-
-the field separator doesn't have to be a pipe.
+where x, y are cartesian coordinates for the pixels.
 '''
 
-import sys
+from functools import reduce
 
 import pandas as pd
 from skimage.io import imread
 
-image = imread('python_logo.png')
 
-red = image[:,:,0]
+def melt_2d(value_name, array):
+    '''
+    melts a 2d numpy array to record x and y coordinates
+    '''
+    df = pd.DataFrame(array)
+    df['x'] = df.index
 
-rdf = pd.DataFrame(red)
-rdf['x'] = rdf.index
+    return pd.melt(df, id_vars=['x'], var_name='y', value_name=value_name)
 
-rdf = pd.melt(rdf, id_vars=['x'], var_name='y')
 
+def png_to_csv(image_name):
+    '''
+    Creates the CSV file as described in the module docstring
+    '''
+    base_name = image_name.split('.')[0]
+    image = imread(image_name)
+
+    color_index = {'red': 0, 'green': 1, 'blue': 2}
+
+    rgb_dict = {key: melt_2d(key, image[:,:,value]) 
+                for key, value in color_index.items()}
+
+    rgb = reduce(pd.merge, rgb_dict.values())
+    rgb.to_csv(base_name + '.csv', index=False)
+
+
+if __name__ == '__main__':
+
+    import sys
+    png_to_csv(sys.argv[1])
