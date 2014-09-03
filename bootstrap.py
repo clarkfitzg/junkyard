@@ -1,18 +1,29 @@
 '''
-Implement bootstrap using generator
+Implement statistical bootstrap using a generator.
+
+It would make sense to build a class around this, but it's probably better
+to just use sklearn.
 '''
 
 import numpy as np
 from numpy.random import choice, randn
 
 
-def bootstrap(stat, data, n):
+def bootstrap(stat, data, n, lazy=False):
     '''
-    lazily bootstrap stat on data n times
+    bootstrap stat on data n times
     '''
     size = len(data)
     bootsamples = (choice(data, size) for i in range(n))
-    return map(stat, bootsamples)
+    stats = map(stat, bootsamples)
+
+    if lazy:
+        return stats
+    else:
+        return np.array(list(stats))
 
 
-means = bootstrap(np.mean, randn(1000), int(1e4))
+if __name__ == '__main__':
+
+    lazy_means = bootstrap(np.mean, randn(1000), int(1e4), lazy=True)
+    means = bootstrap(np.mean, randn(1000), int(1e2))
