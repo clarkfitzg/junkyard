@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.stats import binom
+from scipy.special import comb
 from trix import replicate
 
 
@@ -20,4 +21,6 @@ def experiment():
     return np.mean(outcomes)
 
 
-results = replicate(experiment, 1000)
+results = replicate(experiment, 100)
+
+expected = sum(0.5 ** (2*k) * comb(n_plays, k) for k in range(n_plays))
