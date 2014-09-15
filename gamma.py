@@ -8,7 +8,7 @@ import math
 
 import numpy as np
 from matplotlib import pyplot as plt
-import statsmodels.stats.anova as anova
+#import statsmodels.stats.anova as anova
 from scipy.stats import t, ttest_1samp
 from scipy.optimize import minimize
 from scipy.special import gamma
@@ -18,9 +18,9 @@ from scipy.misc import factorial
 x = np.arange(1, 10)
 
 # We expect it to be close to this
-ymf = np.array(map(math.factorial, x))[:-1]
+ymf = np.array(list(map(math.factorial, x)))[:-1]
 
-ymg = np.array(map(math.gamma, x))[1:]
+ymg = np.array(list(map(math.gamma, x)))[1:]
 yf = factorial(x)[:-1]
 yg = gamma(x)[1:]
 
