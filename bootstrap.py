@@ -9,7 +9,7 @@ import numpy as np
 from numpy.random import choice, randn
 
 
-def bootstrap(stat, data, n, lazy=False):
+def bootstrap(stat, data, n=1000, lazy=False):
     '''
     bootstrap stat on data n times
     '''
@@ -24,6 +24,8 @@ def bootstrap(stat, data, n, lazy=False):
 
 
 if __name__ == '__main__':
+
+    np.random.seed(24)
 
     lazy_means = bootstrap(np.mean, randn(1000), int(1e4), lazy=True)
     means = bootstrap(np.mean, randn(1000), int(1e2))
