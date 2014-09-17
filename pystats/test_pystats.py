@@ -1,5 +1,5 @@
 from nose.tools import assert_equal, raises
-from pystats import weighcount, binom
+from pystats import weighcount, binom, sample_iter
 
 
 class test_weighcount:
@@ -32,3 +32,22 @@ class test_binom:
     @raises(TypeError)
     def test_floats_raise_TypeError(self):
         binom(5, 3.5)
+
+
+class test_sample_iter:
+
+    def test_prob_1(self):
+        actual = list(sample_iter(range(10), 1))
+        assert_equal(actual, list(range(10)))
+
+    def test_prob_0(self):
+        actual = list(sample_iter(range(10), 0))
+        assert_equal(actual, [])
+
+    @raises(ValueError)
+    def test_negative_probabilities(self):
+        sample_iter(range(10), -1)
+
+    @raises(ValueError)
+    def test_too_big_probabilities(self):
+        sample_iter(range(10), 2)

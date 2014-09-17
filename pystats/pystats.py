@@ -5,7 +5,8 @@ Stats in pure Python
 '''
 
 import collections
-from functools import reduce
+from random import random
+from functools import reduce, partial
 from operator import mul
 
 
@@ -87,6 +88,23 @@ def binom(n, k):
     return numerator // denominator
 
 
-if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
+def sample_iter(iterable, prob=0.5):
+    '''
+    Returns iterator which randomly samples elements from `iterator` with 
+    probability `prob` that each element is yielded.
+
+    >>> import random
+    >>> random.seed(12)
+    >>> squares = (x ** 2 for x in range(10))
+    >>> list(sample_iter(squares, 0.1))  # Probability is 0.1
+    [16]
+
+    See Also:
+        filter, random.sample, itertools.compress
+
+    '''
+    if not 0 <= prob <= 1:
+        raise ValueError('Probability must be between 0 and 1')
+
+    condition = lambda x: random() < prob
+    return filter(condition, iterable)
