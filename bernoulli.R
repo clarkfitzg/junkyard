@@ -23,5 +23,21 @@ se_theory <- sqrt(p * (1-p) / n)
 se_boot <- boot(make_p_hats(), function(x, index) sd(x[index]), n_se)
 se_sim <- replicate(n_se, sd(make_p_hats()))
 
-hist(se_sim)
-plot(se_boot)
+#hist(se_sim)
+#plot(se_boot)
+
+# 90 percent confidence interval
+percent <- 0.9
+alpha <- 1 - percent
+difference <- se_theory * qnorm(1 - alpha/2)
+lower <- p - difference
+upper <- p + difference
+ratio_inside <- function(){
+    # whats the ratio of p_hats landing inside the confidence interval?
+    p_hats <- make_p_hats()
+    sum(lower < p_hats & p_hats < upper) / length(p_hats)
+}
+
+# Stays pretty close to the expected 90 percent.
+inside <- replicate(500, ratio_inside())
+hist(inside)
