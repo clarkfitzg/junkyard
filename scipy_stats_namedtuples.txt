@@ -1,0 +1,8 @@
+describe: n, minmax, mean, variance, skewness, exc_kurtosis
+kurtosistest: zscore, pvalue
+mode: mode, count
+normaltest: k2, pvalue
+
+Not doing rv.stats because it returns variable length result
+
+
