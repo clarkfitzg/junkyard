@@ -1,7 +1,14 @@
 describe: n, minmax, mean, variance, skewness, exc_kurtosis
-kurtosistest: zscore, pvalue
 mode: mode, count
+
 normaltest: k2, pvalue
+skewtest: zscore, pvalue
+kurtosistest: zscore, pvalue
+
+cumfreq: cumcount, lowerlimit, binsize, extrapoints
+histogram: count, lowerlimit, binsize, extrapoints
+relfreq: frequency, lowerlimit, binsize, extrapoints
+
 
 Not doing rv.stats because it returns variable length result
 
