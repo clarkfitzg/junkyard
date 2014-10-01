@@ -1,14 +1,33 @@
+
+The pattern returned for each element of bayes_mvs is important
+because it is an estimate with confidence interval. 
+It might be even be worth exposing this one publicly.
+
+bayes_mvs: mean, variance, std_dev
+    (center, (lower, upper)) -> estimate, minmax
+
 describe: n, minmax, mean, variance, skewness, exc_kurtosis
 mode: mode, count
+sigmaclip: clipped, lower, upper
 
 normaltest: k2, pvalue
 skewtest: zscore, pvalue
 kurtosistest: zscore, pvalue
+f_oneway: fvalue, pvalue
+
+pearsonr: correlation, pvalue
+spearmanr: correlation, pvalue
+pointbiserialr: correlation, pvalue
+kendalltau: correlation, pvalue
 
 cumfreq: cumcount, lowerlimit, binsize, extrapoints
 histogram: count, lowerlimit, binsize, extrapoints
 relfreq: frequency, lowerlimit, binsize, extrapoints
 
+binned_statistic: stat, bin_edges, binnumber
+binned_statistic_2d: stat, x_edge, y_edge, binnumber
+binned_statistic_2d: stat, bin_edges, binnumber
+   
 
 Not doing rv.stats because it returns variable length result
 
