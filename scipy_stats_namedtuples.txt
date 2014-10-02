@@ -9,6 +9,7 @@ bayes_mvs: mean, variance, std_dev
 describe: n, minmax, mean, variance, skewness, exc_kurtosis
 mode: mode, count
 sigmaclip: clipped, lower, upper
+linregress: slope, intercept, rvalue, pvalue, stderr
 
 normaltest: k2, pvalue
 skewtest: zscore, pvalue
