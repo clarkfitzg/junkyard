@@ -10,13 +10,31 @@ describe: n, minmax, mean, variance, skewness, exc_kurtosis
 mode: mode, count
 sigmaclip: clipped, lower, upper
 linregress: slope, intercept, rvalue, pvalue, stderr
+anderson: stat, critical_vals, sig_level
 
-normaltest: k2, pvalue
-skewtest: zscore, pvalue
-kurtosistest: zscore, pvalue
-f_oneway: fvalue, pvalue
 
-pearsonr: correlation, pvalue
+Note `shapiro` doesn't follow the pattern below
+
+normaltest: stat, pvalue
+skewtest: stat, pvalue
+kurtosistest: stat, pvalue
+f_oneway: stat, pvalue
+ttest_1samp: stat, pvalue
+ttest_ind: stat, pvalue
+ttest_rel: stat, pvalue
+kstest: stat, pvalue
+ks_2samp: stat, pvalue
+power_divergence: stat, pvalue
+mannwhitneyu: stat, pvalue
+ranksums: stat, pvalue
+wilcoxon: stat, pvalue
+kruskal: stat, pvalue
+friedmanchisquare: stat, pvalue
+ansari: stat, pvalue
+bartlett: stat, pvalue
+levene: stat, pvalue
+
+stat: correlation, pvalue
 spearmanr: correlation, pvalue
 pointbiserialr: correlation, pvalue
 kendalltau: correlation, pvalue
