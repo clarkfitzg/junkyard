@@ -1,0 +1,44 @@
+% A simple template for LaTeX documents
+
+\documentclass[12pt]{article}
+
+% Begin paragraphs with new line
+\usepackage{parskip}  
+
+% Change margin size
+\usepackage[margin=1in]{geometry}   
+
+% Graphics Example:  (PDF's make for good plots)
+\usepackage{graphicx}               
+% \centerline{\includegraphics{figure.pdf}}
+
+% Allows hyperlinks
+\usepackage{hyperref}
+
+% Blocks of code
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily, title=\lstname}
+% Insert code like this. replace `plot.R` with file name.
+% \lstinputlisting{plot.R}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Math 201A - HW 1}
+\date{13 October 2014}
+\author{Richard Clark Fitzgerald}
+
+\begin{document}
+
+\maketitle
+
+\section{}
+
+Display equations:
+
+\[
+    f(x) = x^2 + 5x + \pi
+\]
+
+Inline equation $\sum x$, and so on.
+
+\end{document}
