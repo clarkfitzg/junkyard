@@ -34,7 +34,6 @@ ansari: stat, pvalue
 bartlett: stat, pvalue
 levene: stat, pvalue
 
-stat: correlation, pvalue
 spearmanr: correlation, pvalue
 pointbiserialr: correlation, pvalue
 kendalltau: correlation, pvalue
