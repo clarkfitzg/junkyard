@@ -8,18 +8,14 @@
 % Change margin size
 \usepackage[margin=1in]{geometry}   
 
-% Graphics Example:  (PDF's make for good plots)
-\usepackage{graphicx}               
-% \centerline{\includegraphics{figure.pdf}}
+% Supports proof environment
+\usepackage{amsthm}
 
-% Allows hyperlinks
-\usepackage{hyperref}
+% Allows writing \implies and align*
+\usepackage{amsmath}
 
-% Blocks of code
-\usepackage{listings}
-\lstset{basicstyle=\ttfamily, title=\lstname}
-% Insert code like this. replace `plot.R` with file name.
-% \lstinputlisting{plot.R}
+% Allows mathbb{R}
+\usepackage{amsfonts}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -33,12 +29,54 @@
 
 \section{}
 
-Display equations:
+Let $(X, d)$ be a metric space, and let $x, y, w, z \in X$.
 
+\textbf{a)}
+Prove that
 \[
-    f(x) = x^2 + 5x + \pi
+    d(x, y) \geq |d(x, z) - d(z, y)|.
 \]
 
-Inline equation $\sum x$, and so on.
+\begin{proof}
+
+Applying the triangle inequality two times we have
+\begin{align*}
+    d(x, z) \leq d(x, y) + d(y, z) 
+    &\implies 
+    d(x, z) - d(y, z) \leq d(x, y) \\
+    d(y, z) \leq d(y, x) + d(x, z)
+    &\implies 
+    d(y, z) - d(x, z) \leq d(y, x) = d(x, y).
+\end{align*}
+For $a, b \in \mathbb{R}$ if $a \leq b$ and $-a \leq b$, then
+$|a| \leq b$. We have shown this, so we have the result:
+\[
+    d(x, y) \geq |d(x, z) - d(z, y)|.
+\]
+
+\end{proof}
+
+\textbf{b)}
+Prove that
+\[
+    d(x, y) + d(z, w) \geq |d(x, z) - d(y, w)|.
+\]
+
+\begin{proof}
+
+By part a) we have
+\begin{align*}
+   d(x, y) &\geq |d(x, z) - d(z, y)| \\
+   d(z, w) &\geq |d(z, y) - d(y, w)|.
+\end{align*}
+Adding both sides of the above inequalities produces
+\begin{align*}
+   d(x, y) + d(z, w) &\geq |d(z, y) - d(y, w)| + |d(x, z) - d(z, y)| \\
+                     &\geq |d(z, y) - d(y, w) + d(x, z) - d(z, y)|  \\
+                     &= |d(x, z) - d(y, w)|
+\end{align*}
+In the second step we used that $|a| + |b| \geq |a + b|$ for $a, b \in \mathbb{R}$.
+\end{proof}
+
 
 \end{document}
