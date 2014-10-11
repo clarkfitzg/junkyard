@@ -90,6 +90,10 @@ Prove that $\lim_{n \rightarrow \infty} d(x_n, y_n) = d(x, y)$.
 \textbf{Problem 2.}
 Show that the limit of a convergent sequence in a metric space is unique.
 \begin{proof}
+Let $(x_n) \rightarrow x, (y_n) \rightarrow y$. Above we showed $d(x_n,
+y_n) \rightarrow d(x, y)$. Take $y_n = x_n$. Then $d(x_n, y_n) = 0$ for all
+$n$ and $d(x_n, y_n) \rightarrow 0$, implying $d(x, y) = 0$. Since we're
+working in a metric space we have $x = y$.
 \end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -98,8 +102,30 @@ Show that the limit of a convergent sequence in a metric space is unique.
 Let $(a_n)$ be a sequence in $\mathbb{R}$.
 \textbf{a)}
 There exists a subsequence of $(a_{n_k})_{k=1}^{\infty}$ of $(a_n)$
-such that $lim_k a_{n_k} = \lim \inf_n a_n$.
+such that $\lim_k a_{n_k} = \lim \inf_n a_n$.
 \begin{proof}
+Suppose that $\lim \inf (a_n) = +\infty$. We construct a sequence $(b_n)$
+diverging to $+ \infty$. Let $b_1 = a_1$. Let $b_2$ be the first element
+$a_k$ in $a_n$ where $b_1 + 1 < a_k$. Such an element must exist since the
+terms in $a_n$ are not bounded above. Let $(\hat{a}_{n_k})$ be the new
+subsequence of $(a_n)$ formed by only considering those terms in $(a_n)$
+occuring after $a_k$. Repeat the process by choosing $b_3$ from the new
+sequence $(\hat{a}_{n_k})$ where $b_3 > b_2 + 1$. Proceeding in this manner
+we have that $(b_n)$ increases by at least 1 with every element, and hence
+diverges to $+ \infty$. The case for $\lim \inf (a_n) = -\infty$ is
+analogous; just choose $b_{i + 1} < b_{i} - 1$. 
+
+Now suppose $\lim \inf a_n \rightarrow c$ for some $c \in \mathbb{R}$. We
+construct a subsequence $(b_n)$ of $(a_n)$ with $(b_n) \rightarrow c$. Let
+$b_1 = a_1$. Let $a_k$ be the first element in $(a_n)$ where $|a_k - c|
+\leq |\frac{b_1 - c}{2}|$. Such an element exists since $\lim \inf a_n
+\rightarrow c$ implies there are infinited terms in $(a_n)$ within
+$\epsilon$
+of $c$. Take $b_2 = a_k$. Again take the
+subsequence of $(a_n)$ formed by only considering those terms in $(a_n)$
+occuring after $a_k$. Repeat the process to create a sequence $(b_n)$ 
+where $| b_n - c| \leq | \frac{b_1 - c}{2^n}|$. Hence $(b_n) \rightarrow c= \lim \inf_n a_n$.
+
 \end{proof}
 
 \textbf{b)}
