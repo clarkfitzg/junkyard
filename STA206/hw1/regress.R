@@ -1,17 +1,17 @@
 library(testthat)
 
-set.seed(3.14)
+set.seed(253)
 
 # Plotting parameter - sets bottom, left, top, right margin size
 par(mai=c(0.8,0.6,0.1,0.4))
 
-n = 100
+n = 30
 
-b0 = 300
-b1 = 5
-noise = 200 * rnorm(n)
+b0 = 10
+b1 = 0.5
+noise = rnorm(n)
 
-x = 1:n
+x = runif(n)
 
 # The true linear model
 y = b0 + b1 * x + noise
