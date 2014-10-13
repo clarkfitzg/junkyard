@@ -11,8 +11,8 @@ import numpy as np
 
 
 n = int(1e2)
-x = np.array([random.random() for i in range(n)])
-y = np.array(list(range(n)))
+x = np.random.randn(n)
+y = np.random.randn(n)
 
 
 #@jit
@@ -34,7 +34,9 @@ def dot2(x, y):
     return product
 
 
-@jit
+# Seems to work about the same with or without the signature
+#@jit('f8(f8[:],f8[:])')
+@jit(nopython=True)
 def dot3(x, y):
     '''
     Loop style dot product
@@ -46,7 +48,6 @@ def dot3(x, y):
     return product
 
 
-#numbadot = jit(dot2)
 print(pydot(x, y))
 print(dot2(x, y))
 print(dot3(x, y))
