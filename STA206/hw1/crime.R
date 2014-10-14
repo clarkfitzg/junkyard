@@ -21,9 +21,17 @@ b0 = mean_y - b1 * mean_x
 print(c('b0 and b1 are : ', b0, b1))
 
 # 8b
-sse = sum_y2 - 2 * mean_y * sum_y + n * mean_y -
-      (b1 ** 2) * (sum_x2 - 2 * mean_x * sum_x + n * mean_x)
+ssto = sum_y2 - 2 * mean_y * sum_y + n * mean_y
+sxx = sum_x2 - 2 * mean_x * sum_x + n * mean_x
+
+sse = ssto + (b1 ** 2) * sxx
 mse = sse / (n - 2)
 print(c('sse and mse are : ', sse, mse))
 
 # 8c
+var_y = ssto / (n - 1)
+sd_y = sqrt(var_y)
+
+sd_b0 = var_y * (1/n + mean_x ** 2 / sxx)
+sd_b1 = var_y / sxx
+print(c('standard errors for b0 and b1 are : ', sd_b0, sd_b1))

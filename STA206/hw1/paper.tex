@@ -43,13 +43,13 @@
 \begin{document}
 
 \begin{center}
-    {\Large Homework 1}\\
+    {\Large Stats 206 - Homework 1}\\
     \bigskip
     \bigskip
     \hrule
     \medskip
     Clark Fitzgerald\\
-    Stats 206
+    15 Oct 2014
 \end{center}
 
 \subsubsection*{2. True / False}
@@ -73,7 +73,9 @@ while the true regression line is the dashed line. They are not the same.
 \item \textbf{True} $\bar{X} = 0$ and $\bar{Y} = 0 \implies \hat{\beta_0} =
 0$. This is implied by the equation in part a).
 
-\item \textbf{True} Standard errors of $\beta_i$. 
+\item \textbf{True} The standard errors for $\beta_0$ and $\beta_1$ both
+have a term with $\sum (X_i - \bar{X})$ in the denominator. Hence increasing the
+range of the $X_i$'s decreases the standard error estimates.
 
 \item \textbf{True} It's harder to predict than to infer the mean.
 
@@ -97,10 +99,10 @@ noise. The $R^2$ for the fitted line is nearly 0.
 
 \centerline{\includegraphics{nonlinear.pdf}}
 
-\item \textbf{True} Scatter plots show nonlinear relationships between two
-variables. The sine function is easily recognized above. However, if they are done incorrectly they won't show the
-relationship, for example plotting tens of thousands of filled points without adjusting the
-alpha value. 
+\item \textbf{False} It can be difficult to detect nonlinearity using a
+scatterplot depending on the  scale of the variables.
+Plotting the residuals of a linear model is more reliable.
+An example was shown in the third lecture demonstrating this.
 
 \end{enumerate}
 
