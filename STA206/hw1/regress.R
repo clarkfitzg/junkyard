@@ -26,7 +26,7 @@ plot(x, y)
 points(mean(x), mean(y), pch = 16, cex = 2, col = 'blue')
 
 # True line
-abline(b0, b1, lty = 2, col = 'red')
+abline(b0, b1, lty = 2)
 
 # Fitted line
 abline(mod)
