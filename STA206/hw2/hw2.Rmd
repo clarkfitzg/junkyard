@@ -1,0 +1,33 @@
+---
+title: "Stats 206 Homework 2"
+author: "Clark Fitzgerald"
+date: "October 16, 2014"
+output: pdf_document
+---
+
+
+```{r, echo=FALSE}
+setwd('~/junkyard/STA206/hw2')
+women = read.table('muscle.txt')
+names(women) = c('muscle', 'age')
+```
+
+The histograms of muscle and age are unsurprising. The ranges are as expected. Age appears to be roughly uniform and muscle has a bell shape.
+
+```{r, echo=FALSE}
+par(mfrow=c(1, 2))
+hist(women$age, xlab = 'age', main = '')
+hist(women$muscle, xlab = 'muscle', main = '')
+```
+
+The relation between age and muscle appears to be linear, and it looks like muscle
+mass decreases with age.
+
+```{r, echo=FALSE}
+plot(women$age, women$muscle, xlab = 'age', ylab = 'muscle')
+```
+
+```{r, echo=FALSE}
+simple = lm(muscle ~ age, data=women)
+summary(simple)
+```
