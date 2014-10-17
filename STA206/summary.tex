@@ -1,0 +1,72 @@
+% A simple template for LaTeX documents
+
+\documentclass[12pt]{article}
+
+% Begin paragraphs with new line
+\usepackage{parskip}
+
+% Change margin size
+\usepackage[margin=1in]{geometry}
+
+% Supports proof environment
+\usepackage{amsthm}
+
+% Allows writing \implies and align*
+\usepackage{amsmath}
+
+% Allows mathbb{R}
+\usepackage{amsfonts}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\section{Definitions}
+
+\textbf{Design matrix}
+
+$y$ can be decomposed into orthogonal vectors
+\[
+    y = \hat{y} + e.
+\]
+
+Estimated $\hat{\beta}$.
+\[
+    \hat{\beta} = (X'X)^{-1}X'y
+\]
+
+$H$ is the \textbf{hat matrix} because it puts the hat on $y$. Adorable. It projects
+$y$ onto $\langle X \rangle$ the column space of the design matrix $X$.
+\[
+    \hat{y} = X \hat{\beta} = X(X X^{-1})X'y = Hy
+\]
+
+\textbf{Error vector} is $y$ projected onto the space orthogonal to $X$.
+\[
+    e = y - \hat{y} = y - Hy = (I - H)y
+\]
+
+\subsection{Sums of Squares}
+
+\textbf{SSE} - Error Sum of Squares
+\[
+    \sum_{i=1}^n e_i^2 = \sum_{i=1}^n (y_i - \hat{y_i})^2
+    = e'e
+\]
+
+\textbf{SSR} - Regression Sum of Squares
+\[
+    \sum_{i=1}^n (y_i - \bar{y})^2
+    = (\hat{y} - \bar{y} 1)' (\hat{y} - \bar{y} 1) 
+\]
+
+SSTO - Total Sum of Squares, Define $J_n$ to be an $n$ by $n$ matrix of all 1's.
+\[
+    \sum_{i=1}^n (y_i - \bar{y})^2 = \sum_{i=1}^n y_i^2 - n\bar{y}^2
+    = y'(I - \frac{1}{n} J_n)y
+\]
+
+MSE - Error Mean Squared $MSE = SSE / (n - 2)$. Includes degree of freedom
+correction.
+
+\end{document}
