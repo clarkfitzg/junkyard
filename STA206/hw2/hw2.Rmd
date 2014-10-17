@@ -6,6 +6,8 @@ output: pdf_document
 ---
 
 
+## 1a
+
 ```{r, echo=FALSE}
 setwd('~/junkyard/STA206/hw2')
 women = read.table('muscle.txt')
@@ -24,10 +26,73 @@ The relation between age and muscle appears to be linear, and it looks like musc
 mass decreases with age.
 
 ```{r, echo=FALSE}
-plot(women$age, women$muscle, xlab = 'age', ylab = 'muscle')
+scatter = function(){
+  plot(women$age, women$muscle, xlab = 'age', ylab = 'muscle')
+}
+
+scatter()
+```
+
+## 1b
+
+After fitting the linear model we extract regression coefficients with 
+their standard errors, the mean squared
+error (MSE), and its degrees of freedom.
+
+Regression coefficients:
+```{r, echo=FALSE}
+simple = lm(muscle ~ age, data=women)
+simple$coefficients
+```
+
+Standard errors for regression coefficients:
+```{r, echo=FALSE}
+ss = summary(simple)
+ss$coefficients[, 'Std. Error']
+```
+
+The MSE and its degrees of freedom are:
+```{r, echo=FALSE}
+a = anova(simple)
+a['Residuals', c('Df', 'Mean Sq')]
+```
+
+## 1c
+
+The fitted regression line is:
+```{r, echo=FALSE}
+sprintf('muscle = %.2f + %.2f * age', simple$coefficients[1],
+        simple$coefficients['age'])
 ```
 
 ```{r, echo=FALSE}
-simple = lm(muscle ~ age, data=women)
-summary(simple)
+scatter()
+abline(simple)
 ```
+It looks like the linear regression is a good fit.
+
+## 1d
+
+The fitted values for the 6th and 16th cases are:
+```{r, echo=FALSE}
+simple$fitted.values[c(6, 16)]
+```
+
+The residuals for the 6th and 16th cases are:
+```{r, echo=FALSE}
+simple$residuals[c(6, 16)]
+```
+
+## 1e
+```{r, echo=FALSE}
+par(mfrow=c(1, 2))
+plot.lm(simple, which=1)
+plot.lm(simple, which=2)
+```
+
+Using linear algebra notation,
+the simple linear regression model with Normal errors assumes
+- $y = X \beta + \epsilon$ The response is a linear function of the predictors.
+- $\epsilon ~ $ Normal$(0, \sigma^2 I_n)$ The error terms are normally distributed and uncorrelated.
+
+This 

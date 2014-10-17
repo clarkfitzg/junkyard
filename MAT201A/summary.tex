@@ -1,0 +1,91 @@
+% A simple template for LaTeX documents
+
+\documentclass[12pt]{article}
+
+% Begin paragraphs with new line
+\usepackage{parskip}  
+
+% Change margin size
+\usepackage[margin=1in]{geometry}   
+
+% Supports proof environment
+\usepackage{amsthm}
+
+% Allows writing \implies and align*
+\usepackage{amsmath}
+
+% Allows mathbb{R}
+\usepackage{amsfonts}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\section{Definitions}
+
+\subsubsection{Metric Space}
+A \textbf{metric} on $X$ is a function
+\[
+    d: X \times X \rightarrow \mathbb{R}
+\]
+such that
+
+\begin{enumerate}
+    \item Nonnegative $d(x, y) \geq 0$ for all $x, y \in X$.
+
+    \item $d(x, y) = 0 \iff x = y$.
+
+    \item Symmetric $d(x, y) = d(y, x)$.
+
+    \item Triangle Inequality $d(x, y) \leq d(x, z) + d(z, y)$
+\end{enumerate}
+
+A sequence $(x_n)$ \textbf{converges} to $x \in X$ if for all $\epsilon > 0$ there
+exists $N \in \mathbb{N}$ such that $d(x_n, x) < \epsilon$ for all $n \geq
+N$.
+
+A sequence $(x_n)$ is \textbf{Cauchy} if for all $\epsilon > 0$ there is $N
+\in \mathbb{N}$ such that $d(x_m, x_n) < \epsilon$ for all $m, n \geq N$.
+
+A metric space $(X, d)$ is \textbf{complete} if every Cauchy sequence in $X$
+converges to a limit in $X$.
+
+$G \subset X$ is \textbf{open} if for all $x \in G$ there exists $r > 0$
+such that $B_r (x) \subset G$. $F \subset G$ is \textbf{closed} if the complement
+$F^C$ is open.
+
+$K \subset X$ is \textbf{sequentially compact} if every sequence in $K$
+contains a subsequence that converges in $K$.
+
+$K \subset X$ is \textbf{compact} if every open cover of $K$ has a finite
+subcover.
+
+$A \subset X$ is \textbf{totally bounded} if there exists a finite
+$\epsilon$ net for every $\epsilon > 0$.
+
+\subsubsection{Theorems}
+
+A subset of a metric space is complete if and only if it is closed.
+
+A subset of a metric space is compact if and only if it is complete and
+totally bounded.
+
+\subsection{Functions}
+
+A function $f : X \rightarrow Y$ is \textbf{continuous} at $x_0 \in X$ if
+for all $\epsilon > 0$ there exists $\delta > 0$ such that $d_X(x, x_0) <
+\delta$ implies $d_Y(f(x), f(x_0)) < \epsilon$. Equivalently:
+\begin{enumerate}
+    \item There is a ball of positive radius $\delta$
+    around a point $x_0$ that is mapped into the ball of radius $\epsilon$ around
+    $f(x_0)$.
+    \item $\lim_{x \rightarrow x_0} f(x) = f(x_0)$
+\end{enumerate}
+
+A function $f : X \rightarrow Y$ is \textbf{uniformly continuous} on $X$ if 
+for all $\epsilon > 0$ there exists $\delta > 0$ such that $d_X(x, y) <
+\delta$ implies $d_Y(f(x), f(y)) < \epsilon$ for all $x, y \in X$. 
+
+
+
+\end{document}

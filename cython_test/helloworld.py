@@ -36,15 +36,17 @@ def dot2(x, y):
 
 # Seems to work about the same with or without the signature
 #@jit(nopython=True)
-@jit('f8(f8[:],f8[:])')
+#@jit('f8(f8[:],f8[:])')
+@jit
 def dot3(x, y):
     '''
     Loop style dot product
     '''
-    product = 0
-    n = len(x)
-    for i in range(n):
-        product += x[i] * y[i]
+    for i in range(4000):
+        product = 0
+        n = len(x)
+        for i in range(n):
+            product += x[i] * y[i]
     return product
 
 xl, yl = map(list, (x, y))

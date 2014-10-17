@@ -1,4 +1,4 @@
-n = 500
+n = 100
 x = runif(n, max=3 * pi)
 y = 8 * sin(x) + rnorm(n)
 
@@ -9,6 +9,6 @@ pdf('nonlinear.pdf', width = 5, height = 4)
 plot(x, y)
 
 # Fitted line
-abline(mod)
+abline(mod, lty=2)
 
 dev.off()
