@@ -61,6 +61,11 @@ squares.
     Q(\hat{\beta}) = e'e
 \]
 
+\subsubsection{Gauss Markov Theorem}
+
+The least squares estimates are unbiased and have minimum variance of all
+linear unbiased estimators.
+
 \subsubsection{Design matrix}
 
 $y$ can be decomposed into orthogonal vectors
@@ -86,6 +91,13 @@ $y$ onto $\langle X \rangle$ the column space of the design matrix $X$.
 
 \subsection{Sums of Squares}
 
+\subsubsection{SXX} - Variation in X.
+\[
+    \sum_{i=1}^n (x_i - \bar{x})^2 
+    = (x - \bar{x}1)' (x - \bar{x}1) 
+    = x_c' x_c
+\]
+
 \subsubsection{SSE} - Error Sum of Squares. The degrees of freedom is the
 length of the $\beta$ vector, which equals the number of regressors plus
 one for the intercept.
@@ -98,21 +110,64 @@ one for the intercept.
 \[
     \sum_{i=1}^n (y_i - \bar{y})^2
     = (\hat{y} - \bar{y} 1)' (\hat{y} - \bar{y} 1) 
+    = \hat{y}_c' \hat{y}_c
 \]
 
-SSTO - Total Sum of Squares, Define $J_n$ to be an $n$ by $n$ matrix of all 1's.
+\subsubsection{SSTO} - Total Sum of Squares, Define $J_n$ to be an $n$ by $n$ matrix of all 1's.
 \[
     \sum_{i=1}^n (y_i - \bar{y})^2 = \sum_{i=1}^n y_i^2 - n\bar{y}^2
     = y'(I - \frac{1}{n} J_n)y
+    = y_c' y_c
 \]
 
-MSE - Error Mean Squared. SSE with degrees of freedom correction. In the
+\subsubsection{MSE} - Error Mean Squared. SSE with degrees of freedom correction. In the
 case of single regression with an intercept $df(SSE) = n-2$. This estimates
 the variance of the errors.
 \[
-    MSE = SSE / df(SSE) \quad \E(MSE) = \sigma^2
+    MSE = \frac{SSE}{df(SSE)} \quad \E(MSE) = \sigma^2
 \]
 
 \subsection{Confidence Intervals}
+The following results hold for the normal error model.
+
+\subsubsection{Studentized pivotal quantity}
+In the normal error model with one predictor, 
+\[
+    \frac{\hat{\beta_1} - \beta_1}{SE(\hat{\beta_1}}) \sim t_{n - 2}
+\]
+Which allows the construction of a $1 - \alpha$ confidence interval along
+with the corresponding t tests.
+\[
+    \hat{\beta_1} + t(1 - \frac{\alpha}{2}; n - 2) \times
+    SE(\hat{\beta_1})
+\]
+
+\subsubsection{Mean Response}
+Estimates the average $y_h$ given $x_h$. 
+\[
+    SE^2(\hat{y_h}) = \sigma^2 (\frac{1}{n} + \frac{(x_h - \bar{x})^2}{x_c^t
+x_c})
+\]
+A large range of $x$ or large $n$ makes for a tighter interval.
+
+Does this hold for multiple regression?
+
+\subsubsection{Prediction}
+Predicts $y_{h(new)}$ given $x_h$. 
+\[
+    SE^2(y_{h(new)}) = \sigma^2 + SE^2(\hat{y_h})
+    = \sigma^2 ( 1 + \frac{1}{n} + \frac{(x_h - \bar{x})^2}{x_c^t x_c})
+\]
+
+\subsubsection{Estimating Whole line}
+The \textbf{Working-Hotelling multiplier} gives a confidence band for the
+entire regression line.
+\[
+    W = \sqrt{2F(1 - \alpha;2, n-2)}
+\]
+The $1 - \alpha$ confidence band is:
+\[
+    \hat{y_h} +- W \times SE(\hat{y_h}) \quad \forall x \in \mathbb{R}
+\]
 
 \end{document}
