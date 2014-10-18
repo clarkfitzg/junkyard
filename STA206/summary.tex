@@ -14,8 +14,21 @@
 % Allows writing \implies and align*
 \usepackage{amsmath}
 
-% Allows mathbb{R}
+% Allows \mathbb{R}
 \usepackage{amsfonts}
+
+% Allows bold greek symbols \bm{\sigma} 
+\usepackage{bm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% User defined commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\E}{\mathrm{E}}
+
+\newcommand{\Var}{\mathrm{Var}}
+
+\newcommand{\Cov}{\mathrm{Cov}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -23,7 +36,32 @@
 
 \section{Definitions}
 
-\textbf{Design matrix}
+\subsubsection{Model Assumptions}
+
+The simple linear regression model with Normal errors assumes
+\begin{itemize}
+    \item $y = X \beta + \epsilon$ The response is a linear function of the predictors.
+    \item $\E(\epsilon) = 0$ The expectation of the error term is 0.
+    \item $\Cov(\epsilon) = \sigma^2 I_n$ The error terms have constant
+variance $\sigma^2$ and are uncorrelated. This is equivalent to
+$\Cov(y) = \sigma^2 I_n$.
+\end{itemize}
+
+The normal error model strengthens the second two conditions:
+\begin{itemize}
+    \item $\epsilon \sim $ Normal$(0, \sigma^2 I_n)$ The error terms are
+normally distributed.
+\end{itemize}
+
+\subsubsection{Least Squares}
+
+Least squares estimates $\beta$ by minimizing SSE, the error sum of
+squares.
+\[
+    Q(\hat{\beta}) = e'e
+\]
+
+\subsubsection{Design matrix}
 
 $y$ can be decomposed into orthogonal vectors
 \[
@@ -41,20 +79,22 @@ $y$ onto $\langle X \rangle$ the column space of the design matrix $X$.
     \hat{y} = X \hat{\beta} = X(X X^{-1})X'y = Hy
 \]
 
-\textbf{Error vector} is $y$ projected onto the space orthogonal to $X$.
+\subsubsection{Error vector} is $y$ projected onto the space orthogonal to $X$.
 \[
     e = y - \hat{y} = y - Hy = (I - H)y
 \]
 
 \subsection{Sums of Squares}
 
-\textbf{SSE} - Error Sum of Squares
+\subsubsection{SSE} - Error Sum of Squares. The degrees of freedom is the
+length of the $\beta$ vector, which equals the number of regressors plus
+one for the intercept.
 \[
     \sum_{i=1}^n e_i^2 = \sum_{i=1}^n (y_i - \hat{y_i})^2
     = e'e
 \]
 
-\textbf{SSR} - Regression Sum of Squares
+\subsubsection{SSR} - Regression Sum of Squares
 \[
     \sum_{i=1}^n (y_i - \bar{y})^2
     = (\hat{y} - \bar{y} 1)' (\hat{y} - \bar{y} 1) 
@@ -66,7 +106,13 @@ SSTO - Total Sum of Squares, Define $J_n$ to be an $n$ by $n$ matrix of all 1's.
     = y'(I - \frac{1}{n} J_n)y
 \]
 
-MSE - Error Mean Squared $MSE = SSE / (n - 2)$. Includes degree of freedom
-correction.
+MSE - Error Mean Squared. SSE with degrees of freedom correction. In the
+case of single regression with an intercept $df(SSE) = n-2$. This estimates
+the variance of the errors.
+\[
+    MSE = SSE / df(SSE) \quad \E(MSE) = \sigma^2
+\]
+
+\subsection{Confidence Intervals}
 
 \end{document}

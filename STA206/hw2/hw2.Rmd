@@ -128,13 +128,18 @@ tstar = b1 / ss$coefficients[2, 'Std. Error']
 sprintf('If %.3f is less than %.3f we reject H0', tstar, t99)
 ```
 
-We conclude that there is a significant negative linear association 
-between amount of muscle mass and age.
+We reject the null hypothesis and conclude that there is a significant 
+negative linear association between amount of muscle mass and age.
 
-## 1
+## 1h
 
+A 95% prediction interval for the muscle mass for women of age 60 is:
 ```{r, echo=FALSE}
+predict(simple, data.frame(age=60), interval='prediction', level=0.95)
 ```
+We would expect 95% of new observations to fall between the lower and upper
+bounds.
+
 
 ## 1
 
