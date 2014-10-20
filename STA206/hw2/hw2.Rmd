@@ -44,7 +44,7 @@ Regression coefficients:
 simple = lm(muscle ~ age, data=women)
 b0 = simple$coefficients[1]
 b1 = simple$coefficients[2]
-print(b0, b1)
+c(b0, b1)
 ```
 
 Standard errors for regression coefficients:
@@ -98,7 +98,7 @@ plot.lm(simple, which=2)
 Using linear algebra notation,
 the simple linear regression model with Normal errors assumes
 - $y = X \beta + \epsilon$ The response is a linear function of the predictors.
-- $\epsilon ~ $ Normal$(0, \sigma^2 I_n)$ The error terms are normally distributed and uncorrelated.
+- $\epsilon ~  Normal(0, \sigma^2 I_n)$ The error terms are normally distributed and uncorrelated.
 
 #TODO - interpret plot
 
@@ -156,7 +156,7 @@ p60 = predict(simple, data.frame(age=60), se.fit=TRUE,
 fit60 = p60$fit[1] 
 
 # Working-Hotelling multiplier
-W = sqrt(qf(0.95, 2, df)) 
+W = sqrt(2 * qf(0.95, 2, df)) 
 
 # direct calculation of standard error of this prediction
 xbar = mean(women$age)
@@ -168,9 +168,6 @@ se60 = sqrt(mse * ((60 - xbar) ** 2 / sxx + 1/n + 1))
 # se60 = sqrt(p60$se.fit ** 2 + mse)
 
 c(fit60 + W * se60, fit60 - W * se60)
-# Expect
-84.94683
-110.9549
 ```
 
 ## 1j
@@ -201,12 +198,45 @@ sprintf('If %.3f is less than %.3f we reject H0', fstar, f99)
 We reject the null hypothesis and conclude that there is a significant 
 linear association between amount of muscle mass and age.
 
+## 1k
 
+The proportion of total variation in muscle mass explained by age is $R^2$ as
+viewed in the summary of the model:
+```{r, echo=FALSE}
+summary(simple)
+```
+
+The correlation between muscle mass and age is:
+```{r, echo=FALSE}
+cor(women$muscle, women$age)
+```
+
+## 1l
+
+We fit the model using the log of age.
 
 ```{r, echo=FALSE}
+logsimple = lm(muscle ~ log(age), data=women)
+summary(logsimple)
+plot(log(women$age), women$muscle)
+abline(logsimple)
+```
+
+This model has the corresponding residual plots:
+
+```{r, echo=FALSE}
+par(mfrow=c(2, 2))
+plot(logsimple)
 ```
 
 ## 1
 
+We plot the Box-Cox power transformation.
+
 ```{r, echo=FALSE}
+library(MASS)
+boxcox(simple)
 ```
+
+This suggests that a value of $\lambda = 1$ is appropriate. In other words, no
+transformation is required.
