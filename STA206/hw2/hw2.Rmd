@@ -173,7 +173,35 @@ c(fit60 + W * se60, fit60 - W * se60)
 110.9549
 ```
 
-## 1
+## 1j
+
+The ANOVA table for this data is:
+```{r, echo=FALSE}
+a
+```
+
+We use an F test at level 0.01 to see if there is a linear association
+between muscle mass and age. $H_0$ is $\beta_1 = 0$ and $H_1$ is the
+two sided alternative hypothesis $\beta_1 \neq 0$. 
+
+The test statistic is 
+$F^* = \frac{\hat(\beta_1) - 0}{se(\hat(\beta_1))} ~ t(n - 2)$.
+
+The decision rule is to reject $H_0$ if $F^* > F(0.99; 1, n - 2)$.
+
+```{r, echo=FALSE}
+alpha = 0.01
+f99 = qt(alpha, 1, n-2)
+msr = sum(simple$residuals ** 2) / n
+fstar = msr / mse
+
+sprintf('If %.3f is less than %.3f we reject H0', fstar, f99)
+```
+
+We reject the null hypothesis and conclude that there is a significant 
+linear association between amount of muscle mass and age.
+
+
 
 ```{r, echo=FALSE}
 ```
