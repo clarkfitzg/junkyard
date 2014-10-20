@@ -56,7 +56,10 @@ ss$coefficients[, 'Std. Error']
 The MSE and its degrees of freedom are:
 ```{r, echo=FALSE}
 a = anova(simple)
-a['Residuals', c('Df', 'Mean Sq')]
+mse = a['Residuals', 'Mean Sq']
+df = a['Residuals', 'Df']
+
+c(mse, df)
 ```
 
 ## 1c
@@ -121,8 +124,7 @@ The decision rule is to reject $H_0$ if $T^* < t(0.99, n - 2)$.
 
 ```{r, echo=FALSE}
 alpha = 0.01
-degfree = anova(simple)['Residuals', 'Df']
-t99 = qt(alpha, df=degfree)
+t99 = qt(alpha, df=df)
 tstar = b1 / ss$coefficients[2, 'Std. Error']
 
 sprintf('If %.3f is less than %.3f we reject H0', tstar, t99)
@@ -137,13 +139,38 @@ A 95% prediction interval for the muscle mass for women of age 60 is:
 ```{r, echo=FALSE}
 predict(simple, data.frame(age=60), interval='prediction', level=0.95)
 ```
-We would expect 95% of new observations to fall between the lower and upper
-bounds.
+The fit is the expected value. We expect 95% of new observations to fall 
+between the lower and upper bounds.
 
 
-## 1
+## 1i
 
+The limits of a the 95% simultaneous confidence bands for the regression
+line at $x_h = 60$ are:
 ```{r, echo=FALSE}
+
+p60 = predict(simple, data.frame(age=60), se.fit=TRUE, 
+    interval='prediction', level=0.95)
+
+# Actual fitted value
+fit60 = p60$fit[1] 
+
+# Working-Hotelling multiplier
+W = sqrt(qf(0.95, 2, df)) 
+
+# direct calculation of standard error of this prediction
+xbar = mean(women$age)
+sxx = sum((women$age - xbar) ** 2)
+n = nrow(women)
+se60 = sqrt(mse * ((60 - xbar) ** 2 / sxx + 1/n + 1))
+
+# An alternative way is to recover it from the standard error of the mean
+# se60 = sqrt(p60$se.fit ** 2 + mse)
+
+c(fit60 + W * se60, fit60 - W * se60)
+# Expect
+84.94683
+110.9549
 ```
 
 ## 1
