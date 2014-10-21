@@ -42,11 +42,9 @@ def dot3(x, y):
     '''
     Loop style dot product
     '''
-    for i in range(4000):
-        product = 0
-        n = len(x)
-        for i in range(n):
-            product += x[i] * y[i]
+    product = 0
+    for i in range(n):
+        product += x[i] * y[i]
     return product
 
 xl, yl = map(list, (x, y))

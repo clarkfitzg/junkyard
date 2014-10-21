@@ -158,16 +158,9 @@ fit60 = p60$fit[1]
 # Working-Hotelling multiplier
 W = sqrt(2 * qf(0.95, 2, df)) 
 
-# direct calculation of standard error of this prediction
-xbar = mean(women$age)
-sxx = sum((women$age - xbar) ** 2)
-n = nrow(women)
-se60 = sqrt(mse * ((60 - xbar) ** 2 / sxx + 1/n + 1))
-
-# An alternative way is to recover it from the standard error of the mean
-# se60 = sqrt(p60$se.fit ** 2 + mse)
-
-c(fit60 + W * se60, fit60 - W * se60)
+se60 = p60$se.fit
+c(fit60 - W * se60, fit60 + W * se60)
+# 82.296, 87.5977
 ```
 
 ## 1j
@@ -187,8 +180,7 @@ $F^* = \frac{\hat(\beta_1) - 0}{se(\hat(\beta_1))} ~ t(n - 2)$.
 The decision rule is to reject $H_0$ if $F^* > F(0.99; 1, n - 2)$.
 
 ```{r, echo=FALSE}
-alpha = 0.01
-f99 = qt(alpha, 1, n-2)
+f99 = qf(0.99, 1, n-2)
 msr = sum(simple$residuals ** 2) / n
 fstar = msr / mse
 
@@ -200,10 +192,9 @@ linear association between amount of muscle mass and age.
 
 ## 1k
 
-The proportion of total variation in muscle mass explained by age is $R^2$ as
-viewed in the summary of the model:
+The proportion of total variation in muscle mass explained by age is $R^2:
 ```{r, echo=FALSE}
-summary(simple)
+summary(simple)$r.squared
 ```
 
 The correlation between muscle mass and age is:
