@@ -7,6 +7,8 @@ Y
 # 4b
 XtX = t(X) %*% X
 XtX
+XtY = t(X) %*% Y
+XtY
 
 # 4c
 XtX_inverse = solve(XtX)
