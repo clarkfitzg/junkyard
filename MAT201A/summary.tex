@@ -49,12 +49,9 @@ such that
 
 \begin{enumerate}
     \item Nonnegative $||x|| \geq 0$ for all $x \in X$.
-
     \item $||x|| = 0 \iff x = 0$.
-
-    \item Triangle Inequality (verify) $||x + y|| \leq ||x|| + ||y||$
-
     \item Scalar multiplication $|| \lambda x || = |\lambda| \cdot ||x||$
+    \item Triangle Inequality $||x + y|| \leq ||x|| + ||y||$
 
 \end{enumerate}
 
@@ -84,12 +81,18 @@ contains a subsequence that converges in $K$.
 $K \subset X$ is \textbf{compact} if every open cover of $K$ has a finite
 subcover.
 
-$A \subset X$ is \textbf{totally bounded} if there exists a finite
+A subset of $X$ is \textbf{totally bounded} if there exists a finite
 $\epsilon$ net for every $\epsilon > 0$.
 
-$A \subset X$ is \textbf{dense} 
+$A \subset X$ is \textbf{dense} in $X$ if $\bar{A} = X$.
 
-$A \subset X$ is \textbf{separable} if $A$ has a countable dense subset.
+A subset of $X$ is \textbf{separable} if it has a countable dense subset.
+Compact metric spaces are separable.
+
+A subset of $X$ is \textbf{precompact} if its closure in $X$ is compact. 
+$\iff$ Subset is totally bounded.
+
+
 \subsubsection{Theorems}
 
 A subset of a metric space is complete if and only if it is closed.
@@ -98,6 +101,8 @@ A subset of a metric space is compact if and only if it is complete and
 totally bounded.
 
 Continuous functions on a compact set are uniformly continuous.
+
+The image of a compact set under a continous function is compact.
 
 \subsection{Functions}
 
@@ -121,5 +126,16 @@ is defined as
     d(f, g) = \sup_{x \in [0, 1]} |f(x) - g(x)|
 \]
 
+A sequence of bounded, real valued functions $(f_n)$ on a metric space
+\textbf{converges uniformly} to a function $f$ if
+\[
+    \lim_{n =rightarrow \infty} || f_n -f || = 0
+\]
+
+$C(K)$, the space of continuous functions on a compact metric space $K$ is
+complete.
+
+\textbf{Weierstrass Approximation} The set of polynomials is dense in
+$C([a, b])$.
 
 \end{document}
