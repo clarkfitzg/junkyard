@@ -100,7 +100,8 @@ A subset of a metric space is complete if and only if it is closed.
 A subset of a metric space is compact if and only if it is complete and
 totally bounded.
 
-Continuous functions on a compact set are uniformly continuous.
+Continuous functions on a compact set are uniformly continuous and bounded,
+attaining their max and min.
 
 The image of a compact set under a continous function is compact.
 
@@ -113,7 +114,8 @@ for all $\epsilon > 0$ there exists $\delta > 0$ such that $d_X(x, x_0) <
     \item There is a ball of positive radius $\delta$
     around a point $x_0$ that is mapped into the ball of radius $\epsilon$ around
     $f(x_0)$.
-    \item $\lim_{x \rightarrow x_0} f(x) = f(x_0)$
+    \item $f$ continuous $\iff$ if $x_n \rightarrow x_0$ then $f(x_n)
+\rightarrow f(x_))$.
 \end{enumerate}
 
 A function $f : X \rightarrow Y$ is \textbf{uniformly continuous} on $X$ if 
@@ -129,7 +131,7 @@ is defined as
 A sequence of bounded, real valued functions $(f_n)$ on a metric space
 \textbf{converges uniformly} to a function $f$ if
 \[
-    \lim_{n =rightarrow \infty} || f_n -f || = 0
+    \lim_{n = \rightarrow \infty} || f_n -f || = 0
 \]
 
 $C(K)$, the space of continuous functions on a compact metric space $K$ is
