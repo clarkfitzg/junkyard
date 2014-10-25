@@ -108,7 +108,7 @@ one for the intercept.
 
 \subsubsection{SSR} - Regression Sum of Squares
 \[
-    \sum_{i=1}^n (y_i - \bar{y})^2
+    \sum_{i=1}^n (\hat{y_i} - \bar{y})^2
     = (\hat{y} - \bar{y} 1)' (\hat{y} - \bar{y} 1) 
     = \hat{y}_c' \hat{y}_c
 \]
@@ -126,6 +126,19 @@ the variance of the errors.
 \[
     MSE = \frac{SSE}{df(SSE)} \quad \E(MSE) = \sigma^2
 \]
+
+\subsubsection{Decomposition of Error}
+SSTO = SSE + SSR
+
+\subsubsection{Measures of Fit}
+
+$R^2$, the coefficient of multiple determination is the reduction of total
+variation when using $X$ to explain $Y$.
+\[
+    R^2 = \frac{SSR}{SSTO} = 1 - \frac{SSE}{SSTO}
+\]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Confidence Intervals}
 The following results hold for the normal error model.
