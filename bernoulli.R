@@ -4,6 +4,7 @@ library(boot)
 
 set.seed(84)
 
+n <- 100
 p <- 0.5
 n_pts <- 100
 n_reps <- 100
