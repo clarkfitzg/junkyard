@@ -163,7 +163,18 @@ x_c})
 \]
 A large range of $x$ or large $n$ makes for a tighter interval.
 
-Does this hold for multiple regression?
+For multiple regression we have the variance of $\hat\beta$ is:
+\[
+    VAR(\hat\beta) = MSE (X'X)^{-1}.
+\]
+So to predict $\hat Y_h$ we have
+\[
+    s^2(\hat (Y_h) = MSE (X'_h (X'X)^{-1} X_H) .
+\]
+Then the $1 - \alpha$ confidence limits for $E(Y_h)$ are:
+\[
+    \hat Y_h +- t(1 - \alpha / 2; n - p) s(\hat Y _h)
+\]
 
 \subsubsection{Prediction}
 Predicts $y_{h(new)}$ given $x_h$. 
@@ -183,4 +194,10 @@ The $1 - \alpha$ confidence band is:
     \hat{y_h} +- W \times SE(\hat{y_h}) \quad \forall x \in \mathbb{R}
 \]
 
+\subsection{Projection Matrices}
+\textbf{Projection Matrices} are symmetric and idempotent. Here are the
+ones we've seen:
+\[
+    H = X(X'X)^{-1} \quad \quad \quad I - H
+\]
 \end{document}
