@@ -1,9 +1,29 @@
+set.seed(328)
+
+# 1a
+############################################################
+n = 100
+x1 = rnorm(n)
+x2 = rnorm(n)
+x3 = rnorm(n)
+y = 4 * x1 + rnorm(n)
+
+mod1 = lm(y ~ x1)
+mod2 = lm(y ~ x2 + x3)
+
+# 1b
+############################################################
+n = 100
+x1 = rnorm(n)
+y = rep(10, n)
+
+mod1 = lm(y ~ x1)
+
 # 1k
 ############################################################
 # Does the magnitude of a standardized regression coefficient
 # reflect the comparitive importance?
 
-set.seed(328)
 n = 100
 df = data.frame(x1 = runif(n))
 df$y = 400 + 2 * df$x1 + 0.001 * rnorm(n)
@@ -28,7 +48,7 @@ x = rep(1, n)
 x[y != 0] = 0
 x[x == 1][sample.int(n/2, size=n/4)] = -1
 
-x2 = rnorm(n)
+#x2 = rnorm(n)
 mod1n = lm(y ~ x + x2)
 s1n = summary(mod1n)
 # Observe that beta1 is not 0.
@@ -135,3 +155,8 @@ R2.given.x1.x2 = 0.448 / SSE.x1.x2
 # Partial correlation Ry, x1*x2 | x2, x1
 # Sign comes from the coefficient of x1*x2 term in model summary
 -sqrt(R2.given.x1.x2)
+
+# 4f
+############################################################
+fstar = (5.49 + 0.448) / MSE
+f99 = qf(c(0.005, 0.995), 2, 26)
