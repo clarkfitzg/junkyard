@@ -75,6 +75,8 @@ s10 = summary(mod1o)
 
 Xfirst4 = matrix(c(rep(1, 4), 0.36, 0.66, 0.66, -0.52,
                    2.14, 0.74, 1.91, -0.41), nrow=4)
+# Add interaction term
+Xfirst4 = cbind(Xfirst4, Xfirst4[, 2] * Xfirst4[, 3])
 Xfirst4
 
 # 4b
@@ -95,7 +97,7 @@ predvalue
 
 # Prediction standard error at this point
 xh = c(1, 0, 0, 0)
-predse = sqrt(MSE * xh %*% XtXinv %*% xh)
+predse = sqrt(MSE * (1 + xh %*% XtXinv %*% xh))
 predse
 
 # A 95% prediction interval
@@ -158,5 +160,16 @@ R2.given.x1.x2 = 0.448 / SSE.x1.x2
 
 # 4f
 ############################################################
+
+
+
+
+
+
+
+
+
 fstar = (5.49 + 0.448) / MSE
+fstar
 f99 = qf(c(0.005, 0.995), 2, 26)
+f99
