@@ -81,3 +81,54 @@ plot.interact = function(xx) {
 apply(combn(c('X1', 'X2', 'X3', 'X4'), 2), 2, plot.interact)
 ```
 
+TODO- Interpret these plots
+
+## 1e
+
+Testing whether each regression coefficient is 0  at level 0.01 with $p$ predictors
+(including the intercept) is
+similar to testing with a single predictor, we just use a $t$ distribution
+with $n - p$ degrees of freedom. For $\hat{\beta_i}, i = 0, 1, 2, 3, 4$ the
+null hypothesis $H_0$ is $\beta_i = 0$, and the alternative hypothesis
+$H_1$ is $\beta_i \neq 0$. The test statistic is given by
+$$
+    T^*_i = \frac{\hat{\beta_i} - 0}{se(\hat{\beta_i})} \sim t(n - 5)
+$$
+under the null hypothesis. $se(\hat{\beta_i})$ is the $i + 1$ diagonal element of
+$MSE(X'X)^{-1}$. 
+The decision rule is to reject $H_0$ if $|T^*_i| > t(0.995, n - 5) \approx
+2.64$. All of this information is available in the summary output:
+
+```{r}
+qt(0.995, 81 - 5)
+summary(fit1)
+```
+
+We see that in the multiple regression model, only $X_4$ is
+not significant. This implies that we could drop $X_4$ from the model.
+
+## 4f
+
+The ANOVA table below shows SSTO, SSR, and SSE.
+
+```{r, echo=FALSE}
+anova.table = function(model){
+
+    # Makes an ANOVA table for a model resulting from lm output
+
+    a = anova(model)
+
+    total = data.frame('SS' = sum(a[, 'Sum Sq']), 'DF' = sum(a$Df))
+    error = data.frame('SS' = a['Residuals', 'Sum Sq'], 
+                       'DF' = a['Residuals', 'Df'])
+    regression = data.frame(total - error)
+
+    out = rbind(regression, error, total)
+    out$MS = out$SS / out$DF
+    row.names(out) = c('regression', 'error', 'total')
+    return(out)
+}
+anova1 = anova(fit1)
+anova.table(fit1)
+```
+
