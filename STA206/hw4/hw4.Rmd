@@ -1,8 +1,12 @@
-## HW4
+---
+title: Stats 206 - Homework 4
+author: Clark Fitzgerald
+date: 5 November 2014
+output: pdf_document
+fontsize: 11pt
+geometry: margin=1in
+---
 
-Stats 206
-
-Clark Fitzgerald
 
 ```{r setup, include=FALSE}
 # Use pdf plots rather than jpeg.
@@ -11,6 +15,8 @@ library(plyr)
 ```
 
 ## 1a
+
+We look at the correlation matrix:
 
 ```{r, scatterplot, echo=FALSE}
 setwd('~/junkyard/STA206/hw4')
@@ -104,10 +110,10 @@ qt(0.995, 81 - 5)
 summary(fit1)
 ```
 
-We see that in the multiple regression model, only $X_4$ is
-not significant. This implies that we could drop $X_4$ from the model.
+We see that in the multiple regression model, only $X_3$ is
+not significant. This implies that we could drop $X_3$ from the model.
 
-## 4f
+## 1f
 
 The ANOVA table below shows SSTO, SSR, and SSE.
 
@@ -128,7 +134,56 @@ anova.table = function(model){
     row.names(out) = c('regression', 'error', 'total')
     return(out)
 }
-anova1 = anova(fit1)
-anova.table(fit1)
+anova1 = anova.table(fit1)
+anova1
 ```
 
+To test whether there is a regression relation at $\alpha = 0.01$ we use an
+F test. The null hypothesis $H_0$ is that $\beta_i = 0$ for $i = 1, 2, 3,
+4$. $H_1$ is that not all such $\beta_i = 0$. The test statistic is 
+$$
+    F^* = \frac{MSR}{MSE} \sim_{H_0} F(4, 76)
+$$
+
+The decision rule is to reject $H_0$ if $F^* > F(0.99 ; 4, 80)$.
+
+```{r}
+qf99 = qf(0.99, 4, 76)
+qf99
+
+Fstar = anova1['regression', 'MS'] / anova1['error', 'MS']
+Fstar
+
+Fstar > qf99
+```
+
+Hence we reject $H_0$ and conclude that there is a significant regression relation at
+$\alpha = 0.01$. Note that this information is available in the last line
+of the `summary` output as well.
+
+## 1g
+
+Now we exclude $X_3$ from the model, because it failed the significance test in part e)
+above.
+
+```{r, echo=FALSE}
+fit2 = lm(Y ~ X1 + X2 + X4, data = property)
+summary(fit2)
+anova(fit2)
+```
+
+We compare $MSE, R^2$ and $R^2_a$ with those of model 1.
+
+```{r, echo=FALSE}
+getr2 = function(modelname){
+    model = get(modelname)
+    r2 = summary(model)[c('r.squared', 'adj.r.squared')]
+
+    data.frame(R2 = r2[1], R2a = r2[2], 
+               MSE = anova(model)['Residuals', 'Mean Sq'],
+               row.names = modelname)
+}
+sapply(c('fit1', 'fit2'), getr2)
+```
+
+The second fit has better adjusted $R^2_a$, and smaller MSE.
