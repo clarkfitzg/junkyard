@@ -187,3 +187,89 @@ sapply(c('fit1', 'fit2'), getr2)
 ```
 
 The second fit has better adjusted $R^2_a$, and smaller MSE.
+
+## 1h
+
+We compare standard errors of the regression coefficient estimates 
+for $X_1, X_2, X_4$ with those of model 1.
+
+```{r, echo=FALSE}
+getse = function(modelname){
+    model = get(modelname)
+    coef(summary(model))[c('X1', 'X2', 'X4'), 'Std. Error']
+}
+sapply(c('fit1', 'fit2'), getse)
+```
+
+As expected, Model 2 has smaller standard errors for each coefficient.
+Here are 95% confidence intervals for the regression coefficients:
+
+```{r}
+confint(fit2, level=0.99)
+```
+
+The confidence intervals for Model 1 are larger, since Model 1 has larger
+standard error around all regression coefficients.
+
+```{r}
+confint(fit1, level=0.99)
+```
+
+## 1i
+
+We predict a new property under both models:
+
+```{r}
+x.new = data.frame(X1 = 4, X2 = 10, X3 = 0.1, X4 = 8e4)
+
+predict(fit1, x.new, interval = 'prediction', level = 0.99)
+predict(fit2, x.new, interval = 'prediction', level = 0.99)
+```
+
+The fitted values and intervals are similar with both models. The intervals
+for Model 2 are marginally smaller.
+
+## 1j
+
+Model 2 is preferable. All of the exercises above demonstrate that
+including the $X3$ variable does not help the fit in any significant way.
+Therefore we choose the simpler model.
+
+## 1k
+
+We calculate the coefficient of partial determination 
+$$
+    R^2_{Y 3 | 124} = \frac{SSE(X_1, X_2, X_4) - SSE(X_1, X_2, X_3, X_4)}{SSE(X_1, X_2, X_4)}.
+$$
+This measures the relative change in SSE when the $X_3$ term is included.
+
+```{r, echo=FALSE}
+# Writing it in this order lets us see the effect of X3 after X4 is in the
+# model. Use cumulative sums to calculate the difference.
+
+a = anova(lm(Y ~ X1 + X2 + X4 + X3, data = property))
+a = cumsum(a)
+coefpd = (a['X3', 'Mean Sq'] - a['X4', 'Mean Sq']) / a['X4', 'Mean Sq']
+coefpd 
+```
+
+The coefficient of partial correlation $r_{Y 3 | 214}$ is:
+
+```{r, echo=FALSE}
+sqrt(coefpd) * sign(coef(fit1)['X4'])
+```
+
+The correlation coefficient between the two sets of residuals is:
+
+```{r}
+cor(fit1$residuals, fit2$residuals)
+```
+
+## 2a
+
+```{r, boxplots, echo=FALSE}
+par(mfrow = c(1, 5))
+sapply(property, boxplot)
+#sapply(property, function(x) boxplot(x, main=names(x)))
+```
+
