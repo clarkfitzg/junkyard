@@ -268,8 +268,57 @@ cor(fit1$residuals, fit2$residuals)
 ## 2a
 
 ```{r, boxplots, echo=FALSE}
-par(mfrow = c(1, 5))
-sapply(property, boxplot)
-#sapply(property, function(x) boxplot(x, main=names(x)))
+par(mfrow = c(2, 5))
+plothelper = function(varname, plotfunc, data=property, ...){
+    # Plots individual plots with the variable name
+    # ... are additional arguments to `plotfunc`
+    plotfunc(data[, varname], main = varname, ...)
+}
+varnames = names(property)
+sapply(varnames, plothelper, boxplot)
+sapply(varnames, plothelper, hist, xlab='')
+```
+
+```{r}
+summary(property)
+```
+
+The scale of the $X_4$ variable is much larger than all other variables.
+
+## 2b
+
+The sample means are available from the `summary` output above. The sample
+standard deviations are:
+
+```{r}
+sapply(property, sd)
+```
+
+We perform the correlation transformation:
+
+```{r}
+n = nrow(property)
+property.t = scale(property) / sqrt(n - 1)
+```
+
+The sample means and sample standard deviations for the transformed
+variables are:
+
+```{r}
+sapply(propert.t, mean)
+sapply(propert.t, sd)
+```
+
+## 2c
+
+```{r, echo=FALSE}
+unstandardize = function(x, n=n, means, sds){
+    # The inverse of a correlation transformation
+    #   x   : vectors to be transformed back
+    #   n   : as used in the correlation transformation
+    #   means   : vector of column means of original data
+    #   sds     : vector of column standard deviations of original data
+
+}
 ```
 
