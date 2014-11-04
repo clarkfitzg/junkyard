@@ -297,8 +297,42 @@ sapply(property, sd)
 We perform the correlation transformation:
 
 ```{r}
-n = nrow(property)
-property.t = scale(property) / sqrt(n - 1)
+getscale = function(X){
+    # Returns scaling information
+    # X is the original source of data
+    # To be used together with `cor.transform`
+    list(multiplier = 1 / sqrt(nrow(X) - 1),
+         sd = sapply(X, sd),
+         mean = sapply(X, mean))
+}
+
+cor.transform = function(X, scaleinfo, inverse=FALSE){
+    # Perform a correlation transformation on X
+    # X         : dataframe
+    # scaleinfo : output from getscale() on original data
+    # inverse   : TRUE means to transform from standardized version
+    #             standardized -> original
+
+    # Create vectors from scaleinfo to work with R's recycling rules
+    # Memory usage?
+    n = nrow(X)
+    s = lapply(scaleinfo, rep, each=n)
+
+    if (inverse){
+        Xnew = data.frame(X * s$sd / s$multiplier + s$mean)
+    }
+    else{
+        Xnew = data.frame(s$multiplier * (X - s$mean) / s$sd)
+    }
+    return(Xnew)
+}
+
+scl = getscale(property)
+property.t2 = cor.transform(property, scl)
+
+# testing correctness
+property.t = scale(property) / sqrt(nrow(property) - 1)
+pback = cor.transform(property.t2, scl, inverse=TRUE)
 ```
 
 The sample means and sample standard deviations for the transformed
