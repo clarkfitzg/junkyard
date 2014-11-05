@@ -3,7 +3,7 @@ title: Stats 206 - Homework 4
 author: Clark Fitzgerald - 3013
 date: 5 November 2014
 output: pdf_document
-fontsize: 11pt
+fontsize: 10pt
 geometry: margin=1in
 ---
 
@@ -15,17 +15,18 @@ opts_chunk$set(dev = 'pdf')
 
 ## 1a
 
-We look at the correlation matrix:
 
-```{r, echo=FALSE}
-cor(property)
-```
-
-```{r, scatterplot, results='hide', echo=FALSE}
+```{r, scatterplot, results='hide'}
 setwd('~/junkyard/STA206/hw4')
 property = read.table('property.txt')
 names(property) = c('Y', 'X1', 'X2', 'X3', 'X4')
 plot(property)
+```
+
+The scatterplot is on the next page. We look at the correlation matrix:
+
+```{r}
+cor(property)
 ```
 
 There are no obviously strong linear relationships here. $X_2$ and $X_4$
@@ -36,7 +37,7 @@ exhibit the largest correlations.
 The least squares estimates, $R^2$, and $R^2_a$ can be read from the
 model summary output:
 
-```{r, echo=FALSE}
+```{r}
 fit1 = lm(Y ~ ., data = property)
 summary(fit1)
 ```
@@ -47,13 +48,13 @@ $$
 $$
 
 MSE is 1.293 from the ANOVA table. 
-```{r, echo=FALSE}
+```{r}
 anova(fit1)
 ```
 
 ## 1c
 
-```{r, Residuals, echo=FALSE, results='hide', fig.height = 4}
+```{r, Residuals, results='hide', fig.height = 4}
 par(mfrow=c(1, 3))
 
 plot.lm(fit1, which=c(1, 2))
@@ -66,7 +67,7 @@ bit heavy.
 
 ## 1d
 
-```{r, Effects, results='hide', echo=FALSE}
+```{r, Effects, results='hide'}
 par(mfrow=c(2, 2))
 
 plotone = function(x) {
@@ -76,7 +77,7 @@ plotone = function(x) {
 sapply(c('X1', 'X2', 'X3', 'X4'), plotone)
 ```
 
-```{r, Interactions, results='hide', echo=FALSE}
+```{r, Interactions, results='hide'}
 par(mfrow=c(3, 2))
 
 plot.interact = function(xx) {
@@ -121,7 +122,7 @@ not significant. This implies that we could drop $X_3$ from the model.
 
 The ANOVA table below shows SSTO, SSR, and SSE.
 
-```{r, echo=FALSE}
+```{r}
 anova.table = function(model){
 
     # Makes an ANOVA table for a model resulting from lm output
@@ -170,7 +171,7 @@ of the `summary` output as well.
 Now we exclude $X_3$ from the model, because it failed the significance test in part e)
 above.
 
-```{r, echo=FALSE}
+```{r}
 fit2 = lm(Y ~ X1 + X2 + X4, data = property)
 summary(fit2)
 anova(fit2)
@@ -178,7 +179,7 @@ anova(fit2)
 
 We compare $MSE, R^2$ and $R^2_a$ with those of model 1.
 
-```{r, echo=FALSE}
+```{r}
 getr2 = function(modelname){
     model = get(modelname)
     r2 = summary(model)[c('r.squared', 'adj.r.squared')]
@@ -197,7 +198,7 @@ The second fit has better adjusted $R^2_a$, and smaller MSE.
 We compare standard errors of the regression coefficient estimates 
 for $X_1, X_2, X_4$ with those of model 1.
 
-```{r, echo=FALSE}
+```{r}
 getse = function(modelname){
     model = get(modelname)
     coef(summary(model))[c('X1', 'X2', 'X4'), 'Std. Error']
@@ -247,9 +248,9 @@ $$
 $$
 This measures the relative change in SSE when the $X_3$ term is included.
 
-```{r, echo=FALSE}
+```{r}
 # Writing it in this order lets us see the effect of X3 after X4 is in the
-# model. Use cumulative sums to calculate the difference.
+# model. 
 
 a = anova(lm(Y ~ X1 + X2 + X4 + X3, data = property))
 coefpd = a['X3', 'Sum Sq'] / a['Residuals', 'Sum Sq']
@@ -258,7 +259,7 @@ coefpd
 
 The coefficient of partial correlation $r_{Y 3 | 214}$ is:
 
-```{r, echo=FALSE}
+```{r}
 cpc = sqrt(coefpd) * sign(coef(fit1)['X4'])
 names(cpc) = ''
 cpc
@@ -272,7 +273,7 @@ cor(fit1$residuals, fit2$residuals)
 
 ## 2a
 
-```{r, boxplots, results='hide', echo=FALSE}
+```{r, boxplots, results='hide'}
 par(mfrow = c(2, 5))
 plothelper = function(varname, plotfunc, data=property, ...){
     # Plots individual plots with the variable name
@@ -365,7 +366,7 @@ $$
 
 If we fit the model on the standardized data including the intercept we get:
 
-```{r, echo=FALSE}
+```{r}
 fit3 = lm(Y ~ ., data = property.t)
 fit3
 ```
@@ -373,7 +374,7 @@ fit3
 The intercept is numerically 0, as expected.
 
 Now we fit the standardized data excluding the intercept.
-```{r, echo=FALSE}
+```{r}
 fit4 = lm(Y ~ . -1, data = property.t)
 fit4
 ```
@@ -396,7 +397,7 @@ Compare SSTO, SSE, and SSR under the standardized model with the original
 model. The standardized model has one more degree of freedom when the
 intercept is removed.
 
-```{r, echo=FALSE}
+```{r}
 # standardized
 anova.table(fit4)
 ```
@@ -405,7 +406,7 @@ anova.table(fit4)
 
 $R^2$ and $R^2_a$ are available from the `summary` output.
 
-```{r, echo=FALSE}
+```{r}
 summary(fit4)
 ```
 
@@ -447,7 +448,7 @@ diag(rxxinv)
 We confirm that $VIF_k = \frac{1}{1 - R_k^2}$ by regressing each $X_k$ on
 the other $X_j \neq X_k$.
 
-```{r, echo=FALSE}
+```{r}
 mods = list()
 mods$X1 = lm(X1 ~ X2 + X3 + X4, data=property)
 mods$X2 = lm(X2 ~ X1 + X3 + X4, data=property)
@@ -461,7 +462,7 @@ cause for concern. We don't observe that here.
 
 ## 3c
 
-```{r, echo=FALSE}
+```{r}
 mod.X4 = lm(Y ~ X4, data=property)
 mod.X3X4 = lm(Y ~ X3 + X4, data=property)
 mod.X4
@@ -472,7 +473,7 @@ The regression coefficients for $X_4$ are similar if $X_3$ is included or
 excluded. This does not surprise us, since $X_3$ and $X_4$ are not highly
 correlated.
 
-```{r, echo=FALSE}
+```{r}
 anova(mod.X4)
 anova(mod.X3X4)
 ```
@@ -481,7 +482,7 @@ SSR.
 
 ## 3d
 
-```{r, echo=FALSE}
+```{r}
 mod.X2 = lm(Y ~ X2, data=property)
 mod.X2X4 = lm(Y ~ X4 + X2, data=property)
 mod.X2
@@ -492,10 +493,11 @@ $X_2$ and $X_4$ have sample correlation 0.44, and we can see that including
 $X_4$ in the model makes a large change in the regression coefficient for
 $X_2$. 
 
-```{r, echo=FALSE}
+```{r}
 anova(mod.X2)
 anova(mod.X2X4)
 ```
 
-From the ANOVA table we see that $SSR(X_2 | X_4)$ is small. This is due to
+From the ANOVA table we see that $SSR(X_2 | X_4)$ is small, 9.3 compared to
+40.5 when it's the only term in the model. This is due to
 the collinearity of $X_2$ and $X_4$.
