@@ -1,6 +1,6 @@
 ---
 title: Stats 206 - Homework 4
-author: Clark Fitzgerald
+author: Clark Fitzgerald - 3013
 date: 5 November 2014
 output: pdf_document
 fontsize: 11pt
@@ -11,19 +11,21 @@ geometry: margin=1in
 ```{r setup, include=FALSE}
 # Use pdf plots rather than jpeg.
 opts_chunk$set(dev = 'pdf')
-library(plyr)
 ```
 
 ## 1a
 
 We look at the correlation matrix:
 
-```{r, scatterplot, echo=FALSE}
+```{r, echo=FALSE}
+cor(property)
+```
+
+```{r, scatterplot, results='hide', echo=FALSE}
 setwd('~/junkyard/STA206/hw4')
 property = read.table('property.txt')
 names(property) = c('Y', 'X1', 'X2', 'X3', 'X4')
 plot(property)
-cor(property)
 ```
 
 There are no obviously strong linear relationships here. $X_2$ and $X_4$
@@ -51,7 +53,7 @@ anova(fit1)
 
 ## 1c
 
-```{r, Residuals, echo=FALSE, fig.height = 4}
+```{r, Residuals, echo=FALSE, results='hide', fig.height = 4}
 par(mfrow=c(1, 3))
 
 plot.lm(fit1, which=c(1, 2))
@@ -59,11 +61,12 @@ boxplot(fit1$residuals)
 ```
 
 The residuals versus fitted graph shows no clear patterns, which is good.
-We can see from the QQ plot that the tails of the distribution are light.
+We can see from the QQ plot that the tails of the distribution are a little
+bit heavy.
 
 ## 1d
 
-```{r, Residuals and Main Effects, echo=FALSE}
+```{r, Effects, results='hide', echo=FALSE}
 par(mfrow=c(2, 2))
 
 plotone = function(x) {
@@ -73,7 +76,7 @@ plotone = function(x) {
 sapply(c('X1', 'X2', 'X3', 'X4'), plotone)
 ```
 
-```{r, Residuals Versus Main Effects, echo=FALSE}
+```{r, Interactions, results='hide', echo=FALSE}
 par(mfrow=c(3, 2))
 
 plot.interact = function(xx) {
@@ -87,7 +90,8 @@ plot.interact = function(xx) {
 apply(combn(c('X1', 'X2', 'X3', 'X4'), 2), 2, plot.interact)
 ```
 
-TODO- Interpret these plots
+These plots show no obvious linear relationship between the residuals and other
+terms, which suggests that we don't need the interaction terms
 
 ## 1e
 
@@ -145,7 +149,7 @@ $$
     F^* = \frac{MSR}{MSE} \sim_{H_0} F(4, 76)
 $$
 
-The decision rule is to reject $H_0$ if $F^* > F(0.99 ; 4, 80)$.
+The decision rule is to reject $H_0$ if $F^* > F(0.99 ; 4, 76)$.
 
 ```{r}
 qf99 = qf(0.99, 4, 76)
@@ -205,14 +209,14 @@ As expected, Model 2 has smaller standard errors for each coefficient.
 Here are 95% confidence intervals for the regression coefficients:
 
 ```{r}
-confint(fit2, level=0.99)
+confint(fit2, level=0.95)
 ```
 
 The confidence intervals for Model 1 are larger, since Model 1 has larger
 standard error around all regression coefficients.
 
 ```{r}
-confint(fit1, level=0.99)
+confint(fit1, level=0.95)
 ```
 
 ## 1i
@@ -255,7 +259,9 @@ coefpd
 The coefficient of partial correlation $r_{Y 3 | 214}$ is:
 
 ```{r, echo=FALSE}
-sqrt(coefpd) * sign(coef(fit1)['X4'])
+cpc = sqrt(coefpd) * sign(coef(fit1)['X4'])
+names(cpc) = ''
+cpc
 ```
 
 The correlation coefficient between the two sets of residuals is:
@@ -266,7 +272,7 @@ cor(fit1$residuals, fit2$residuals)
 
 ## 2a
 
-```{r, boxplots, echo=FALSE}
+```{r, boxplots, results='hide', echo=FALSE}
 par(mfrow = c(2, 5))
 plothelper = function(varname, plotfunc, data=property, ...){
     # Plots individual plots with the variable name
@@ -403,10 +409,11 @@ $R^2$ and $R^2_a$ are available from the `summary` output.
 summary(fit4)
 ```
 
-$R^2$ is the same for the standardized model and the original.
-
-$R^2_a = 0.5632$ is slightly better for the standardized model versus
-$R^2_a = 0.5629$ for the 
+$R^2$ is the same for the standardized model and the original. $R^2_a$ is
+marginally better for the standardized model excluding the intercept,
+because R considers it as using one less degree of freedom. This is not
+true however, because the correlation transformation centered the data,
+projecting it into the subspace orthogonal to the vector of 1's.
 
 ## 3a
 
@@ -414,12 +421,81 @@ We look at the correlation matrices. First we calculate through matrix
 multiplication using the standardized variables.
 
 ```{r}
-Xs = as.matrix(property.t)
+Xs = as.matrix(property.t[, 2:5])
+Ys = as.matrix(property.t[, 1])
 rxx = t(Xs) %*% Xs
+rxy = t(Xs) %*% Ys
+rxx
+rxy
 ```
 
 Here is the correlation between the original variables.
 ```{r}
 cor(property)
 ```
+They match the matrix calculations.
 
+## 3b
+
+The variance inflator factors are:
+
+```{r}
+rxxinv = solve(rxx)
+diag(rxxinv)
+```
+
+We confirm that $VIF_k = \frac{1}{1 - R_k^2}$ by regressing each $X_k$ on
+the other $X_j \neq X_k$.
+
+```{r, echo=FALSE}
+mods = list()
+mods$X1 = lm(X1 ~ X2 + X3 + X4, data=property)
+mods$X2 = lm(X2 ~ X1 + X3 + X4, data=property)
+mods$X3 = lm(X3 ~ X1 + X2 + X4, data=property)
+mods$X4 = lm(X4 ~ X1 + X2 + X3, data=property)
+sapply(mods, function(x) 1 / (1 - summary(x)$r.squared))
+```
+
+The rule of thumb is that if max $VIF_k > 10$ then multicollinearity is a
+cause for concern. We don't observe that here.
+
+## 3c
+
+```{r, echo=FALSE}
+mod.X4 = lm(Y ~ X4, data=property)
+mod.X3X4 = lm(Y ~ X3 + X4, data=property)
+mod.X4
+mod.X3X4
+```
+
+The regression coefficients for $X_4$ are similar if $X_3$ is included or
+excluded. This does not surprise us, since $X_3$ and $X_4$ are not highly
+correlated.
+
+```{r, echo=FALSE}
+anova(mod.X4)
+anova(mod.X3X4)
+```
+From the ANOVA output we can see that $X_3$ makes almost no difference in
+SSR.
+
+## 3d
+
+```{r, echo=FALSE}
+mod.X2 = lm(Y ~ X2, data=property)
+mod.X2X4 = lm(Y ~ X4 + X2, data=property)
+mod.X2
+mod.X2X4
+```
+
+$X_2$ and $X_4$ have sample correlation 0.44, and we can see that including
+$X_4$ in the model makes a large change in the regression coefficient for
+$X_2$. 
+
+```{r, echo=FALSE}
+anova(mod.X2)
+anova(mod.X2X4)
+```
+
+From the ANOVA table we see that $SSR(X_2 | X_4)$ is small. This is due to
+the collinearity of $X_2$ and $X_4$.
