@@ -248,8 +248,7 @@ This measures the relative change in SSE when the $X_3$ term is included.
 # model. Use cumulative sums to calculate the difference.
 
 a = anova(lm(Y ~ X1 + X2 + X4 + X3, data = property))
-a = cumsum(a)
-coefpd = (a['X3', 'Mean Sq'] - a['X4', 'Mean Sq']) / a['X4', 'Mean Sq']
+coefpd = a['X3', 'Sum Sq'] / a['Residuals', 'Sum Sq']
 coefpd 
 ```
 
@@ -298,9 +297,11 @@ The sample means and sample standard deviations for the transformed
 variables are:
 
 ```{r}
-sapply(propert.t, mean)
-sapply(propert.t, sd)
+sapply(property.t, mean)
+sapply(property.t, sd)
 ```
+
+The means are numerically 0.
 
 Here are some functions to perform the correlation transformation,
 as well as the inverse transformation back to the original scale.
@@ -348,16 +349,6 @@ a = as.vector(property[1, ])
 at = cor.transform(a, scl)
 cor.transform(at, scl, inverse=TRUE)
 ```
-
-The sample means and sample standard deviations of the transformed
-variables are:
-
-```{r}
-sapply(property.t, mean)
-sapply(property.t, sd)
-```
-
-The means are numerically 0.
 
 ## 2c
 
