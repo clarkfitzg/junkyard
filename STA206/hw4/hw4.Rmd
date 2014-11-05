@@ -294,7 +294,16 @@ standard deviations are:
 sapply(property, sd)
 ```
 
-We perform the correlation transformation:
+The sample means and sample standard deviations for the transformed
+variables are:
+
+```{r}
+sapply(propert.t, mean)
+sapply(propert.t, sd)
+```
+
+Here are some functions to perform the correlation transformation,
+as well as the inverse transformation back to the original scale.
 
 ```{r}
 getscale = function(X){
@@ -308,51 +317,118 @@ getscale = function(X){
 
 cor.transform = function(X, scaleinfo, inverse=FALSE){
     # Perform a correlation transformation on X
-    # X         : dataframe
+    # X         : matrix
     # scaleinfo : output from getscale() on original data
     # inverse   : TRUE means to transform from standardized version
     #             standardized -> original
 
     # Create vectors from scaleinfo to work with R's recycling rules
-    # Memory usage?
-    n = nrow(X)
+    # Can't call nrow on vector X
+    n = max(nrow(X), 1)
     s = lapply(scaleinfo, rep, each=n)
 
     if (inverse){
-        Xnew = data.frame(X * s$sd / s$multiplier + s$mean)
+        Xnew = X * s$sd / s$multiplier + s$mean
     }
     else{
-        Xnew = data.frame(s$multiplier * (X - s$mean) / s$sd)
+        Xnew = s$multiplier * (X - s$mean) / s$sd
     }
     return(Xnew)
 }
 
 scl = getscale(property)
-property.t2 = cor.transform(property, scl)
+property.t = cor.transform(property, scl)
 
 # testing correctness
-property.t = scale(property) / sqrt(nrow(property) - 1)
-pback = cor.transform(property.t2, scl, inverse=TRUE)
+property.t2 = scale(property) / sqrt(nrow(property) - 1)
+pback = cor.transform(property.t, scl, inverse=TRUE)
+
+# testing works with vectors
+a = as.vector(property[1, ])
+at = cor.transform(a, scl)
+cor.transform(at, scl, inverse=TRUE)
 ```
 
-The sample means and sample standard deviations for the transformed
+The sample means and sample standard deviations of the transformed
 variables are:
 
 ```{r}
-sapply(propert.t, mean)
-sapply(propert.t, sd)
+sapply(property.t, mean)
+sapply(property.t, sd)
 ```
+
+The means are numerically 0.
 
 ## 2c
 
-```{r, echo=FALSE}
-unstandardize = function(x, n=n, means, sds){
-    # The inverse of a correlation transformation
-    #   x   : vectors to be transformed back
-    #   n   : as used in the correlation transformation
-    #   means   : vector of column means of original data
-    #   sds     : vector of column standard deviations of original data
+The model equation for the standardized first-order regression model is
+$$
+    .   
+$$
 
-}
+If we fit the model on the standardized data including the intercept we get:
+
+```{r, echo=FALSE}
+fit3 = lm(Y ~ ., data = property.t)
+fit3
+```
+
+The intercept is numerically 0, as expected.
+
+Now we fit the standardized data excluding the intercept.
+```{r, echo=FALSE}
+fit4 = lm(Y ~ . -1, data = property.t)
+fit4
+```
+
+Transforming the standardized regression coefficients back to the ones for
+the original model and compare with the original coefficients produces:
+
+```{r}
+std = coef(fit3) * sd(property$Y) / scl$sd
+std[-1]
+coef(fit1)
+```
+
+With the appropriate transformation we can recover the original
+coefficients.
+
+## 2d
+
+Compare SSTO, SSE, and SSR under the standardized model with the original
+model. The standardized model has one more degree of freedom when the
+intercept is removed.
+
+```{r, echo=FALSE}
+# standardized
+anova.table(fit4)
+```
+
+## 2e
+
+$R^2$ and $R^2_a$ are available from the `summary` output.
+
+```{r, echo=FALSE}
+summary(fit4)
+```
+
+$R^2$ is the same for the standardized model and the original.
+
+$R^2_a = 0.5632$ is slightly better for the standardized model versus
+$R^2_a = 0.5629$ for the 
+
+## 3a
+
+We look at the correlation matrices. First we calculate through matrix
+multiplication using the standardized variables.
+
+```{r}
+Xs = as.matrix(property.t)
+rxx = t(Xs) %*% Xs
+```
+
+Here is the correlation between the original variables.
+```{r}
+cor(property)
 ```
 
