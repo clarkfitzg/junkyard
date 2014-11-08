@@ -13,7 +13,7 @@ geometry: margin=1in
 opts_chunk$set(dev = 'pdf')
 ```
 
-## 1a
+# 1
 
 - (a) **FALSE** A categorical variable with $k$ classes should be encoded
    using $k - 1$ indicator variables. Using $k$ means that the columns of
@@ -47,3 +47,127 @@ opts_chunk$set(dev = 'pdf')
   with the most variables.
 
 - (i) 
+
+- (j) **TRUE** $C_p$ includes a positive $SSE_p$ coefficient and both
+  $AIC_p$ and $BIC_p$ include a positive $log(SSE_p)$ term.
+
+- (k) **TRUE** $SSE_p$ is the result of a global minimization with all of
+  the data, meaning you can't possibly do better by leaving some data out.
+
+- (l) **TRUE** If $\log(n) > 2 \iff n > 8$ then the coefficient for the $p$
+  term is greater in $AIC_p$ than for $BIC_p$. Hence $BIC_p$ favors
+  relatively smaller $p$.
+
+- (m) **TRUE** Stepwise procedures are less computationally expensive
+  compared with best subsets, so it makes sense to use them when there are
+  many candidate $X$ variables.
+
+- (n) **FALSE** Stepwise procedures are greedy, and they don't always
+  find the globally optimal model.
+
+# 2
+
+## 2a
+
+```{r, echo=FALSE, results='hide'}
+setwd('~/junkyard/STA206/hw5')
+property = read.table('../hw4/property.txt')
+names(property) = c('Y', 'X1', 'X2', 'X3', 'X4')
+```
+
+We fit the new model with $X_1$ centered. For simplicity with the $\beta$
+indices we let $\beta_5$ be the coefficient of the $X_{1c}^2$ term.
+$$
+    \hat{Y} = \beta_0 + \beta_1 X_{1c} + \beta_2 X_2 + \beta_4 X_4 + \beta_5 X_{1c}^2 
+$$
+
+```{r}
+# Include the centered X1 variable
+property$X1c = property$X1 - mean(property$X1)
+fit1 = lm(Y ~ X1c + X2 + X4 + I(X1c**2), data=property)
+summary(fit1)
+```
+
+```{r, Residuals, echo=FALSE}
+plot(property$Y, fit1$residuals)
+```
+
+## 2b
+
+Compare the measures of model fit.
+
+```{r}
+oldfit = lm(Y ~ X1 + X2 + X4, data = property)
+measurefit = function(model){
+    s = summary(model)
+    data.frame(R2 = s$r.squared, R2a = s$adj.r.squared, BIC = BIC(model),
+               AIC = AIC(model))
+}
+sapply(list('new'=fit1, 'old'=oldfit), measurefit)
+```
+
+The new model including the centered and quadratic term has
+better measures of fit.
+
+## 2c
+
+We test whether the $X_{1c}^2$ term may be dropped from the model at level
+0.05.
+The null hypothesis $H_0$ is $\beta_5 = 0$, and the alternative hypothesis
+$H_1$ is $\beta_5 \neq 0$. The test statistic is given by
+$$
+    T^* = \frac{\hat{\beta_5} - 0}{se(\hat{\beta_5})} \sim t(n - 5)
+$$
+under the null hypothesis.
+The decision rule is to reject $H_0$ if $|T^*| > t(0.995, n - 5) \approx
+2.64$. The p-value from the summary output above is 0.0174, so we reject $H_0$
+and keep the quadratic term.
+
+## 2d
+
+Predicting a new observation
+
+```{r}
+x.new = data.frame(X1 = 4, X2 = 10, X4 = 8e4)
+# Add the centered X1 term
+x.new$X1c = x.new$X1 - mean(property$X1)
+
+pnew = predict(fit1, x.new, interval = 'prediction', level = 0.99)
+pnew
+pold = predict(oldfit, x.new, interval = 'prediction', level = 0.99)
+pold
+
+pnew[3] - pnew[2]
+pold[3] - pold[2]
+```
+
+The prediction intervals are similar. The last
+calculation shows that the confidence intervals are slightly smaller for
+the new model.
+
+# 3
+
+## 3a
+
+Reading in the diabetes data.
+
+```{r}
+diabetes = read.table('diabetes.txt', header = TRUE)
+
+# I don't like doing this because it leaves an empty string as a factor
+# level. This may cause problems later.
+is.na(diabetes$frame) = which(diabetes$frame == '')
+
+fit = lm(glyhb ~ ratio + bp.1s + age + factor(gender) + factor(frame),
+         na.action = na.omit, data = diabetes)
+```
+
+## 3b
+
+```{r}
+sapply(diabetes[, c('glyhb', 'ratio', 'bp.1s', 'age', 'gender', 'frame')],
+       class)
+```
+
+Gender and frame are factors, the rest are numeric.
+
