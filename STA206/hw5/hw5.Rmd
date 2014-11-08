@@ -1,0 +1,49 @@
+---
+title: Stats 206 - Homework 5
+author: Clark Fitzgerald - 3013
+date: 17 November 2014
+output: pdf_document
+fontsize: 10pt
+geometry: margin=1in
+---
+
+
+```{r setup, include=FALSE}
+# Use pdf plots rather than jpeg.
+opts_chunk$set(dev = 'pdf')
+```
+
+## 1a
+
+- (a) **FALSE** A categorical variable with $k$ classes should be encoded
+   using $k - 1$ indicator variables. Using $k$ means that the columns of
+   the matrix $X$ will be linearly dependent implying that the least
+   squares solution is undefined.
+   
+- (b) **FALSE** Polynomials of high degree are notoriously unstable. This
+  is why cubic splines are used for interpolation.
+
+- (c) **TRUE** If $X_1$ and $X_2$ are two variables then their interaction
+  term is $X_1 \cdot X_2$. By the hierarchical principle the model would
+  then include $\beta_1 X_1 + \beta_2 X_2 + \beta_{1,2} X_1 X_2$.
+
+- (d) **FALSE** Regressing on each class of a categorical model results in
+  a smaller sample size $\implies$ higher error variance. It's also easier
+  to understand the effect of that one categorical variable on the response
+  using a single model.
+
+- (e) **FALSE** This is not an efficient subset selection technique because
+  of multicollinearity. This approach only works if the $X$ variables are
+  mutually orthogonal.
+
+- (f) **FALSE** 'Correct model' is a technical term meaning that the model
+  has little bias. A model could be correct but not useful if the
+  sampling variability is excessive due to many nuisance variables.
+
+- (g) **FALSE** Including many nuisance $X$ variables results in higher
+  variance and smaller bias.
+
+- (h) **FALSE** Maximizing $R^2_p$ will result in always choosing the model
+  with the most variables.
+
+- (i) 

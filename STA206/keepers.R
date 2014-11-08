@@ -17,3 +17,14 @@ anova.table = function(model){
     row.names(out) = c('regression', 'error', 'total')
     return(out)
 }
+
+
+plothelper = function(varname, plotfunc, data=property, ...){
+    # Plots individual plots with the variable name
+    # ... are additional arguments to `plotfunc`
+    plotfunc(data[, varname], main = varname, ...)
+}
+varnames = names(property)
+sapply(varnames, plothelper, boxplot)
+sapply(varnames, plothelper, hist, xlab='')
+
