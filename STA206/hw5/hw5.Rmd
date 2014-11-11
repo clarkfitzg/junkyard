@@ -299,4 +299,66 @@ summary(fit4)
 
 ## 3k
 
+Let $X_1$, $X_2$ be `ratio` and `age`. 
+Let $X_3$ and $X_4$ be indicator variables if `frame` is medium or small,
+respectively. The model equation is
+$$
+    y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3 + \beta_4 X_4 + \beta_5 X_5
+$$
+where the values for each \beta_i can be read from the `summary` output
+above.
+
+We can get a regression function for each category in `frame` by setting
+$X_3$ and $X_4$ to 1 or 0. This has the effect of changing the intercept.
+
+Setting $X_3 = 0$ and $X_4 = 1$ gives the fitted regression equation for `frame` = `small`.
+$$
+    y = (\beta_0 + \beta_4) + \beta_1 X_1 + \beta_2 X_2 + \beta_5 X_5
+$$
+
+Setting $X_3 = 1$ and $X_4 = 0$ gives the fitted regression equation for `frame` = `medium`.
+$$
+    y = (\beta_0 + \beta_3) + \beta_1 X_1 + \beta_2 X_2 + \beta_5 X_5
+$$
+
+Setting both $X_3 = 0$ and $X_4 = 0$ gives the fitted regression equation for `frame` = `large`.
+$$
+    y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_5 X_5
+$$
+
+## 3l
+
+```{r}
+fit5 = lm(glyhb.inverse ~ ratio + age + frame + frame:age, data=diabetes)
+summary(fit5)
+```
+From the p-values we see that the interaction between `age` and `frame` is
+not significant.
+
+## 3m
+
+Model 5 doesn't contain all the variables in Model 2. To calculate these
+measures of fit we need a full model. It would be much easier to just let the
+`leaps` library do the heavy lifting.
+```{r}
+a5 = anova(fit5)
+fullMSE = a5['Residuals', 'Mean Sq']
+n = sum(a5$Df) + 1
+
+modelscore = function(modelname){
+    # Returns statistics about how well model fit
+    model = get(modelname)
+    s = summary(model)
+    a = anova(model)
+    sse = a['Residuals', 'Mean Sq']
+    p = sum(a$Df[1:(length(a$Df) - 1)]) + 1
+    data.frame(r.squared = s$r.squared,
+               adj.r.squared = s$adj.r.squared,
+               Cp = sse / fullMSE - (n - 2 * p)
+               )
+}
+
+t(sapply(c('fit2', 'fit3', 'fit4', 'fit5'), modelscore))
+```
+
 
