@@ -1,0 +1,29 @@
+# Name of the file
+TEXFILE = slides
+
+FIGDIR = ./figure
+ 
+# List of all figures to be included in output
+FIGURES = sin cos
+
+# Location of Python files that do the plotting
+PYPLOTS := $(wildcard $(FIGDIR)/*.py)
+
+# All PDF's in the figure directory
+PDFFIGS := $(wildcard $(FIGDIR)/*.pdf)
+
+########################################
+
+#$(TEXFILE).pdf : $(TEXFILE).tex $(FIGDIR)/sin.pdf
+$(TEXFILE).pdf : $(TEXFILE).tex $(FIGURES)/$(PDFFIGS)/*.pdf
+	pdflatex $(TEXFILE).tex
+
+# RUN EVERY R FILE
+# $(RDIR)/%.Rout: $(RDIR)/%.R $(RDIR)/functions.R
+# 	R CMD BATCH $<
+$(FIGDIR)/%.pdf: $(FIGDIR)/%.py
+	python $<
+
+
+clean :
+	rm *.aux *.log *.nav *.out *.snm *.toc *.vrb *.Rout

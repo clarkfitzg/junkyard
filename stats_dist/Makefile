@@ -1,5 +1,5 @@
 # Names of all figures to include
-FIGURES := sin.pdf cos.pdf
+FIGURES := sin.pdf cos.pdf fake.pdf
 
 ############################################################
 

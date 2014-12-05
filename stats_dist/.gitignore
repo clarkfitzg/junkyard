@@ -1,0 +1,6 @@
+# LaTeX Beamer slide output
+*.nav
+*.snm
+*.toc
+*.vrb
+*.html
