@@ -21,9 +21,9 @@ for vi in v:
     prob += vi <= 1
 
 # The problem is solved using PuLP's choice of Solver
-prob.solve()
+#prob.solve()
 
-#prob.writeLP('hypercube.lp')
+prob.writeLP('bighypercube.lp')
 
 # The status of the solution is printed to the screen
 print(LpStatus[prob.status])
