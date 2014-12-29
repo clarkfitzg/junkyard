@@ -98,3 +98,70 @@ attributes(b)
 ```
 structure to add new attributes
 
+Names, dim, and class are the most important attributes
+
+```{r, echo=FALSE}
+x = c(a=1, b=2)
+names(x) = 'hello'
+x
+str(x)
+names(x) = NULL
+unname(x)
+f = function(x){
+    setNames(x, c('a', 'b'))
+}
+f(1:4)
+```
+
+So names doesn't recycle. Just sets the first k if there are too few
+specified.
+
+```{r, echo=FALSE}
+x = factor(c('a', 'b', 'a'))
+y = factor(c('a', 'b', 'a'))
+x
+#x[2] = 'd'
+#y = c(factor('a'), factor('b'))
+z = c(x, y)
+z
+levels(x) = c('b', 'a')
+x
+rev(1:5)
+# A nice way to get a mapping of letters to integers
+rev(factor(letters))
+factor(letters, levels = rev(letters))
+# This changes the encoding so that z is 1 and a is 26.
+
+l = factor(letters)
+l
+levels(l) = rev(letters)
+# Updating levels later changes:
+#       oldlevel --> newlevel
+```
+
+Don't try to combine factors with c- doesn't work.
+Modifying levels changes how they are encoded.
+
+```{r, echo=FALSE}
+x = structure(1:4, foo='bar')
+x
+structure(1:4, foo='bar')
+```
+The above seems to print just fine. Ex 2.2.2.1
+
+
+```{r, echo=FALSE}
+a = 1:12
+a
+dim(a)
+dim(a) = c(2, 6)
+class(a)
+dim(a) = c(2, 2, 3)
+class(a)
+dim(a)
+dimnames(a) = list(c('r1', 'r2'), c('c1', 'c2'), c('f1', 'f2', 'f3'))
+a
+```
+
+Numpy arrays have much in common with R vectors.
+
