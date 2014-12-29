@@ -1,0 +1,9 @@
+Going through the book 'Introductory Time Series with R' by Cowpertwait and
+Metcalfe
+
+
+```{r, echo=FALSE}
+data(AirPassengers)
+AP = AirPassengers
+```
+
