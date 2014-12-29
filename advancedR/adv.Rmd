@@ -88,3 +88,13 @@ So it looks like `c` flattened the list while `list` preserves the
 structure.
 
 Also, unlist is recursive by default.
+
+```{r, echo=FALSE}
+a = list(x = 1:10, y=list(a = 1, b = 2))
+a
+str(a)
+b = structure(a, foo='bar')
+attributes(b)
+```
+structure to add new attributes
+
