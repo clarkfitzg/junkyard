@@ -268,3 +268,55 @@ cbind(a, b)
 as.matrix on dataframe coerces to most generic type.
 Yes, you can make a data frame with no rows / columns
 rbind works but cbind does not.
+
+```{r, echo=FALSE}
+x = 1:10
+x[-c(4, 6, 3)]
+x[c(TRUE, FALSE)] 
+# Recycles, picking out the odd indices. Numpy doesn't do this.
+x[]
+y = setNames(x, letters[1:10]) # useful just before function return
+a = y[c('a', 'bc')]
+is.na(a[2])
+x[13:16]
+```
+
+Doesn't raise an error if you try to access names that don't exist.
+Is the same true for a list? Yes. Most Python will throw a KeyError
+
+```{r, echo=FALSE}
+a = list(x=1, y=2)
+a[['abcx']]
+```
+
+Trying some nonlinear minimization:
+
+```{r, echo=FALSE}
+f1 = function(p){
+    out = sum(p)
+    return(out)
+}
+
+r1 = nlm(f1, p=c(1, 1, 2))
+
+# Manually set the gradient
+f2 = function(p){
+    out = sum(p ** 2)
+    attr(out, 'gradient') = 2 * p
+    return(out)
+}
+
+
+r2 = nlm(f2, p=c(1, 1, 2))
+
+# No gradient
+f3 = function(p){
+    out = sum(p ** 2)
+    return(out)
+}
+
+r3 = nlm(f3, p=c(1, 1, 2))
+
+f2(c(1, 1, 2))
+```
+
