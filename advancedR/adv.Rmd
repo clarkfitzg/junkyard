@@ -320,3 +320,72 @@ r3 = nlm(f3, p=c(1, 1, 2))
 f2(c(1, 1, 2))
 ```
 
+```{r, echo=FALSE}
+a = list(alpha=10, bravo=20)
+a[[1]]
+a[1:2]
+```
+
+Arrays in R are in column major order. In Python they are in row major
+order.
+```{r, echo=FALSE}
+a = matrix(1:10, nrow=2)
+a
+
+colnames(a) = letters[1:5]
+b = a[1, ]
+dim(b)
+```
+
+```{r, echo=FALSE}
+a = matrix(1:4, nrow=2)
+b = matrix(c(1, 1, 2, 2), nrow=2)
+a[b]
+a[c(1, 1, 2, 2)]
+```
+
+So subsetting a matrix with another matrix uses the rows of a matrix to pick out the indices.
+Does this result in fast subsetting when combined with outer?
+
+Suppose I want to extract the diagonals of a matrix. There are three ways
+to do this.
+
+```{r, echo=FALSE}
+library(microbenchmark)
+
+n = 1000
+# Big square matrix
+x = matrix(1:(n**2), nrow=n)
+
+# Use built in diag function
+d1 = diag(x)
+microbenchmark(diag(x))
+
+ds = matrix(rep(1:n, 2), ncol=2)
+d2 = x[ds]
+microbenchmark(ds[d2])
+
+d3 = x[matrix(rep(1:nrow(x), 2), ncol=2)]
+microbenchmark(x[matrix(rep(1:nrow(x), 2), ncol=2)])
+```
+
+The subsetting is 3 orders of magnitudes faster than diag. Surprising. What
+if I don't have the matrix built ahead of time? Still 2 orders of magnitude
+faster. 
+
+```{r, echo=FALSE}
+loopdiag = function(x) {
+    n = nrow(x)
+    out = rep(NA_integer_, n)
+    for (i in 1:n) {
+        out[i] = x[i, i]
+    }
+    out
+}
+d4 = loopdiag(x)
+microbenchmark(loopdiag(x))
+```
+
+The loop version runs in about the same time as regular diag- demonstrating
+the effectiveness of vectorization in R. Makes sense because each iteration
+of the loop is doing at least two R function calls.

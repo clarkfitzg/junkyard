@@ -6,6 +6,9 @@ Interesting- jit doesn't take the default arguments.
 
 These times demonstrate that Numpy arrays are indeed laid out in row major
 order. "The rightmost index varies the fastest"
+
+An easier way to see this is to just modify the shape attribute of the
+output of np.arange.
 '''
 
 import numpy as np
