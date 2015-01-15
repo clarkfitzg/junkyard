@@ -49,14 +49,19 @@ def query(parameters, key=usda_key):
     url = 'http://quickstats.nass.usda.gov/api/api_GET'
     parameters['key'] = key
     response = requests.get(url=url, params=parameters)
-    return response.json()['data']
+    try:
+        return response.json()['data']
+    except KeyError:
+        return response.json()
 
 
 if __name__ == '__main__':
+
+    import operator
     # A few examples of usage
 
     # Possible values for 'commodity_desc'
-    commodity_desc = get_param_values('commodity_desc')
+    # commodity_desc = get_param_values('commodity_desc')
     # Expect:
     # ['AG LAND', 'AG SERVICES', 'AG SERVICES & RENT',
     # 'ALMONDS', ...
@@ -70,9 +75,37 @@ if __name__ == '__main__':
                   'unit_desc': '$',
                   }
 
-    yolorice = query(riceparams)
+    # yolorice = query(riceparams)
 
     # Try using a dictionary comprehension to filter
-    yearvalue = {x['year']: x['Value'] for x in yolorice}
+    # yearvalue = {x['year']: x['Value'] for x in yolorice}
     # Expect:
     # {'2007': '26,697,000', '2012': '51,148,000'}
+
+    tobacco = query({'commodity_desc': 'TOBACCO',
+        'sector_desc': 'CROPS',
+        'source_desc': 'CENSUS',
+        'domain_desc': 'TOTAL',
+        'agg_level_desc': 'STATE',
+        'year': '2012',
+        'freq_desc': 'ANNUAL',
+        'unit_desc': '$',
+        })
+
+
+    def cleanup(value):
+        '''
+        Massage data into proper form
+        '''
+        # '(D)' can't be converted to integer
+        if '(D)' in value:
+            return 0
+
+        # Strip out commas
+        return int(value.replace(',', ''))
+
+
+    t2 = [(cleanup(x['Value']), x['state_name']) for x in tobacco]
+    t2.sort(key=operator.itemgetter(0), reverse=True)
+
+    print(t2)
