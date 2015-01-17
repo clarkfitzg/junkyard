@@ -1,23 +1,22 @@
 '''
 Working on problem 7.6.15 in Degroot and Schervish book
-
-This isn't working at all.
 '''
 
 import numpy as np
+from numpy import log
 from scipy.optimize import minimize
 
 
-def obj(beta):
-    gamma120 = beta ** 120 * np.exp(-120 * beta)
-    expcdf15 = 1 - np.exp(15 * beta)
-    return -(gamma120 * expcdf15)
+def llhood(mu):
+    beta = 1 / mu
+    l = 20 * log(beta) - 135 * beta
+    return -l
 
 
-out = minimize(obj, 1/6)
+out = minimize(llhood, 6.5)
 
-ans = 1 / out['x']
-print(ans)
+print(out['x'])
+
 
 x = np.linspace(5, 8)
-y = obj(x)
+y = llhood(x)
