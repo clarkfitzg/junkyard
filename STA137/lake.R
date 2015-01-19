@@ -11,6 +11,7 @@ summary(mod2)
 anova(mod2)
 # Bummer that the anova table doesn't show each one
 anova(lm(level ~ t + I(t**2), data=lake))
+summary(lm(level ~ t + I(t**2), data=lake))
 # So quadratic is definitely helping here.
 
 points(mod2$fitted.values, col='red')
