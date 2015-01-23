@@ -82,30 +82,41 @@ if __name__ == '__main__':
     # Expect:
     # {'2007': '26,697,000', '2012': '51,148,000'}
 
+    # This was the sales, not the production
     tobacco = query({'commodity_desc': 'TOBACCO',
-        'sector_desc': 'CROPS',
-        'source_desc': 'CENSUS',
-        'domain_desc': 'TOTAL',
-        'agg_level_desc': 'STATE',
-        'year': '2012',
-        'freq_desc': 'ANNUAL',
-        'unit_desc': '$',
-        })
+                     'sector_desc': 'CROPS',
+                     'source_desc': 'CENSUS',
+                     'domain_desc': 'TOTAL',
+                     'agg_level_desc': 'STATE',
+                     'year': '2012',
+                     'freq_desc': 'ANNUAL',
+                     'unit_desc': '$',
+                     })
 
+    # Rylan's query, which does production
+    tprod = query({'sector_desc': 'CROPS',
+                   'commodity_desc': 'TOBACCO',
+                   'year': '2012',
+                   'agg_level_desc': 'STATE',
+                   'statisticcat_desc': 'PRODUCTION',
+                   'short_desc': 'TOBACCO - PRODUCTION, MEASURED IN $'
+                   })
 
     def cleanup(value):
         '''
         Massage data into proper form
         '''
-        # '(D)' can't be converted to integer
-        if '(D)' in value:
+        try:
+            return int(value.replace(',', ''))
+
+        # Some contain strings with '(D)'
+        except ValueError:
             return 0
-
-        # Strip out commas
-        return int(value.replace(',', ''))
-
 
     t2 = [(cleanup(x['Value']), x['state_name']) for x in tobacco]
     t2.sort(key=operator.itemgetter(0), reverse=True)
+
+    tprod2 = [(cleanup(x['Value']), x['state_name']) for x in tprod]
+    tprod2.sort(key=operator.itemgetter(0), reverse=True)
 
     print(t2)

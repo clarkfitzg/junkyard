@@ -1,0 +1,19 @@
+\documentclass[12pt]{article}
+
+\usepackage{tikz}  
+\usetikzlibrary{graphs}  
+
+\begin{document}
+
+ \tikz \graph { a -> {b, c} -> d };
+
+
+%\begin{tikzpicture}
+    \tikz \graph {
+      a -> b -> c;
+      d -> e -> f;
+      g -> f;
+    };
+%\end{tikzpicture}
+
+\end{document}

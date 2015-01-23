@@ -1,0 +1,15 @@
+\documentclass[tikz,border=5]{standalone}
+\usetikzlibrary{graphs,graphdrawing,arrows.meta}
+\usegdlibrary{trees}
+\begin{document}
+\begin{tikzpicture}[>=Stealth]    
+\graph  [tree layout, grow=down]{
+  1 <- 2 <- {
+    3 <- {
+      5 <- {10,11,12}, 6 <- {13,14}, 7 <- {,15}
+    }, 
+    4 <- {,/}
+  };   
+};
+\end{tikzpicture}
+\end{document} 
