@@ -19,7 +19,7 @@ G.add_edges_from(e)
 #pos = nx.shell_layout(G)
 #pos = nx.spring_layout(G)
 
-nx.draw_networkx(G, pos,
+nx.draw_networkx(G
         node_size=1500, node_color='g',
         alpha=0.3,
         )
