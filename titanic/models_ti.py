@@ -27,9 +27,10 @@ classifiers = {
     'Naive Bayes' : sklearn.naive_bayes.GaussianNB()
     }
 
-print '''For the Titanic data set, untuned models achieved the following 
+print('''For the Titanic data set, untuned models achieved the following 
 mean accuracy rates in 5 fold cross validation:
-'''
+''')
+
 for i in classifiers:
     scores = sklearn.cross_validation.cross_val_score(classifiers[i], X, y, cv=5)
-    print i, ':  ', np.mean(scores)
+    print(i, ':  ', np.mean(scores))
