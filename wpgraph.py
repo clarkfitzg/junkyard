@@ -1,5 +1,7 @@
 '''
 Building a graph of characters from the novel War and Peace
+
+TODO- can speed this up using Counter of words
 '''
 
 import re
