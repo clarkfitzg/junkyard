@@ -1,17 +1,22 @@
 Looking at the contrast matrix for balanced design.
 
-Here are the default treatment contrasts (aka dummy coding).
+To prepare we'll prepare some data that satisfies the ANOVA model assumptions.
 
 ```{r}
 set.seed(893)
 
-x = rep(1:5, each=5)
+x = rep(1:3, each=4)
 y = 5 * x + rnorm(length(x))
 
 d = data.frame(x = as.factor(x), y = y)
+plot(d)
+```
 
+Here are the default treatment contrasts (aka dummy coding).
+
+```{r}
 fit1 = aov(y ~ x, d)
-summary(fit1)
+coef(fit1)
 model.matrix(fit1)
 ```
 
@@ -19,7 +24,7 @@ We can specify contrasts for each factor inside the call to lm or aov.
 
 ```{r}
 fit2 = aov(y ~ x, d, contrasts=list(x=contr.sum))
-summary(fit2)
+coef(fit2)
 model.matrix(fit2)
 ```
 
@@ -29,6 +34,16 @@ We can also change the default.
 options(contrasts=c('contr.sum', 'contr.sum'))
 
 fit3 = aov(y ~ x, d)
-summary(fit3)
-model.matrix(fit3)
+coef(fit3)
 ```
+
+Lets check how predict works.
+
+```{r}
+dnew = data.frame(x = unique(d$x))
+
+predict(fit1, dnew)
+predict(fit2, dnew)
+```
+
+Same for both.
