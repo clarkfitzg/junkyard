@@ -1,0 +1,82 @@
+# Transforms
+
+When fitting linear models, it's sometimes necessary to transform both the
+response and the predictor variables in order for the data to have
+better distributions- typically this means they are closer to normal. Then
+one fits the model in the transformed space. Suppose that y is positive.
+
+# No transform needed
+
+Here's what happens when everything is perfect and no transforms are
+necessary:
+
+```{r}
+set.seed(12)
+library(MASS)
+
+n = 200
+x0 = 20 + rnorm(n, sd=5)
+y0 = -10 + 3 * x0 + rnorm(n, sd=5)
+
+plot(x0, y0)
+fit1 = lm(y0 ~ x0)
+summary(fit1)
+```
+
+# Y needs transform
+
+Here's an example of transforming just the response Y.
+
+```{r}
+y2 = y0^2
+
+plot(x0, y2)
+```
+
+The trend doesn't actually look bad.
+
+```{r}
+fit2 = lm(y2 ~ x0)
+boxcox(fit2)
+summary(fit2)
+```
+
+And the box cox method is not very clearly pointing out to the square root
+transform. But the model R^2 got better.
+
+I'm finding that the box cox is not doing what I expect if I vary the model
+parameters. I thought that it would be more accurate in figuring out the 
+correct transformation.
+
+Let's try the exponential.
+
+```{r}
+yexp = exp(y0)
+fit3 = lm(yexp ~ x0)
+plot(x0, yexp)
+summary(fit3)
+```
+
+Looks like one outlying observation wrecked the whole model here.
+
+```{r}
+max(yexp)
+boxcox(fit3)
+```
+
+But the boxcox nailed it!
+
+# Both X and Y need transforms
+
+```{r}
+x3 = x0^3
+y3 = y0^3
+plot(y3, x3)
+fit4 = lm(y3 ~ x3)
+summary(fit4)
+boxcox(fit4)
+```
+
+Here we observe the data spreading out on the right side of the graph.
+
+The box cox isn't really pointing to what transform is needed.
