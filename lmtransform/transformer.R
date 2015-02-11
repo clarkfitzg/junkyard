@@ -40,7 +40,8 @@ ytransform = function(y, lambda){
         new_y = y ** lambda
     }
     # return the normalized vector
-    new_y / norm(new_y, '2')
+    #y. = prod(new_y) ** (1/n)
+    n * new_y / norm(new_y, '2')
 }
 
 xtransform = function(x, lambda){
