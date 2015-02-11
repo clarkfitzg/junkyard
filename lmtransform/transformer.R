@@ -27,21 +27,24 @@ summary(fit1)
 
 # Some helper functions
 
-issmall = function(x, epsilon=1e-5) abs(x) < epsilon
+issmall = function(x, epsilon=1e-1) abs(x) < epsilon
 
-ytransform = function(y, lambda){
+geomean = function(x){
+    # The geometric mean aka xdot
+    prod(x) ** (1/length(x))
+}
+
+ytransform = function(y, lambda, ydot){
     #
-    # Acts on the y vector given scalar lambda
+    # Acts on the y vector given scalar lambda and geometric mean ydot
     #
     if(issmall(lambda)){
-        new_y = log(y)
+        new_y = ydot * log(y)
     }
     else{
-        new_y = y ** lambda
+        new_y = y ** lambda / ydot ** (lambda - 1)
     }
-    # return the normalized vector
-    #y. = prod(new_y) ** (1/n)
-    n * new_y / norm(new_y, '2')
+    return(new_y)
 }
 
 xtransform = function(x, lambda){
@@ -58,23 +61,23 @@ xtransform = function(x, lambda){
 
 #============================================================
 
-# Now lets code the optimization
+# Optimization
 
-# The geometric mean aka ydot
-y. = prod(y) ** (1/n)
+y. = geomean(y)
 
 xdf = as.data.frame(x0)
 
 objective = function(lambda){
     # The objective function to minimize over the lambda vector
     # We continually refer to original y0 and x0
-    y = ytransform(y0, lambda[1])
+    y = ytransform(y0, lambda[1], y.)
     x = Map(xtransform, xdf, lambda[-1])
     x = do.call(cbind, x)
     fit = lm(y ~ x)
     residuals(fit)
 }
 
+# Initial value
 lambda0 = rep(1, p + 1)
 
 out = nls.lm(lambda0, fn=objective)
