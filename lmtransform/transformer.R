@@ -42,7 +42,7 @@ ytransform = function(y, lambda, ydot){
         new_y = ydot * log(y)
     }
     else{
-        new_y = y ** lambda / ydot ** (lambda - 1)
+        new_y = (y ** lambda - 1) / (lambda * ydot ** (lambda - 1))
     }
     return(new_y)
 }
@@ -55,7 +55,7 @@ xtransform = function(x, lambda){
         log(x)
     }
     else{
-        x ** lambda
+        x ** lambda / lambda
     }
 }
 
