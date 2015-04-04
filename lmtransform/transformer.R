@@ -28,7 +28,7 @@ x0[, 2] = x0[, 2] ** 2
 
 # Now for the cars data
 if (T){
-    set.seed(30)
+    set.seed(40)
     library(xlsx)
     cars = xlsx::read.xlsx('cars93.xlt', 1)
 
