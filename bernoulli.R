@@ -1,7 +1,7 @@
 # Verifying the central limit theorem
 
 library(boot)
-
+    x = 10
 set.seed(84)
 
 n <- 100
