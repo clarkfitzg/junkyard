@@ -2,9 +2,13 @@ import numpy as np
 from scipy import stats, optimize
 
 
-print('9.4.4')
+print('9.4.1')
 
 Z = stats.norm()
+print(Z.ppf(0.05))
+
+print('9.4.4')
+
 n = 25
 
 def power(mu, c):
