@@ -1,0 +1,16 @@
+9.7.7
+MLE for variance of X: 7.625
+MLE for variance of Y: 3.96
+Reject if 1.8484848484848482 > 3.0061019723688758
+
+9.7.8
+{'c2': 3.7693572792968064, 'c1': 0.32023449093195755}
+
+11.1.7
+Intercept    40.892857
+x             0.547619
+dtype: float64
+Intercept    38.482143
+x             3.440476
+I(x ** 2)    -0.642857
+dtype: float64
