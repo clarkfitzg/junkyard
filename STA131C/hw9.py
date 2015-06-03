@@ -31,7 +31,7 @@ seb1 = np.sqrt(varb1)
 fit.cov_params()
 
 print('unbiased estimator of theta: ', 3 * b0 - 2 * b1 + 5)
-print('MSE: ', 9 * varb0 + 4 * varb1 - 12 * covb0b1)
+print('MSE: ', (9 * varb0 + 4 * varb1 - 12 * covb0b1) / sigma2)
 
 print('11.2.9')
 
