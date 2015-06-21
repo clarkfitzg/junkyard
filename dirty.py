@@ -11,4 +11,4 @@ import numpy
 
 import os
 
-os.listum()
+os.listdir()
