@@ -1,0 +1,49 @@
+Wed Jun 24 09:14:13 PDT 2015
+
+## Questions:
+
+What is the `S1` data type as seen when an xray DataArray is printed to
+screen?
+
+Array of strings of length 1.
+
+http://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
+
+When is data being copied versus returning a view?
+
+Appears to follow the pandas / Numpy philosophy of doing as little copying
+as possible.
+
+Using `rename` method - could be done in place. Some others too.
+
+```
+In [68]: a.rename?
+Signature: a.rename(new_name_or_name_dict)
+Docstring:
+Returns a new DataArray with renamed coordinates and/or a new name.
+```
+
+Maybe better to be explicit here in the docs- this returns a view not
+a copy.
+
+## Running tests
+
+Interesting that `nosetests xray` works from any directory.
+
+```
+..................................../Users/clark.fitzgerald/anaconda/envs/xray_dev/lib/python2.7/site-packages/numpy/testing/utils.py:648:
+FutureWarning: numpy equal will not check object identity in the future.
+The comparison did not return the same result as suggested by the identity
+(`is`)) and will change.
+  val = comparison(x, y)
+```
+
+## Installing xray from source
+
+```
+(xray_dev)testimage ~/dev/xray $ python setup.py install
+/Users/clark.fitzgerald/anaconda/envs/xray_dev/lib/python2.7/site-packages/setuptools-17.1.1-py2.7.egg/setuptools/dist.py:294:
+UserWarning: The version specified ('0.5.1-7-gfedd28b') is an invalid
+version, this may not work as expected with newer versions of setuptools,
+pip, and PyPI. Please see PEP 440 for more details.
+```
