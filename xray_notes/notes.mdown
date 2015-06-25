@@ -1,17 +1,33 @@
 Wed Jun 24 09:14:13 PDT 2015
 
+`pipe` is kind of a surprising feature. Never used this in pandas before
+
+A couple ways to implement plotting:
+
+1) Convert to dataframes and use pandas plotting methods.
+This is the way it's done in the docs.
+We already depend on pandas. Verify with `conda info xray`.
+
+2) Use Matplotlib directly- As directed in working document. Gives us more
+flexibility. But it is more work.
+
+
 ## Questions:
+
+How to test plotting functions? Lets see what pandas does.
+
+How many lines of code is xray?
 
 What is the `S1` data type as seen when an xray DataArray is printed to
 screen?
 
-Array of strings of length 1.
+Ans: Array of strings of length 1.
 
 http://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
 
 When is data being copied versus returning a view?
 
-Appears to follow the pandas / Numpy philosophy of doing as little copying
+Ans: Appears to follow the pandas / Numpy philosophy of doing as little copying
 as possible.
 
 Using `rename` method - could be done in place. Some others too.
