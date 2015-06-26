@@ -1,3 +1,100 @@
+Fri Jun 26 08:53:25 PDT 2015
+
+---
+
+Lets write the inital method on the DataArray, since it's more obvious what
+should be happening here.
+
+---
+
+A general goal should be easy integration and extension with matplotlib.
+Ie, just pass more parameters.
+
+If there's just one coordinate variable and one data variable then the plot
+is straightforward- put the coordinate on the x and the data on the y.
+In fact, this is really the only way it makes sense to plot a line or
+scatter plot. So maybe we just implement this. Default can be to pick the
+first data variable and first coordinate variable.
+
+Num coords  |   plot type
+--- ------  -   ---- ----
+1           |   Traditional line / scatter
+2           |   Contour / heat map
+3           |   Animation of contour / heat maps
+4+          |   ?? Far from obvious
+
+It would be natural to plot for longitude to correspond to x and 
+latitude to correspond to y. Library should attempt to do this by default.
+If there are multiple data values then we can just pick the first one.
+
+For an animation, time should index the frames. Use regex to discover time
+name?
+
+---
+
+Seems like slicing gets a little hairy when dealing with non sorted
+coordinates
+
+---
+
+xray terminology:
+
+__DataSets__ contain __DataArrays__, the labeled ndarrays
+__Coordinates__ are the metadeta indexing the DataSets and DataArrays. 
+Examples are time, latitude, longitude.
+Access as the `coords` attribute of the DataArray
+__Axis__ is the integer corresponding to the named __Dimension__.
+
+
+---
+
+## Testing:
+
+1. Ensure that matplotlib is not imported if plotting does not occur.
+2. Can pass additional keyword args to mpl.
+3. Use regex to find variables for latitude and longitude and by default
+   plot as x, y
+4. Can override lat / long settings above
+
+Thu Jun 25 16:43:43 PDT 2015
+
+---
+
+Where are the `**kwds` being passed into matplotlib from pandas?
+See line 302.
+
+```
+ 301                 ax.scatter(df[b][common], df[a][common],
+ 302                            marker=marker, alpha=alpha, **kwds)
+```
+
+---
+
+Pandas seems to have lots of stuff for plotting. About 3500 lines in 
+`tools/plotting.py`. How much do we want to use these versus using our own?
+
+---
+
+Interesting- `matplotlib` is an expensive module to import. 
+Pandas gets around this by deferring the import until one of the plot
+methods is called.
+
+```
+testimage ~/dev/pandas/pandas/tools $ grep "import matplotlib" plotting.py
+| wc
+```
+
+Running this we see that matplotlib is imported about 30 times- within the
+context of each function that wants to plot.
+There might be a cleaner way to make this happen. Decorator is one
+possibility.
+
+---
+
+Also sets a style sheet.
+
+---
+
 Wed Jun 24 09:14:13 PDT 2015
 
 `pipe` is kind of a surprising feature. Never used this in pandas before
