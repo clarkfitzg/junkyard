@@ -50,7 +50,11 @@ __Axis__ is the integer corresponding to the named __Dimension__.
 
 ## Testing:
 
-1. Ensure that matplotlib is not imported if plotting does not occur.
+Probably can look into the current figure to make sure that the right
+labels are in.
+
+1. Ensure that matplotlib is not imported if plotting does not occur. Not
+   sure how to do this.
 2. Can pass additional keyword args to mpl.
 3. Use regex to find variables for latitude and longitude and by default
    plot as x, y
