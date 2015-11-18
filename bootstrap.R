@@ -30,3 +30,11 @@ actual_inside <- replicate(1000, inside())
 print(sum(actual_inside))
 
 # Prints 951 - Very close to 95% confidence interval. Cool.
+
+superboot = function(data, statistic, R){
+    # A simpler way to make this work
+    boot(data, function(x, ind) statistic(x[ind]), R)
+}
+
+x = rnorm(100)
+superboot(x, mean, 1000)

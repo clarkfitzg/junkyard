@@ -1,0 +1,20 @@
+/* Run with the following:
+
+    $ dot -Tpdf digraph.dot -o digraph.pdf
+*/
+
+digraph {
+rankdir = BT
+
+davis -> rb
+davis -> corning
+sf -> davis
+vacaville -> davis
+berkeley -> davis
+fremont -> berkeley
+fremont -> sf
+fremont -> rb
+
+davis [fontsize=24 shape=rect style=bold]
+rb [label="Red Bluff"]
+}
