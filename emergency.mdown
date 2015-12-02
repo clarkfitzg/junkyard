@@ -6,7 +6,7 @@ These items can stay in a small box in the trunk.
 
 1. Cash, including small bills
 4. First aid kit
-2. Flashlight
+2. Flashlight with spare batteries
 3. Multitool
 4. Knife
 4. Orange safety vest
@@ -46,6 +46,7 @@ medicine so the drugs stay up to date.
 5. GI tourniquet
 5. Wound closure strips
 6. Ace bandage
+7. Gloves
 5. Irrigating syringe
 6. Safety scissors
 7. Water treatment (iodine)
@@ -72,3 +73,4 @@ Not needed every day, but useful in an emergency.
 4. Poncho
 9. Blanket
 4. E tool shovel
+4. Duct tape
