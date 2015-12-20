@@ -1,0 +1,18 @@
+[{
+    "weight": 0.4,
+    "name": "spoon",
+    "brand": 
+
+[
+    {
+    "cooking":
+        [0.4, "spoon", "big grey plastic"]
+}
+
+weight, item, description
+#
+# Cooking
+#
+0.4, spoon, 
+3.5, bowl, stainless steel msr
+4
