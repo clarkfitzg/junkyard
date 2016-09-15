@@ -1,7 +1,4 @@
 weight, item, description
-#
-# Cooking
-#
 0.4, spoon, big grey plastic
 3.5, bowl, stainless steel msr
 4.25, multitool, leatherman red juice c2 with wine opener
@@ -31,9 +28,6 @@ weight, item, description
 0.35, lighter, mini Bic 
 0.85, wine container, Platypus 0.75 liter
 1.6, salt and pepper shaker, dual purpose GSI (full)
-#
-# Misc
-#
 1.05, notebook, 48 page orange Field Notes
 1.4, alice clips, 2 steel
 9.25, foam sleeping mat, old short grey Ridge Rest
@@ -58,9 +52,7 @@ weight, item, description
 0.6, stove base, aluminum msr 
 11.95, complete msr windpro stove kit, includes tool stuffsack and two lighters
 29.65, msr stove with 2L aluminum pot,
-# Sleeping
 20.6, sleeping bag, 40 deg Mountain Hardware down 
-# Clothing
 2, boonie cap, plaid OR
 27.6, down jacket, black Mountain Hardwear size med
 20.9, down blanket, blue Western Mountaineering twin size comforter
@@ -134,7 +126,6 @@ weight, item, description
 55.05, backpack, coyote Specops recon ruck ultra ALICE
 19.35, waist belt, desert molle ruck
 91.9, backpack, coyote Specops recon ruck ultra ALICE complete with frame and belt
-# Shooting gear
 51.8, vest, coyote FLC including 5 pouches
 51.55, target, 4 inch steel gong including PVC stand and rubber bungees
 23.2, squeeze bag, coyote
