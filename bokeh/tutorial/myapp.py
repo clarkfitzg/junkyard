@@ -23,6 +23,8 @@ def frame(i):
     A single frame
     """
     y = [i] * n
+    plot.title.text = "Now we're on: " + str(i)
+    # Need to update the whole dict like this
     ds.data = {'x': x, 'y': y}
 
 
@@ -32,8 +34,6 @@ def animate():
         frame(i)
         sleep(0.02)
         i += 1
-    # Reset for another button click
-    i = 0
 
 
 button = Button(label="Animate")
