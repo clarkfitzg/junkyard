@@ -15,27 +15,29 @@ n = len(x)
 i = 0
 
 # No data yet
-l = plot.line(x=[], y=[])
-ds = l.data_source
+ds = plot.line(x=[], y=[]).data_source
 
 
-def callback():
-    global i, ds
+def frame(i):
+    """
+    A single frame
+    """
     y = [i] * n
     ds.data = {'x': x, 'y': y}
-    i += 1
 
 
-def callback_animate():
+def animate():
     global i
     while i < 90:
-        callback()
+        frame(i)
         sleep(0.02)
+        i += 1
+    # Reset for another button click
+    i = 0
 
 
-# add a button widget and conploture with the call back
 button = Button(label="Animate")
-button.on_click(callback_animate)
+button.on_click(animate)
 
 # put the button and plot in a layout and add to the document
 curdoc().add_root(column(button, plot))
