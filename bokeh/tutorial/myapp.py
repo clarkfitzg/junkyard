@@ -12,8 +12,6 @@ plot = figure(x_range=(0, 100), y_range=(0, 100), toolbar_location=None)
 x = list(range(100))
 n = len(x)
 
-i = 0
-
 # No data yet
 ds = plot.line(x=[], y=[]).data_source
 
@@ -29,7 +27,7 @@ def frame(i):
 
 
 def animate():
-    global i
+    i = 0
     while i < 90:
         frame(i)
         sleep(0.02)
