@@ -28,12 +28,12 @@ var arc = d3.svg.arc()
 var pie = d3.layout.pie()
     .value(function(i) { return 1; });
 
-// select the arc elements
-var g = svg.selectAll(".arc")
+var g = svg.selectAll(".arc")  // select the arc elements
     .data(pie(intensity))
     .enter().append("g")
     .attr("class", "arc");
 
 g.append("path")
     .attr("d", arc)
-    .style("fill", function(d) { return color(0.5); });
+    //.style("fill", function(d) { return color(0.2); });
+    .style("fill", function(d, i) { return color(intensity[i]); });
