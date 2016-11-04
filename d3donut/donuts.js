@@ -14,12 +14,12 @@ var svg = d3.select("body").append("svg")
     .append("g")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-// Define the color mapping
+// Define a linear map from [0, 1] -> [white, red]
 var color = d3.scale.linear()
     .domain([0, 1])
     .range(["white", "red"]);
 
-// Create an arc svg element?
+// Define a function used in making arcs
 var arc = d3.svg.arc()
     .outerRadius(radius - 10)
     .innerRadius(radius - 70);
@@ -30,14 +30,16 @@ var pie = d3.layout.pie()
 
 // Start drawing on the donut
 var g = svg.selectAll(".arc")   // CSS3 selector for all elements with class arc
-    .data(pie(intensity))       // Defines what the default data are
-    .enter().append("g")        // Add a "g" element for each datum d_i
+    .data(pie(intensity))       // Defines the default data {d_i}
+    .enter()                    // Operate on the elements that don't yet exist
+    .append("g")                // Add a "g" element for each datum d_i
     .attr("class", "arc")       // Set the class of these elements to "arc"
     .append("path")             // Add a path element under "g"
     .attr("d", arc)             // Set the "d" attribute to arc(d_i)
     .style("fill", color(0.5)); // default color since want to animate updates
 
 // No need to .enter() here since nodes exist
-g.data(intensity)
-    .transition().duration(3000)  // A long transition
-    .style("fill", color);
+g.data(intensity)               // intensity is now the data {d_i}
+    .transition()               // Change smoothly from current to next state
+    .duration(3000)             // transition length in ms
+    .style("fill", color);      // set fill style i to color(d_i)
