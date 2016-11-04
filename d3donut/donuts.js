@@ -17,7 +17,7 @@ var svg = d3.select("body").append("svg")
 // Define the color mapping
 var color = d3.scale.linear()
     .domain([0, 1])
-    .range(["green", "red"]);
+    .range(["white", "red"]);
 
 // Create an arc svg element?
 var arc = d3.svg.arc()
@@ -28,12 +28,16 @@ var arc = d3.svg.arc()
 var pie = d3.layout.pie()
     .value(function(i) { return 1; });
 
-var g = svg.selectAll(".arc")  // select the arc elements
-    .data(pie(intensity))
-    .enter().append("g")
-    .attr("class", "arc");
+// Start drawing on the donut
+var g = svg.selectAll(".arc")   // CSS3 selector for all elements with class arc
+    .data(pie(intensity))       // Defines what the default data are
+    .enter().append("g")        // Add a "g" element for each datum d_i
+    .attr("class", "arc")       // Set the class of these elements to "arc"
+    .append("path")             // Add a path element under "g"
+    .attr("d", arc)             // Set the "d" attribute to arc(d_i)
+    .style("fill", color(0.5)); // default color since want to animate updates
 
-g.append("path")
-    .attr("d", arc)
-    //.style("fill", function(d) { return color(0.2); });
-    .style("fill", function(d, i) { return color(intensity[i]); });
+// No need to .enter() here since nodes exist
+g.data(intensity)
+    .transition().duration(3000)  // A long transition
+    .style("fill", color);
