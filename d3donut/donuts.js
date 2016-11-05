@@ -38,14 +38,26 @@ var g = svg.selectAll(".arc")   // CSS3 selector for all elements with class arc
     .attr("d", arc)             // Set the "d" attribute to arc(d_i)
     .style("fill", color(0.1)); // default color since want to animate updates
 
-var ttime = 2000
+var ttime = 100;
 
-// Loop over each row in intensity
-intensity.forEach(function(row, index) {
-    // No need to .enter() here since nodes exist
-    g.data(row)                 // intensity is now the data {d_i}
-        .transition()           //
-        .duration(ttime)        // transition length in ms
-        .delay(index * ttime)   // Should happen sequentially
-        .style("fill", color)   // set fill style i to color(d_i)
+// User input determines transition time ttime
+d3.select("#ttime").on("input", function() {
+    ttime = +this.value * 1000;
 });
+
+d3.select("body")
+    .insert("button", "svg")
+    .on("click", animate)
+    .html("Run");
+
+function animate(){
+    // Loop over each row in intensity
+    intensity.forEach(function(row, index) {
+        // No need to .enter() here since nodes exist
+        g.data(row)                 // intensity is now the data {d_i}
+            .transition()           //
+            .duration(ttime)        // transition length in ms
+            .delay(index * ttime)   // Should happen sequentially
+            .style("fill", color)   // set fill style i to color(d_i)
+    });
+};
