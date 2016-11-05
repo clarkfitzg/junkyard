@@ -1,5 +1,5 @@
 // Dummy data for testing
-var intensity = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
+var intensity = d3.csv.parseRows("0.1,0.9,0.3,0.4\n0,0,0,0\n0.7,1,0.6,0.3\n0,0,0,0.1")
 
 // Set up the canvas
 var width = 500,
@@ -30,16 +30,22 @@ var pie = d3.layout.pie()
 
 // Start drawing on the donut
 var g = svg.selectAll(".arc")   // CSS3 selector for all elements with class arc
-    .data(pie(intensity))       // Defines the default data {d_i}
+    .data(pie(intensity[0]))    // Defines the default data {d_i}
     .enter()                    // Operate on the elements that don't yet exist
     .append("g")                // Add a "g" element for each datum d_i
     .attr("class", "arc")       // Set the class of these elements to "arc"
     .append("path")             // Add a path element under "g"
     .attr("d", arc)             // Set the "d" attribute to arc(d_i)
-    .style("fill", color(0.5)); // default color since want to animate updates
+    .style("fill", color(0.1)); // default color since want to animate updates
 
-// No need to .enter() here since nodes exist
-g.data(intensity)               // intensity is now the data {d_i}
-    .transition()               // Change smoothly from current to next state
-    .duration(3000)             // transition length in ms
-    .style("fill", color);      // set fill style i to color(d_i)
+var ttime = 2000
+
+// Loop over each row in intensity
+intensity.forEach(function(row, index) {
+    // No need to .enter() here since nodes exist
+    g.data(row)                 // intensity is now the data {d_i}
+        .transition()           //
+        .duration(ttime)        // transition length in ms
+        .delay(index * ttime)   // Should happen sequentially
+        .style("fill", color)   // set fill style i to color(d_i)
+});
