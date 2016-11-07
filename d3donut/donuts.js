@@ -6,11 +6,11 @@ d3.select("#ttime").on("input", function() {
 
 var intensity = "0.5,1\n1,0.5";
 d3.select("#csvInput").on("input", function() {
-    intensity = +this.value;
+    intensity = d3.csv.parseRows(+this.value);
 });
 
 // Dummy data for testing
-var intensity = d3.csv.parseRows("0.1,0.9,0.3,0.4\n0,0,0,0\n0.7,1,0.6,0.3\n0,0,0,0.1")
+//var intensity = d3.csv.parseRows("sin.csv")
 
 // Set up the canvas
 var width = 500,
