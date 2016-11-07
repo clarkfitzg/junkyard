@@ -1,3 +1,14 @@
+var ttime = 100;  // TODO better to not have default here.
+// User input determines transition time ttime
+d3.select("#ttime").on("input", function() {
+    ttime = +this.value * 1000;
+});
+
+var intensity = "0.5,1\n1,0.5";
+d3.select("#csvInput").on("input", function() {
+    intensity = +this.value;
+});
+
 // Dummy data for testing
 var intensity = d3.csv.parseRows("0.1,0.9,0.3,0.4\n0,0,0,0\n0.7,1,0.6,0.3\n0,0,0,0.1")
 
@@ -37,13 +48,6 @@ var g = svg.selectAll(".arc")   // CSS3 selector for all elements with class arc
     .append("path")             // Add a path element under "g"
     .attr("d", arc)             // Set the "d" attribute to arc(d_i)
     .style("fill", color(0.1)); // default color since want to animate updates
-
-var ttime = 100;
-
-// User input determines transition time ttime
-d3.select("#ttime").on("input", function() {
-    ttime = +this.value * 1000;
-});
 
 d3.select("body")
     .insert("button", "svg")
