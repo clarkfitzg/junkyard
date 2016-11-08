@@ -1,4 +1,3 @@
-var ttime = 500;
 var intensity = d3.csv.parseRows("1,0\n0,1");
 
 
@@ -64,10 +63,16 @@ d3.select("body")
     .on("click", animate)
     .html("Run");
 
-function animate(){
+// length of time in seconds
+// Start with default
+var ttime = 1000 * Number(d3.select("#ttime").attr("value"));
 
-    // length of time in seconds
-    //ttime = 1000 * d3.select("#ttime");
+// Update this variable when the user chooses
+d3.select("#ttime").on("input", function() {
+      ttime = 1000 * +this.value;
+});
+
+function animate(){
 
     // Loop over each row in intensity
     intensity.forEach(function(row, index) {
