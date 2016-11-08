@@ -1,8 +1,19 @@
-d3.text("mover.csv", function(d) {
-    intensity = d3.csv.parseRows(d, function(row) {
+var intensity, ttime;
+
+define_intensity = function(csvString) {
+    intensity = d3.csv.parseRows(csvString, function(row) {
         return row.map(parseFloat);
     });
+};
+
+// default
+d3.text("mover.csv", define_intensity);
+
+// user input
+d3.select("#intensity").on("input", function() {
+      define_intensity(this.value);
 });
+
 
 // Set up the canvas
 width = 500,
