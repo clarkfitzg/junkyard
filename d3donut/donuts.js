@@ -1,16 +1,25 @@
-var ttime = 100;  // TODO better to not have default here.
-// User input determines transition time ttime
-d3.select("#ttime").on("input", function() {
-    ttime = +this.value * 1000;
-});
+var ttime = 500;
+var intensity = d3.csv.parseRows("1,0\n0,1");
 
-var intensity = "0.5,1\n1,0.5";
+
+/*
 d3.select("#csvInput").on("input", function() {
     intensity = d3.csv.parseRows(+this.value);
 });
 
+// User input determines transition time ttime
+d3.select("#intensity").on("input", function() {
+    intensity2 = +this.value;
+});
+
+
 // Dummy data for testing
-//var intensity = d3.csv.parseRows("sin.csv")
+var intensity = d3.csv("sin.csv");
+*/
+
+
+
+
 
 // Set up the canvas
 var width = 500,
@@ -49,12 +58,17 @@ var g = svg.selectAll(".arc")   // CSS3 selector for all elements with class arc
     .attr("d", arc)             // Set the "d" attribute to arc(d_i)
     .style("fill", color(0.1)); // default color since want to animate updates
 
+// Add the run button
 d3.select("body")
-    .insert("button", "svg")
+    .insert("button", "p")
     .on("click", animate)
     .html("Run");
 
 function animate(){
+
+    // length of time in seconds
+    //ttime = 1000 * d3.select("#ttime");
+
     // Loop over each row in intensity
     intensity.forEach(function(row, index) {
         // No need to .enter() here since nodes exist
