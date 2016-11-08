@@ -1,53 +1,26 @@
-//var intensity = d3.csv.parseRows("1,0\n0,1");
-
-d3.text("sin.csv", function(d) {
+d3.text("mover.csv", function(d) {
     intensity = d3.csv.parseRows(d, function(row) {
-        return row.map(parseFloat)
+        return row.map(parseFloat);
     });
 });
 
-/*
-// User input determines transition time ttime
-d3.select("#intensity").on("input", function() {
-    intensity2 = +this.value;
-});
-
-
-// Dummy data for testing
-
-d3.select("#intensity").on("input", function() {
-    //intensity = d3.csv(this.value);
-    console.log("in the middle now")
-});
-*/
-
-
-
 // Set up the canvas
-var width = 500,
-    height = 500, // TODO change to more pleasant
-    radius = Math.min(width, height) / 2;
-
-// Add the svg element into the body of the document with appropriate
-// parameters
-var svg = d3.select("body").append("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .append("g")
-    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+width = 500,
+height = 500, // TODO change to more pleasant
+radius = Math.min(width, height) / 2;
 
 // Define a linear map from [0, 1] -> [white, red]
-var color = d3.scale.linear()
+color = d3.scale.linear()
     .domain([0, 1])
     .range(["white", "red"]);
 
 // Define a function used in making arcs
-var arc = d3.svg.arc()
+arc = d3.svg.arc()
     .outerRadius(radius - 10)
     .innerRadius(radius - 70);
 
 // Layout the arcs in an evenly spaced pie
-var pie = d3.layout.pie()
+pie = d3.layout.pie()
     .value(function(i) { return 1; });
 
 // Add the run button
@@ -56,9 +29,14 @@ d3.select("body")
     .on("click", animate)
     .html("Run");
 
+d3.select("body")
+    .insert("button", "p")
+    .on("click", function(d) { svg.remove(); })
+    .html("Reset");
+
 // default length of transition converted to ms
 // + operator casts to float
-var ttime = 1000 * +d3.select("#ttime").attr("value");
+ttime = 1000 * +d3.select("#ttime").attr("value");
 
 // Update variable when the user picks a new one
 d3.select("#ttime").on("input", function() {
@@ -66,6 +44,14 @@ d3.select("#ttime").on("input", function() {
 });
 
 function setup() {
+
+    // Add the svg element into the body of the document with appropriate
+    // parameters
+    svg = d3.select("body").append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
     // Start drawing on the donut
     return svg.selectAll(".arc")   // CSS3 selector for all elements with class arc
