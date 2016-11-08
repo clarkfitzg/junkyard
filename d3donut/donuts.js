@@ -1,11 +1,6 @@
 var intensity = d3.csv.parseRows("1,0\n0,1");
 
-
 /*
-d3.select("#csvInput").on("input", function() {
-    intensity = d3.csv.parseRows(+this.value);
-});
-
 // User input determines transition time ttime
 d3.select("#intensity").on("input", function() {
     intensity2 = +this.value;
@@ -14,9 +9,12 @@ d3.select("#intensity").on("input", function() {
 
 // Dummy data for testing
 var intensity = d3.csv("sin.csv");
+
+d3.select("#intensity").on("input", function() {
+    //intensity = d3.csv(this.value);
+    console.log("in the middle now")
+});
 */
-
-
 
 
 
@@ -63,11 +61,11 @@ d3.select("body")
     .on("click", animate)
     .html("Run");
 
-// length of time in seconds
-// Start with default
-var ttime = 1000 * Number(d3.select("#ttime").attr("value"));
+// default length of transition converted to ms
+// + operator here casts to a float
+var ttime = 1000 * +d3.select("#ttime").attr("value");
 
-// Update this variable when the user chooses
+// Update variable when the user picks a new one
 d3.select("#ttime").on("input", function() {
       ttime = 1000 * +this.value;
 });
