@@ -50,16 +50,6 @@ var arc = d3.svg.arc()
 var pie = d3.layout.pie()
     .value(function(i) { return 1; });
 
-// Start drawing on the donut
-var g = svg.selectAll(".arc")   // CSS3 selector for all elements with class arc
-    .data(pie(intensity[0]))    // Defines the default data {d_i}
-    .enter()                    // Operate on the elements that don't yet exist
-    .append("g")                // Add a "g" element for each datum d_i
-    .attr("class", "arc")       // Set the class of these elements to "arc"
-    .append("path")             // Add a path element under "g"
-    .attr("d", arc)             // Set the "d" attribute to arc(d_i)
-    .style("fill", color(0.1)); // default color since want to animate updates
-
 // Add the run button
 d3.select("body")
     .insert("button", "p")
@@ -75,7 +65,22 @@ d3.select("#ttime").on("input", function() {
       ttime = 1000 * +this.value;
 });
 
-function animate(){
+function setup() {
+
+    // Start drawing on the donut
+    return svg.selectAll(".arc")   // CSS3 selector for all elements with class arc
+        .data(pie(intensity[0]))    // Defines the default data {d_i}
+        .enter()                    // Operate on the elements that don't yet exist
+        .append("g")                // Add a "g" element for each datum d_i
+        .attr("class", "arc")       // Set the class of these elements to "arc"
+        .append("path")             // Add a path element under "g"
+        .attr("d", arc)             // Set the "d" attribute to arc(d_i)
+        .style("fill", color(0.1)); // default color since want to animate updates
+};
+
+function animate() {
+
+    g = setup()
 
     // Loop over each row in intensity
     intensity.forEach(function(row, index) {
