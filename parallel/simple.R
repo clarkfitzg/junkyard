@@ -62,13 +62,10 @@ probs = c(florida = 0.507
 
 # Base R
 set.seed(37, kind = "default")
-results = lapply(probs, count_votes, n = 1000)
-
-# Parallel
-set.seed(37, kind = "L'Ecuyer")
-results2 = mclapply(probs, count_votes, n = 1000)
+results = lapply(probs, count_votes_slow, n = 5e6)
 
 # Try playing around with n, mc.cores and watching
 # CPU resource usage as you run this one:
-results3 = mclapply(probs, count_votes_slow
+set.seed(37, kind = "L'Ecuyer")
+results2 = mclapply(probs, count_votes_slow
                     , mc.cores = 8, n = 5e6)
