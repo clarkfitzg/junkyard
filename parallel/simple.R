@@ -16,7 +16,7 @@ library(parallel)
 
 
 # An idiomatic, vectorized R way to write this:
-count_votes = function(prob_trump = 0.5, n = 1e7)
+count_votes = function(prob_trump = 0.5, n = 1e6)
 {
     probs = c(prob_trump, 1 - prob_trump)
     votes = sample(c("trump", "clinton"), size = n
@@ -27,7 +27,7 @@ count_votes = function(prob_trump = 0.5, n = 1e7)
 
 # This is inefficient in R.
 # Hence the function name :)
-count_votes_slow = function(prob_trump = 0.5, n = 1e7)
+count_votes_slow = function(prob_trump = 0.5, n = 1e6)
 {
     probs = c(prob_trump, 1 - prob_trump)
     counts = c(trump = 0, clinton = 0)
@@ -52,6 +52,9 @@ probs = c(florida = 0.507
         , pennsylvania = 0.506
         , michigan = 0.501
         , virginia = 0.475
+        , arizona = 0.522
+        , nevada = 0.487
+        , wisconsin = 0.505
         )
 
 # set.seed() sets the random number generator, making 
@@ -65,6 +68,7 @@ results = lapply(probs, count_votes, n = 1000)
 set.seed(37, kind = "L'Ecuyer")
 results2 = mclapply(probs, count_votes, n = 1000)
 
-# Try playing around with n and watching
+# Try playing around with n, mc.cores and watching
 # CPU resource usage as you run this one:
-results3 = mclapply(probs, count_votes_slow, n = 1e6)
+results3 = mclapply(probs, count_votes_slow
+                    , mc.cores = 8, n = 5e6)
