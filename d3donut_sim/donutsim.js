@@ -62,10 +62,19 @@ function setup() {
 
 setup();
 
+/**
+ * Traffic demand to enter next cell
+ * @param {Array} density in each cell
+ * @param {Number} max 
+ * @return {Array} demand in units of cars
+ */
+function demand(cells, kmax = kmax, qmax = qmax) {
+}
+
 
 function animate() {
 
-    svg.data([0.5, 0.5, 0, 0])                 // intensity is now the data {d_i}
+    svg.data([0.5, 0.5, 0, 0])  // intensity is now the data {d_i}
         .transition()           //
         .duration(1000 * dt)        // transition length in ms
         .style("fill", color);   // set fill style i to color(d_i)
