@@ -11,9 +11,17 @@
 using namespace std;
 
 
-int noisy_add(int a, int b)
+int noisy_add_int(int a, int b)
 {
-    cout << "It's actually adding!\n";
+    cout << "Inside noisy_add_int\n";
+    return a + b;
+}
+
+
+template<typename T>
+T noisy_add(T a, T b)
+{
+    cout << "Inside noisy_add\n";
     return a + b;
 }
 
@@ -21,8 +29,9 @@ int noisy_add(int a, int b)
 int main()
 {
     char *one_digit;
-    int out = noisy_add(1, 2);
-    //std::cout << std::to_string(noisy_add(1, 2));
+    //int out = noisy_add_int(1, 2);
+    int out = noisy_add(1.0, 2.2);
+
     sprintf(one_digit, "%d", out);
     cout << one_digit << "\n";
     return 0;
