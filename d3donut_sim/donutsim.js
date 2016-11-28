@@ -23,18 +23,43 @@ d3.select("body")
     .on("click", animate)
     .html("Run");
 
-
-
-function setup() {
+/**
+ * Read all user inputs
+ */
+function html_inputs() {
 
     // + operator casts to float
     dt = +d3.select("#dt").attr("value");
     dx = +d3.select("#dx").attr("value");
     duration = +d3.select("#duration").attr("value");
+    u_f = +d3.select("#u_f").attr("value");
+    k_j = +d3.select("#k_j").attr("value");
+    c_j = +d3.select("#c_j").attr("value");
 
-    // initial density
+    // initial density in regions (quadrants)
     density0 = d3.select("#density0").attr("value");
-    density0 = d3.csv.parseRows(density0)[0].map(Number)
+    density0 = d3.csv.parseRows(density0)[0].map(Number);
+
+    // Want a fixed number of dx's in each region
+    roadlength = 5280 * +d3.select("#roadlength").attr("value");
+    dx_perquad = Math.round(roadlength / (density0.length * dx));
+
+    // density in each fixed area
+    function densitydx(d, nregion = dx_perquad){
+        return Array(nregion).fill(d);
+    };
+
+    density = density0.map(densitydx);
+
+};
+
+
+/**
+ * Create svg
+ */
+function setup() {
+
+    html_inputs();
 
     // Add the svg element into the body of the document with appropriate
     // parameters
@@ -46,7 +71,7 @@ function setup() {
 
     // Start drawing on the donut
     svg = svg.selectAll(".arc")           // CSS3 selector for all elements with class arc
-        .data(pie(density0))        // pie() works with arc()
+        .data(pie(density))        // pie() works with arc()
         .enter()                    // Operate on the elements that don't yet exist
         .append("g")                // Add a "g" element for each datum d_i
         .attr("class", "arc")       // Set the class of these elements to "arc"
@@ -54,13 +79,12 @@ function setup() {
         .attr("d", arc)            // Set the "d" attribute to arc(d_i)
 
     // Add the starting color
-    svg.data(density0)
+    svg.data(density)
         .style("fill", color);
 
     return svg;
 };
 
-setup();
 
 /**
  * Traffic demand to enter next cell
@@ -79,3 +103,7 @@ function animate() {
         .duration(1000 * dt)        // transition length in ms
         .style("fill", color);   // set fill style i to color(d_i)
 };
+
+
+// Action happens here
+setup();
