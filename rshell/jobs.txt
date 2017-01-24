@@ -1,0 +1,1 @@
+Rscript counter.R >> output.txt
