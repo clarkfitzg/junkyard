@@ -2,6 +2,7 @@ Mon Jan 23 13:08:04 PST 2017
 
 Presenting to the Davis R Users Group on R and the shell.
 
+
 ## Topics
 
 - Motivation: automation, sanity
@@ -63,3 +64,9 @@ at> Rscript counter.R >> output.txt
 at> <EOT>    # Here I pressed CTRL+d
 job 6 at Mon Jan 23 16:44:00 2017
 ```
+
+## Agenda
+
+Informal discussion: To better know how integrating with command line may
+be useful it would be good to know why and how you currently use R. Also,
+do you have any ideas on how the command line can help you?
