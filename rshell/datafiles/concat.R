@@ -5,5 +5,6 @@ outfile = "all.txt"
 
 for(f in allfiles){
     cmd = sprintf("cat %s >> %s", f, outfile)
+    print(cmd)
     system(cmd)
 }
