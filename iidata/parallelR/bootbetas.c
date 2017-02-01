@@ -9,16 +9,19 @@ void fit_ols(double *x, double *y, int *n, double *beta)
     double sumy = 0;
     double sumx2 = 0;
     double sumxy = 0;
-    int i;
-    for(i = 0; i < n[0]; i++)
+    //int i;
+    for(int i = 0; i < *n; i++)
     {
+        // Valgrind identifies the line below as going out of bounds.
+        // True regardless of values that I pass in for n.
+        // How and why is this happening?
         sumx += x[i];
         sumy += y[i];
         sumx2 += x[i] * x[i];
         sumxy += x[i] * y[i];
     }
     double nd;
-    nd = (double) n[0];
+    nd = (double) *n;
     double xbar = sumx / nd;
     double ybar = sumy / nd;
     double x2bar = sumx2 / nd;

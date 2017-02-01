@@ -124,3 +124,26 @@ Looks like the relevant one is this one:
 ```
 ==8008==  Address 0x134cbe68 is 0 bytes after a block of size 80,040 alloc'd
 ```
+
+Tried to run gdb on the core dump as follows:
+
+```
+
+[Current thread is 1 (LWP 8574)]
+(gdb) run
+Starting program: /usr/lib/R/bin/exec/R
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff3100700 (LWP 10048)]
+[New Thread 0x7ffff08ff700 (LWP 10049)]
+[New Thread 0x7ffff00fe700 (LWP 10050)]
+Fatal error: R home directory is not defined
+[Thread 0x7ffff08ff700 (LWP 10049) exited]
+[Thread 0x7ffff3100700 (LWP 10048) exited]
+[Thread 0x7ffff00fe700 (LWP 10050) exited]
+[Inferior 1 (process 10044) exited with code 02]
+```
+
+Doesn't work since I don't have `R_HOME`? So I do `export
+R_HOME="/usr/lib/R"` and enter the R prompt. Don't know where to go from
+there.
