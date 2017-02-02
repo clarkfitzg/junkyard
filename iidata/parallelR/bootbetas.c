@@ -1,3 +1,5 @@
+# include <stdlib.h>
+
 /* Given vectors x, y
  * compute OLS estimators b0, b1 
  * minimizing y = b0 + b1x
@@ -30,11 +32,12 @@ void bootstrap(double *x, double *y, int *n, int *nboots, double *beta)
 {
     int sample;
     double *xboot, *yboot;
-    // We'll use the same bootstrap arrays over and over
-    *xboot = (double *)malloc(sizeof(double) * n);
-    *yboot = (double *)malloc(sizeof(double) * n);
 
-    for(int k = 0; k < nboots; k++)
+    // We'll use the same bootstrap arrays over and over
+    xboot = (double *)malloc(*n * sizeof(double));
+    yboot = (double *)malloc(*n * sizeof(double));
+
+    for(int k = 0; k < *nboots; k++)
     {
         // Sample with replacement
         for(int i = 0; i < *n; i++)
@@ -44,6 +47,9 @@ void bootstrap(double *x, double *y, int *n, int *nboots, double *beta)
             yboot[i] = y[sample];
         }
         // Fit OLS and write one column in beta
-        fit_ols(*xboot, *yboot, *n, beta + 2*k);
+        fit_ols(xboot, yboot, n, beta + 2*k);
     }
+
+    free(xboot);
+    free(yboot);
 }
