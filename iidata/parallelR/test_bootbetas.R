@@ -14,4 +14,5 @@ true_beta = coef(lm(y ~ x))
 
 
 #void fit_ols(double *x, double *y, int *n, double *beta)
-out = .Call("fit_ols", x, y, 1L, beta)
+out = .C("fit_ols", x, y, n, beta)
+
