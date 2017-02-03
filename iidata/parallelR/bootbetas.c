@@ -28,6 +28,8 @@ void fit_ols(double *x, double *y, int *n, double *beta)
 }
 
 
+/* First fill arrays with a bootstrap sample. Then compute OLS fit.
+ */
 void bootstrap(double *x, double *y, int *n, int *nboots, double *beta)
 {
     int sample;
@@ -57,12 +59,14 @@ void bootstrap(double *x, double *y, int *n, int *nboots, double *beta)
 }
 
 
-
+/* Process each bootstrap as a stream, with no intermediate arrays.
+ */
 void bootstrap2(double *x, double *y, int *n, int *nboots, double *beta)
 {
     double sumx, sumy, sumx2, sumxy, nd, xbar, ybar, x2bar, xybar;
     double *beta_k;
     int iboot;
+    // This loop could be parallelized with openMP
     for(int k = 0; k < *nboots; k++)
     {
         beta_k = beta + 2*k;
