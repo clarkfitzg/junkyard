@@ -55,3 +55,35 @@ void bootstrap(double *x, double *y, int *n, int *nboots, double *beta)
     free(xboot);
     free(yboot);
 }
+
+
+
+void bootstrap2(double *x, double *y, int *n, int *nboots, double *beta)
+{
+    double sumx, sumy, sumx2, sumxy, nd, xbar, ybar, x2bar, xybar;
+    double *beta_k;
+    int iboot;
+    for(int k = 0; k < *nboots; k++)
+    {
+        beta_k = beta + 2*k;
+        sumx = 0.0;
+        sumy = 0.0;
+        sumx2 = 0.0;
+        sumxy = 0.0;
+        for(int i = 0; i < *n; i++)
+        {
+            iboot = rand() % *n;
+            sumx += x[iboot];
+            sumy += y[iboot];
+            sumx2 += x[iboot] * x[iboot];
+            sumxy += x[iboot] * y[iboot];
+        }
+        nd = (double) *n;
+        xbar = sumx / nd;
+        ybar = sumy / nd;
+        x2bar = sumx2 / nd;
+        xybar = sumxy / nd;
+        beta_k[1] = (xybar - xbar * ybar) / (x2bar - xbar * xbar);
+        beta_k[0] = ybar - beta_k[1] * xbar;
+    }
+}

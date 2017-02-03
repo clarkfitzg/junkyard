@@ -1,3 +1,18 @@
+Thu Feb  2 17:00:37 PST 2017
+
+Discovered that it's not at all easy to get this bootstrap stuff working on
+the GPU. The random numbers are an issue. Playing with some software
+http://cas.ee.ic.ac.uk/people/dt10/research/rngs-gpu-mwc64x.html to try to 
+get the streams, but this seems pretty complex.
+
+Surprisingly the 2 versions of the C bootstrap I have run at exactly the
+same speed. The first writes a random sample to an intermediate array and
+then computes the OLS fit, because this is how I was thinking about the
+problem from R.
+The other streams the whole computation. I 
+expected the stream would be faster. Then is it the cache?
+
+
 Wed Feb  1 14:26:47 PST 2017
 
 Debugging with valgrind.
