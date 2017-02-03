@@ -14,10 +14,6 @@ epsilon = Float32.(sigma * randn(n))
 
 y = b0 + b1 * x + epsilon
 
-const kernel_src = open("bootbeta.cl") do f
-   readstring(f)
-end
-
 device, ctx, queue = cl.create_compute_context()
 
 # Copy over to the device
@@ -27,6 +23,9 @@ yd = cl.Buffer(Float32, ctx, (:r, :copy), hostbuf = y)
 # Column major array storing bootstrapped b0, b1
 beta_d = cl.Buffer(Float32, ctx, :w, 2*nboots)
 
+const kernel_src = open("bootbeta.cl") do f
+   readstring(f)
+end
 program = cl.Program(ctx, source = kernel_src) |> cl.build!
 
 kernel = cl.Kernel(program, "bootbeta")
