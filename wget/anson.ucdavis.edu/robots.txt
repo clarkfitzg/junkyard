@@ -1,0 +1,2 @@
+# An empty robots.txt file. This can be edited or deleted depending on your needs - more at http://www.robotstxt.org/
+# As provided, all robots can scan this site.

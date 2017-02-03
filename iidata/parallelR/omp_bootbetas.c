@@ -32,11 +32,18 @@ void fit_ols(double *x, double *y, int *n, double *beta)
 void omp_bootstrap(double *x, double *y, int *n, int *nboots, double *beta)
 {
     int sample, nthreads;
+    int *starting_index;
     double *xboot, *yboot;
 
-    nthreads = omp_get_num_threads();
-
     // Statically partition nboots
+    //
+    nthreads = omp_get_num_threads();
+    starting_index = (int *)malloc((1 + *nboots) * sizeof(int));
+
+    xboot = (double *)malloc(*n * sizeof(double));
+
+    start
+
 
 
     // We'll use the same bootstrap arrays over and over
@@ -58,4 +65,6 @@ void omp_bootstrap(double *x, double *y, int *n, int *nboots, double *beta)
 
     free(xboot);
     free(yboot);
+
+    free(starting_index);
 }
