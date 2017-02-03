@@ -52,5 +52,5 @@ end
 
 runboot(nboots)
 
-# Runs in about 2.2 ms
+# Runs in about 9.2 ms
 @benchmark runboot(nboots)
