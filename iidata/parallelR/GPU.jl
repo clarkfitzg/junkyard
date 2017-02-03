@@ -50,7 +50,8 @@ function runboot(nboots)
     return cl.read(queue, beta_d)
 end
 
-runboot(nboots)
+b = runboot(nboots)
 
-# Runs in about 9.2 ms
+# Runs in about 9.2 ms. And they're all unique and look to be in the right
+# ballpark. That means it seems to have worked!
 @benchmark runboot(nboots)
