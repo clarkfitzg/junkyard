@@ -1,3 +1,6 @@
+// TODO: Use more accurate updating formula to calculate coefficients
+// https://www.johndcook.com/blog/standard_deviation/
+
 # include <stdlib.h>
 
 /* Given vectors x, y
@@ -41,7 +44,7 @@ void bootstrap(double *x, double *y, int *n, int *nboots, double *beta)
 
     for(int k = 0; k < *nboots; k++)
     {
-        // TODO: There's no need to write this intermediate array at all-
+        // There's no need to write this intermediate array at all-
         // the whole computation is a stream!!
         // Sample with replacement
         for(int i = 0; i < *n; i++)
