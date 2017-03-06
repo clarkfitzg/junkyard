@@ -1,0 +1,2 @@
+def findx():
+    return x
