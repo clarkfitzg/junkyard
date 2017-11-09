@@ -1,10 +1,10 @@
 library(nnet)
 
-n = 1000
+n = 100
 d = data.frame(x = seq(0, 10, length.out = n))
-d$x2 = rnorm(n)
+#d$x2 = rnorm(n)
 d$y = sin(d$x)
-d$noisey = d$y + 0.1*rnorm(n)
+#d$noisey = d$y + 0.1*rnorm(n)
 
 # This neural net fit isn't piecewise linear.
 # It also tends to look different every time I run it :)
@@ -25,10 +25,21 @@ library(h2o)
 h2o.init()
 
 d2 = as.h2o(d)
-fit2 = h2o.deeplearning(x = 1:2, y = 3, d2, activation = "Rectifier", hidden = 2)
+
 
 # This would be a great piece for some data art.
 
+fit2 = h2o.deeplearning(x = 1, y = 2, d2
+                        , activation = "Rectifier"
+                        , hidden = c(50, 50)
+                        , score_each_iteration = TRUE
+                        , adaptive_rate = FALSE
+                        #, momentum_start = 0.5
+                        )
+
 p = as.data.frame(predict(fit2, d2))[, 1]
 plot(d$x, d$y)
-lines(d$x, p, lwd = 3)
+lines(d$x, p, lwd = 2)
+
+# Why do these predictions perform so poorly? I'm not asking for any
+# regularization.
