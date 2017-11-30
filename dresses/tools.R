@@ -1,7 +1,9 @@
 library(RCurl)
 library(XML)
 
-columns = c("description", "price", "sale")
+columns = c("price", "oldprice", "page", "description")
+
+npages = c(lulus = 28, asos = 37)
 
 
 extract = function(nodeset, xpath)
@@ -23,32 +25,56 @@ lulus = function(page = 1)
     products = getNodeSet(doc, "//div[@id = 'product-list']/*")
 
     # We only want the first price
-    price = extract(products, "(.//span[@class = 'price'])[1]")
+    oldprice = extract(products, "(.//span[@class = 'price'])[1]")
 
-    sale = extract(products, "(.//span[@class = 'sale'])[1]")
+    price = extract(products, "(.//span[@class = 'sale'])[1]")
 
     description = extract(products, "(.//h3/a[@href])[1]")
 
-    out = data.frame(description = description
-                     , price = price_to_num(price)
-                     , sale = price_to_num(sale)
+    out = data.frame(price = price_to_num(price)
+                     , oldprice = price_to_num(oldprice)
+                     , page = page
+                     , description = description
                      )
     out
 }
 
-l2 = lulus(2)
 
-
-
+asos = function(page = 1)
+{
 
     baseurl = "http://us.asos.com/women/dresses/cat/"
-    raw = getForm(baseurl, cid = 8799, pgesize = 204)
+    raw = getForm(baseurl, cid = 8799, pge = page - 1, pgesize = 204)
+    #raw = getForm(baseurl, cid = 8799, pgesize = 204, sort ="priceasc")
     doc = htmlParse(raw)
 
     description = xpathSApply(doc, "//span[@class = 'name']", xmlValue)
 
-    current_price = xpathSApply(doc, "//div[@class = 'price-wrap price-current']/span[@class = 'price']", xmlValue)
-    current_price = price_to_num(current_price)
+    price = xpathSApply(doc, "//div[@class = 'price-wrap price-current']/span[@class = 'price']", xmlValue)
+    price = price_to_num(price)
 
-    previous_price = xpathSApply(doc, "//div[@class = 'price-wrap price-previous']/span[@class = 'price']", xmlValue)
-    previous_price = price_to_num(previous_price)
+    oldprice = xpathSApply(doc, "//div[@class = 'price-wrap price-previous']/span[@class = 'price']", xmlValue)
+    oldprice = price_to_num(oldprice)
+
+    nochange = is.na(oldprice)
+
+    oldprice[nochange] = price[nochange]
+
+    out = data.frame(price = price
+                     , oldprice = oldprice
+                     , page = page
+                     , description = description
+                     )
+    out
+}
+
+
+
+# Tests
+if(FALSE){
+
+l2 = lulus(2)
+
+a3 = asos(37)
+
+}
