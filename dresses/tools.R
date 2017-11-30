@@ -4,8 +4,9 @@ library(XML)
 
 extract = function(nodeset, xpath)
 {
-    prices = sapply(products, function(x) xpathSApply(x, "(.//span[@class = 'price'])[1]", xmlValue))
+    sapply(nodeset, function(x) xpathSApply(x, xpath, xmlValue))
 }
+
 
 raw = getURL("https://www.lulus.com/categories/13/dresses.html")
 doc = htmlParse(raw)
@@ -14,9 +15,6 @@ doc = htmlParse(raw)
 products = getNodeSet(doc, "//div[@id = 'product-list']/*")
 
 # We only want the first price
-    prices = sapply(products, function(x) xpathSApply(x, "(.//span[@class = 'price'])[1]", xmlValue))
+price = extract(products, "(.//span[@class = 'price'])[1]")
 
-brand = xpathSApply(doc, "*h3[@class = 'brand']", xmlValue)
-
-//*[@id="swatch-565252-565252"]/div[2]
-
+description = extract(products, ".//a[@href]")
