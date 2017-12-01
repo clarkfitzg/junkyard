@@ -111,9 +111,17 @@ tobi = function(page = 1)
     #raw = getURL(baseurl)
 
 
-scrape = function(scraper, npages)
+scrape = function(scraper, pages, try = TRUE)
 {
-    out = lapply(seq(npages), scraper)
+    tryscraper = function(page){
+        out = try(scraper(page))
+        if(is(out, "try-error"))
+            NULL
+        else
+            out
+    }
+    s = if(try) tryscraper else scraper
+    out = lapply(pages, s)
     do.call(rbind, out)
 }
 
@@ -123,10 +131,17 @@ if(FALSE){
 
 l2 = lulus(2)
 
-l3 = scrape(lulus, 3)
-
 a3 = asos(37)
 
+
 t2 = tobi(2)
+
+# Looks like tobi saw the robot
+# <!DOCTYPE html>
+# <html>
+# <head>
+# <meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+
+tt = scrape(tobi, 1:2, try = FALSE)
 
 }
