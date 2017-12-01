@@ -3,7 +3,6 @@ library(XML)
 
 columns = c("price", "oldprice", "page", "store", "description")
 
-npages = c(lulus = 28, asos = 37, tobi = 33)
 
 
 extract = function(nodeset, xpath)
@@ -103,7 +102,6 @@ tobi = function(page = 1)
 
 }
 
-
 # Resisting:
 
     #baseurl = "https://www.macys.com/shop/womens-clothing/dresses/Productsperpage/120"
@@ -113,10 +111,19 @@ tobi = function(page = 1)
     #raw = getURL(baseurl)
 
 
+scrape = function(scraper, npages)
+{
+    out = lapply(seq(npages), scraper)
+    do.call(rbind, out)
+}
+
+
 # Tests
 if(FALSE){
 
 l2 = lulus(2)
+
+l3 = scrape(lulus, 3)
 
 a3 = asos(37)
 
