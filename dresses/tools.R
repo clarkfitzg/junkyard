@@ -102,27 +102,18 @@ tobi = function(page = 1, ...)
 
 }
 
-revole = function(page = 1, ...)
+revolve = function(page = 1, ...)
 {
 
     baseurl = "http://www.revolve.com/dresses/br/a8e981/"
     raw = getForm(baseurl, pageNum = page, ...)
     doc = htmlParse(raw)
 
+    products = getNodeSet(doc, "//ul[@id = 'plp-prod-list']")
 
-    <ul id="plp-prod-list" class="g products-grid u-margin-b--xxl block-grid--inline n-block-grid--3">
+    # CONTINUE
+}
 
-    description = xpathSApply(doc, "//div[@class = 'plp-name h1 product-titles__name product-titles__name--sm u-margin-b--none js-plp-name']", xmlValue)
-
-    price = xpathSApply(doc, "//span[@class = 'plp_price prices__retail']", xmlValue)
-
-    <span class="plp_price prices__retail">$98</span>
-
-    # Working now, I think with 71 items
-    products = getNodeSet(doc, "//div[@class = 'product-list-item']")
-
-
-revolve = 
 
 
 # Resisting:
@@ -136,9 +127,9 @@ revolve =
 
 scrape = function(scraper, pages, try = TRUE, sleeptime = 1)
 {
+    Sys.sleep(sleeptime)
     tryscraper = function(page, ...){
         out = try(scraper(page, ...))
-        Sys.sleep(sleeptime)
         if(is(out, "try-error"))
             NULL
         else
@@ -146,7 +137,7 @@ scrape = function(scraper, pages, try = TRUE, sleeptime = 1)
     }
     s = if(try) tryscraper else scraper
 
-    # Use the same handle for all requests
+    # Use the same handle for all requests to the same site
     curl = getCurlHandle()
     out = lapply(pages, s, curl = curl)
     do.call(rbind, out)
@@ -166,15 +157,16 @@ a3 = asos(37)
 aa = scrape(asos, 22:23)
 
 
-# Looks like tobi saw the robot
+# Looks like tobi sees the robot after the 3rd time or so:
 # <!DOCTYPE html>
 # <html>
 # <head>
 # <meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 
 t2 = tobi(2)
+
 tt = scrape(tobi, 1:2, try = FALSE)
 
-tt = scrape(tobi, 1:2)
+tt = scrape(tobi, 1:2, sleeptime = 5)
 
 }
