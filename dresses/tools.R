@@ -118,26 +118,22 @@ revolve = function(page = 1, ...)
     description = extract(products, ".//div[contains(@class, 'plp-name h1 product-titles')]")
 
     retail = extract(products, ".//span[@class = 'plp-price-retail prices__retail--strikethrough js-plp-price-retail']")
-
     price = extract(products, ".//span[@class = 'plp_price prices__retail']")
-
     sale = extract(products, ".//span[@class = 'plp-price prices__markdown js-plp-price']")
 
     oldprice = Map(c, retail, price)
     oldprice = sapply(oldprice, function(x) x[[1]])
 
-    price = Map(c, price, retail)
+    price = Map(c, sale, price)
     price = sapply(price, function(x) x[[1]])
 
     out = data.frame(price = price_to_num(price)
                      , oldprice = price_to_num(oldprice)
                      , page = page
-                     , site = "tobi"
+                     , site = "revolve"
                      , description = description
                      )
     out
-
-}
 }
 
 
@@ -185,6 +181,11 @@ a3 = asos(37)
 aa = scrape(asos, 22:23)
 
 
+r2 = revolve(2)
+
+r22 = scrape(revolve, 22:23)
+
+
 # Looks like tobi sees the robot after the 3rd time or so:
 # <!DOCTYPE html>
 # <html>
@@ -196,6 +197,8 @@ t2 = tobi(2)
 tt = scrape(tobi, 1:2, try = FALSE)
 
 tt = scrape(tobi, 1:2, sleeptime = 5)
+
+
 
 price_to_num("Sale price $56")
 price_to_num("$56")
