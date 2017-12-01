@@ -4,6 +4,9 @@ library(XML)
 columns = c("price", "oldprice", "page", "site", "description")
 
 
+# Still doesn't help with the tobi site
+options(HTTPUserAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
+
 
 extract = function(nodeset, xpath)
 {
@@ -11,7 +14,7 @@ extract = function(nodeset, xpath)
 }
 
 
-price_to_num = function(price) as.numeric(gsub("\\$", "", price))
+price_to_num = function(price) as.numeric(gsub("[^0-9^\\.]", "", price))
 
 
 lulus = function(page = 1, ...)
@@ -102,6 +105,7 @@ tobi = function(page = 1, ...)
 
 }
 
+
 revolve = function(page = 1, ...)
 {
 
@@ -109,9 +113,31 @@ revolve = function(page = 1, ...)
     raw = getForm(baseurl, pageNum = page, ...)
     doc = htmlParse(raw)
 
-    products = getNodeSet(doc, "//ul[@id = 'plp-prod-list']")
+    products = getNodeSet(doc, "//ul[@id = 'plp-prod-list']/*")
 
-    # CONTINUE
+    description = extract(products, ".//div[contains(@class, 'plp-name h1 product-titles')]")
+
+    retail = extract(products, ".//span[@class = 'plp-price-retail prices__retail--strikethrough js-plp-price-retail']")
+
+    price = extract(products, ".//span[@class = 'plp_price prices__retail']")
+
+    sale = extract(products, ".//span[@class = 'plp-price prices__markdown js-plp-price']")
+
+    oldprice = Map(c, retail, price)
+    oldprice = sapply(oldprice, function(x) x[[1]])
+
+    price = Map(c, price, retail)
+    price = sapply(price, function(x) x[[1]])
+
+    out = data.frame(price = price_to_num(price)
+                     , oldprice = price_to_num(oldprice)
+                     , page = page
+                     , site = "tobi"
+                     , description = description
+                     )
+    out
+
+}
 }
 
 
@@ -125,7 +151,7 @@ revolve = function(page = 1, ...)
     #raw = getURL(baseurl)
 
 
-scrape = function(scraper, pages, try = TRUE, sleeptime = 1)
+scrape = function(scraper, pages, try = TRUE, sleeptime = 2)
 {
     Sys.sleep(sleeptime)
     tryscraper = function(page, ...){
@@ -140,7 +166,9 @@ scrape = function(scraper, pages, try = TRUE, sleeptime = 1)
     # Use the same handle for all requests to the same site
     curl = getCurlHandle()
     out = lapply(pages, s, curl = curl)
-    do.call(rbind, out)
+    out = do.call(rbind, out)
+    out$position = seq(nrow(out))
+    out
 }
 
 
@@ -168,5 +196,9 @@ t2 = tobi(2)
 tt = scrape(tobi, 1:2, try = FALSE)
 
 tt = scrape(tobi, 1:2, sleeptime = 5)
+
+price_to_num("Sale price $56")
+price_to_num("$56")
+price_to_num("$22.5")
 
 }
