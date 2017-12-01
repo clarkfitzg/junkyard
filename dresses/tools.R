@@ -111,10 +111,11 @@ tobi = function(page = 1)
     #raw = getURL(baseurl)
 
 
-scrape = function(scraper, pages, try = TRUE)
+scrape = function(scraper, pages, try = TRUE, sleeptime = 0.1)
 {
     tryscraper = function(page){
         out = try(scraper(page))
+        Sys.sleep(sleeptime)
         if(is(out, "try-error"))
             NULL
         else
@@ -131,10 +132,13 @@ if(FALSE){
 
 l2 = lulus(2)
 
+ll = scrape(lulus, 16:17)
+
+
 a3 = asos(37)
 
+aa = scrape(asos, 22:24)
 
-t2 = tobi(2)
 
 # Looks like tobi saw the robot
 # <!DOCTYPE html>
@@ -142,6 +146,7 @@ t2 = tobi(2)
 # <head>
 # <meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 
+t2 = tobi(2)
 tt = scrape(tobi, 1:2, try = FALSE)
 
 }
