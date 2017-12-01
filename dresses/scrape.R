@@ -1,6 +1,11 @@
 source("tools.R")
 
 scrapers = list(lulus = lulus, asos = asos, tobi = tobi)
-npages = c(lulus = 28, asos = 37, tobi = 33)
+pages = list(lulus = 1:28, asos = 1:37, tobi = 1:33)
 
-dress = Map(scrape, scrapers, npages)
+# For testing
+pages = list(lulus = 1:2, asos = 1:3, tobi = 2:4)
+
+raw = Map(scrape, scrapers, pages)
+
+dress = do.call(rbind, raw)
