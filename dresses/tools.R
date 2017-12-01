@@ -1,7 +1,7 @@
 library(RCurl)
 library(XML)
 
-columns = c("price", "oldprice", "page", "description")
+columns = c("price", "oldprice", "page", "store", "description")
 
 npages = c(lulus = 28, asos = 37)
 
@@ -34,6 +34,7 @@ lulus = function(page = 1)
     out = data.frame(price = price_to_num(price)
                      , oldprice = price_to_num(oldprice)
                      , page = page
+                     , site = "lulus"
                      , description = description
                      )
     out
@@ -63,10 +64,61 @@ asos = function(page = 1)
     out = data.frame(price = price
                      , oldprice = oldprice
                      , page = page
+                     , store = "asos"
                      , description = description
                      )
     out
 }
+
+
+tobi = function(page = 1)
+{
+
+    baseurl = "http://www.tobi.com/dresses"
+    raw = getForm(baseurl, page = page)
+    doc = htmlParse(raw)
+
+    oldprice = xpathSApply(doc, "//span[@class = 'original-price']", xmlValue)
+    oldprice = price_to_num(oldprice)
+
+    price = xpathSApply(doc, "//span[@class = 'sale-price']", xmlValue)
+    price = price_to_num(oldprice)
+
+
+    # Working now, I think with 71 items
+    products = getNodeSet(doc, "//div[@class = 'product-list-item']")
+
+    description = xpathSApply(doc, "//div[@class = 'color-name-switcher main-color active']/span[@class = 'item-color-name']", xmlValue)
+
+    description = xpathSApply(doc, "//div[@class = 'product-list-name']/div[1]/span", xmlValue)
+
+    price = price_to_num(oldprice)
+
+
+    out = data.frame(price = price
+                     , oldprice = oldprice
+                     , page = page
+                     , store = "tobi"
+                     , description = description
+                     )
+    out
+}
+
+
+
+
+
+
+
+
+# Resisting:
+
+    #baseurl = "https://www.macys.com/shop/womens-clothing/dresses/Productsperpage/120"
+    #raw = getForm(baseurl, id = 5449)
+
+    #baseurl = "https://www.express.com/womens-clothing/dresses/cat550007"
+    #raw = getURL(baseurl)
+
 
 
 
