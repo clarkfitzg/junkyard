@@ -3,7 +3,7 @@ library(XML)
 
 columns = c("price", "oldprice", "page", "store", "description")
 
-npages = c(lulus = 28, asos = 37)
+npages = c(lulus = 28, asos = 37, tobi = 33)
 
 
 extract = function(nodeset, xpath)
@@ -78,37 +78,30 @@ tobi = function(page = 1)
     raw = getForm(baseurl, page = page)
     doc = htmlParse(raw)
 
-    oldprice = xpathSApply(doc, "//span[@class = 'original-price']", xmlValue)
-    oldprice = price_to_num(oldprice)
-
-    price = xpathSApply(doc, "//span[@class = 'sale-price']", xmlValue)
-    price = price_to_num(oldprice)
-
-
     # Working now, I think with 71 items
     products = getNodeSet(doc, "//div[@class = 'product-list-item']")
 
-    description = xpathSApply(doc, "//div[@class = 'color-name-switcher main-color active']/span[@class = 'item-color-name']", xmlValue)
+    description = extract(products, "(.//span[@class = 'item-color-name'])[1]")
 
-    description = xpathSApply(doc, "//div[@class = 'product-list-name']/div[1]/span", xmlValue)
+    retail = extract(products, ".//span[@class = 'retail-price']")
 
-    price = price_to_num(oldprice)
+    oldprice = extract(products, ".//span[@class = 'original-price']")
+    oldprice = Map(c, retail, oldprice)
+    oldprice = sapply(oldprice, function(x) x[[1]])
 
+    price = extract(products, ".//span[@class = 'sale-price']")
+    price = Map(c, price, retail)
+    price = sapply(price, function(x) x[[1]])
 
-    out = data.frame(price = price
-                     , oldprice = oldprice
+    out = data.frame(price = price_to_num(price)
+                     , oldprice = price_to_num(oldprice)
                      , page = page
                      , store = "tobi"
                      , description = description
                      )
     out
+
 }
-
-
-
-
-
-
 
 
 # Resisting:
@@ -120,13 +113,13 @@ tobi = function(page = 1)
     #raw = getURL(baseurl)
 
 
-
-
 # Tests
 if(FALSE){
 
 l2 = lulus(2)
 
 a3 = asos(37)
+
+t2 = tobi(2)
 
 }
