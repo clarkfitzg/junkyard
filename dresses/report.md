@@ -11,9 +11,10 @@ number of dresses from each website.
 
 Fri Dec  1 14:56:11 PST 2017
 
-Actually performed the scrape.
 
 ```{R}
+
+dress = read.csv("~/data/dress.csv")
 
 # Make sure the logic was correct for sale prices
 with(dress, any(oldprice < price))
@@ -29,8 +30,12 @@ tapply(dress$sale, dress$site, mean)
 # How much are the sales marked down?
 with(dress[dress$sale, ], tapply(percent_off, site, median))
 
+
+
+
 # What's the range of the prices?
 boxplot(price ~ site, dress[dress$price < 800, ], ylab = "price ($)", xlab = "site")
+
 
 # With a little better resolution:
 boxplot(price ~ site, dress[dress$price < 300, ], ylab = "price ($)", xlab = "site")
@@ -39,8 +44,18 @@ boxplot(price ~ site, dress[dress$price < 300, ], ylab = "price ($)", xlab = "si
 # What's the distribution of the low priced dresses?
 lp = dress[dress$price < 200, ]
 
+
 library(lattice)
 
 histogram(~ price | site, lp, main = "distribution of dress prices below $200")
 
 ```
+
+## Questions:
+
+Other interesting questions that we can answer:
+- How does each site name their products?
+- How many of each type of dress are offered?
+
+By repeating this every day for some period we can obtain a picture of
+how the prices and sales behave over time.
