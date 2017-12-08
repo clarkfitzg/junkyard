@@ -9,11 +9,11 @@ vti_rate = mean(vti)
 #'
 #' Computes value in today's 1000's of dollars
 #'
-#' @param contrib annual contribution
-#' @param rr average annual return rate (percent)
-#' @param start starting value of account
-#' @param yrs number of years before withdrawl
-#' @param inflation average inflation rate (percent)
+#' @param contrib vector of annual contributions
+#' @param rr vector of average annual return rate (percent)
+#' @param start vector starting value of account
+#' @param yrs scalar number of years before withdrawl
+#' @param inflation vector average inflation rate (percent)
 invest = function(rr = vti_rate, contrib = 5, start = 100, yrs = 30, inflation = 2)
 {
     growthrate = rr - inflation
@@ -24,14 +24,18 @@ invest = function(rr = vti_rate, contrib = 5, start = 100, yrs = 30, inflation =
     total
 }
 
+
 ira = expand.grid(contrib = c(0, 3, 5.5), rr = 4:11)
-ira$value1 = mapply(invest, ira$rr, ira$contrib, start = 130)
-ira$value2 = mapply(invest, ira$rr, ira$contrib, start = 25)
+ira$v1 = invest(ira$rr, ira$contrib, start = 130)
+ira$v2 = invest(ira$rr, ira$contrib, start = 25)
 
 # Starting with this amount, contributing 5.5K every year will add value
 # between 220K-750K 
 
 print(ira)
 
+
 edu = data.frame(rr = 4:11)
-edu$value = sapply(edu$rr, invest, contrib = 0, start = 60, yrs = 16)
+edu$v = invest(edu$rr, contrib = 0, start = 60, yrs = 16)
+
+print(edu)
