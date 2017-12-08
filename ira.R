@@ -32,4 +32,4 @@ ira$value2 = mapply(invest, ira$rr, ira$contrib, start = 27)
 # between 220K-750K 
 
 edu = data.frame(rr = 4:11)
-edu$value = sapply(edu$rr, invest, start = 60, yrs = 16)
+edu$value = sapply(edu$rr, invest, contrib = 0, start = 60, yrs = 16)
