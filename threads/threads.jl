@@ -37,6 +37,7 @@ y = similar(x)
 y2 = similar(x2)
 y3 = similar(x3)
 
+# Running this on my desktop which has 2 cores (maybe hyperthreading?)
 
 # About 1.5x improvement
 @benchmark f_ser!(x, y)
