@@ -1,27 +1,33 @@
 # Will we see a speedup using threads in Julia?
 # First run this in bash:
-#
-# export JULIA_NUM_THREADS=2
+
+# export JULIA_NUM_THREADS=4
 
 using Base.Threads
 using BenchmarkTools
 
 
+function f(xi)
+    return sin(cos(xi + 20))
+    #return 2 * xi
+end
+
+
 function f_ser!(x, y)
-    for i in 1:length(x)
-        y[i] = 2 * x[i]
+    for i in eachindex(x)
+        y[i] = f(x[i])
     end
 end
 
 
 function f_par!(x, y)
-    Threads.@threads for i in 1:length(x)
-        y[i] = 2 * x[i]
+    Threads.@threads for i in eachindex(x)
+        y[i] = f(x[i])
     end
 end
 
 
-n = 1_000
+n = 100
 
 x = randn(n)
 x2 = randn(5*n)
@@ -32,14 +38,14 @@ y2 = similar(x2)
 y3 = similar(x3)
 
 
-# 8 microseconds serial, 11 microseconds threaded
+# About 1.5x improvement
 @benchmark f_ser!(x, y)
 @benchmark f_par!(x, y)
 
-# 40 microseconds serial, 55 microseconds threaded
+# About 2x improvement
 @benchmark f_ser!(x2, y2)
 @benchmark f_par!(x2, y2)
 
-# 250 microseconds serial, 300 microseconds threaded
+# About 2.5x improvement
 @benchmark f_ser!(x3, y3)
 @benchmark f_par!(x3, y3)
