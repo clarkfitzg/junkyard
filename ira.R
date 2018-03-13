@@ -27,7 +27,7 @@ invest = function(rr = vti_rate, contrib = 5, start = 100, yrs = 30, inflation =
 
 ira = expand.grid(contrib = c(0, 3, 5.5), rr = 4:11)
 ira$v1 = invest(ira$rr, ira$contrib, start = 130)
-ira$v2 = invest(ira$rr, ira$contrib, start = 25)
+ira$v2 = invest(ira$rr, ira$contrib, start = 21)
 
 # Starting with this amount, contributing 5.5K every year will add value
 # between 220K-750K 
@@ -36,6 +36,6 @@ print(ira)
 
 
 edu = data.frame(rr = 4:11)
-edu$v = invest(edu$rr, contrib = 0, start = 60, yrs = 16)
+edu$v = invest(edu$rr, contrib = 0, start = 74.4, yrs = 16)
 
 print(edu)

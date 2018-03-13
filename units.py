@@ -3,7 +3,7 @@
 KFREEZE = 273.15
 
 
-class kelvin():
+class Kelvin():
 
     def __init__(self, temp):
         try:
@@ -15,51 +15,44 @@ class kelvin():
         return "{}({})".format(type(self).__name__, self.temp)
 
     def __add__(self, other):
-        raise NotImplementedError("Not sure what it means to 'add' temperatures.")
+        raise ValueError("It only makes sense to me to add differences.")
 
     def __sub__(self, other):
         a = self.to_kelvin().temp
         b = other.to_kelvin().temp
-        return kelvin(a - b)
-
-    def to_kelvin(self):
-        return self
+        return Kelvin(a - b)
 
     def to_celsius(self):
-        return celsius(self.temp - KFREEZE)
+        return Celsius(self.temp - KFREEZE)
 
     def to_fahrenheit(self):
-        return fahrenheit(self.temp * 9 / 5 - 459.67)
+        return Fahrenheit(self.temp * 9 / 5 - 459.67)
 
 
+class KelvinDiff(Kelvin):
 
-class celsius(kelvin):
+    def __add__(self, other):
+        if not isinstance(other, KelvinDiff):
+            raise ValueError("It only makes sense to me to add differences.")
+        return KelvinDiff(self.temp + other.diff)
+
+
+class Celsius(Kelvin):
 
     def to_kelvin(self):
-        return kelvin(self.temp + KFREEZE)
+        return Kelvin(self.temp + KFREEZE)
 
 
-class fahrenheit(kelvin):
+class Fahrenheit(Kelvin):
 
     def to_kelvin(self):
-        return kelvin((self.temp + 459.67) * 5/9)
+        return Kelvin((self.temp + 459.67) * 5/9)
 
 
 if __name__ == "__main__":
 
     # freezing
-    ff = fahrenheit(32)
-    fc = celsius(0)
-    fk = kelvin(KFREEZE)
+    freezing = [Fahrenheit(32), Celsius(0), Kelvin(KFREEZE)]
 
     # boiling
-    bf = fahrenheit(212)
-    bc = celsius(100)
-    bk = kelvin(KFREEZE)
-
-    # These should be about the same
-    (bf - fc).to_fahrenheit()
-
-    (bc - ff).to_fahrenheit()
-
-    (bk - fk).to_fahrenheit()
+    boiling = [Fahrenheit(212), Celsius(100), Kelvin(KFREEZE + 100)]
