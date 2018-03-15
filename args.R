@@ -7,23 +7,27 @@ f(1, 2, c = 20)
 
 library(parallel)
 
+options(warnPartialMatchArgs = TRUE)
+options(error = recover)
+
 clu <- makeCluster(2, "PSOCK")
 
-fun <- function(x0, x1) (x0 + x1)
-clusterApply(clu, x = 1:2, fun = fun, x1 = 1) ## OK
-parLapply(cl = clu, X = 1:2, fun = fun, x1 = 1) #OK
-
-
 fun <- function(b, c) (b + c)
+
+clusterApply(cl = clu, x = 1:2, fun = fun, c = 1) ## OK
 
 # Yes, should be an error because of partial arg matching
 clusterApply(clu, x = 1:2, fun = fun, c = 1) ## Error
 
-clusterApply(cl = clu, x = 1:2, fun = fun, c = 1) ## OK
+# OK, this one fails for exactly the same reason as the one above because
+# internally parLapply has this call:
+# do.call(c, clusterApply(cl, x = splitList(X, length(cl)),
+#     fun = lapply, fun, ...), quote = TRUE)
+# so parLapply needs the fix the reporter suggested.
 
-# But this one should work just like the one above
-parLapply(cl = clu, X = 1:2, fun = fun, c = 1) ## Error
+parLapply(cl = clu, X = 1:2, fun = fun, c = 1)
 
-# Ask Nick.
+
+
 
 stopCluster(clu)
