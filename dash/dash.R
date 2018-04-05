@@ -5,7 +5,13 @@
 # Duncan's workshop on web scraping is a nice resource:
 # http://dsi.ucdavis.edu/WebScraping/
 #
-# The manual has some Easter eggs- actually made me LOL.
+# Authoritative reference for URL's:
+# http://www.ietf.org/rfc/rfc2396.txt
+#
+# https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.1.0/com.ibm.cics.ts.internet.doc/topics/dfhtl_uricomp.html
+#
+# The manual has some Easter eggs- actually made me LOL. Literally the
+# most entertaining API documentation I've ever read.
 # https://dash.ucop.edu/api/docs/#/default/get_datasets__doi_
 # Like chrome muffler bearings
 
@@ -36,7 +42,7 @@ names(j)
 # What is a link to the next and previous pages of results?
 j[["_links"]]
 
-# I think this is how many pages
+# I think this is how many individual results
 j[["count"]]
 
 # How many total results?
@@ -78,3 +84,33 @@ pems_url = paste0(base_url, "/api/datasets/", URLencode(pems_doi, reserved = TRU
 raw3 = getURLContent(pems_url)
 
 j3 = fromJSON(raw3)
+
+
+# How large are the datasets on Dash?
+#
+# We'll start by grabbing all the metadata for all the datasets.
+
+
+# Initialize
+ds_url = paste0(base_url, "/api/datasets")
+raw = getURLContent(ds_url)
+j = fromJSON(raw)
+
+npages = ceiling(j[["total"]] / j[["count"]])
+
+if(npages < 2) stop("Expected multiple pages.")
+
+result = vector(npages, mode = "list")
+
+for(i in seq(npages)){
+    # If the API limits the number of calls you can make within some time
+    # period then pause between consecutive requests:
+    # Sys.sleep(2)
+    result[[i]] = j[["_embedded"]][[1]]
+    if(i < npages){
+        nexturl = paste0(base_url, j[["_links"]][["next"]])
+        j = fromJSON(getURLContent(nexturl))
+    }
+}
+
+out = do.call(c, result)
