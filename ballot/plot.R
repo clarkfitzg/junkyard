@@ -27,4 +27,25 @@ d = d[order(d$ratio), ]
 
 hist(d$ratio)
 
+write.csv(d, "ratios.csv")
+
 # https://medium.com/@urban_institute/how-to-create-state-and-county-maps-easily-in-r-577d29300bb2
+
+library(tidyverse)
+library(urbnmapr)
+
+CAcounty = counties[counties[, "state_abbv"] == "CA", ]
+
+CAcounty$county = gsub(" County", "", CAcounty$county_name)
+
+plt = CAcounty %>% 
+  left_join(d, by = "county") %>% 
+  ggplot(mapping = aes(long, lat, group = group, fill = ratio)) +
+  geom_polygon(color = "#ffffff", size = .25) +
+  #scale_fill_gradientn(guide = guide_colorbar(title.position = "top"), colors = "#ffffff") +
+  coord_map(projection = "albers", lat0 = 39, lat1 = 45) +
+  theme(legend.title = element_text(),
+        legend.key.width = unit(.5, "in")) +
+  ggtitle("Median Home price / Annual income")
+
+ggsave(filename="rates.pdf", plot=plt)
