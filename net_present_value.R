@@ -79,3 +79,32 @@ diff(s)
 
 # The 3.0 rate takes 7 years to break even, which is much worse compared to the others.
 ((3437 - 2000) / (1916 - 1899)) / 12
+
+
+############################################################
+
+# Looking at Rocket Mortgage now
+
+f1 = 1.75*3e5 / 100
+f2 = 1.125*3e5 / 100
+p1 = 2089.83
+p2 = 2126.28
+p3 = 2181.67
+r1 = net_present_value(p1, years_loan = 15, fees = f1)
+r2 = net_present_value(p2, years_loan = 15, fees = f2)
+r3 = net_present_value(p3, years_loan = 15, fees = 0)
+
+r = c(r1, r2, r3)
+plot(r)
+
+# Yeah, it's linear
+cor(r, 1:3)
+
+# How many years to break even on fees?
+
+# Almost 5, which is fine.
+(f1 / (p3 - p1)) / 12
+
+# Almost 8
+# So this is a bad option
+(f2 / (p2 - p1)) / 12
