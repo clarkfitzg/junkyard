@@ -108,3 +108,14 @@ cor(r, 1:3)
 # Almost 8
 # So this is a bad option
 (f2 / (p2 - p1)) / 12
+
+############################################################
+
+rate = 0.03125
+periods = 12
+r_monthly = 1 + rate / periods
+
+total = 1
+for(i in seq(periods)){
+    total = total * r_monthly
+}
