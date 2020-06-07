@@ -12,12 +12,18 @@ Perhaps I should move it somewhere else._
 I've been curious about the Julia programming language for many years, and have decided to sit down and actually start learning it.
 These are my notes as I read the [official documentation](https://docs.julialang.org/en/v1/).
 
+TODO: Attempt to fix `ans =` in [string docs](https://docs.julialang.org/en/v1/manual/strings/#man-characters-1)
+
+## Questions
+
+- What is a "first-class type"?
+- What is a `do` block?
+    The example in setting numeric precision appears to be making a temporary change in how a computation happens.
+
 
 ## Things to be aware of
 
 - [Arithmetic overflows wrap around](https://docs.julialang.org/en/v1/manual/integers-and-floating-point-numbers/#Overflow-behavior-1), like in C.
-- What is a `do` block?
-    The example in setting numeric precision appears to be making a temporary change in how a computation happens.
 
 
 # What I Like
@@ -63,6 +69,7 @@ julia> a = [1, 2, 3]
 ```
 
 Here's how you square and add 1 to each element of an array.
+
 ```
 julia> a.^2 .+ 1
 3-element Array{Int64,1}:
@@ -72,6 +79,7 @@ julia> a.^2 .+ 1
 ```
 
 Alternative syntax for the same operation as above:
+
 ```
 julia> @. a^2 + 1
 3-element Array{Int64,1}:
@@ -81,6 +89,11 @@ julia> @. a^2 + 1
 ```
 
 
+----
+
+[Support for rational numbers](https://docs.julialang.org/en/v1/manual/complex-and-rational-numbers/#Rational-Numbers-1) is built into the language.
+
+
 
 ## Limitations
 
@@ -88,6 +101,28 @@ Here's what I immediately noticed was missing.
 
 - No [support for vi mode from the REPL](https://discourse.julialang.org/t/vim-mode-in-repl-command-line/9023), so quick experiments with expressions take longer and are more tedious than necessary.
 - Cannot [access the source code from the REPL](https://github.com/JuliaLang/julia/issues/2625#issuecomment-498840808), so when I'm experimenting with minor variations of a function I have to take the extra step of saving them in a text file.
+
+
+## What's strange
+
+The following example shows how `prevind(s, end, 2)` works when indexing into a string using `[`, but not on its own.
+This makes some sense, if you're indexing into `x` using `[`, then you have a context for what `end` means: the last element of `x`.
+On the other hand, it means the subexpression `prevind(s, end, 2)` is not valid when not inside `[`.
+I can accept this, because `end` is a keyword in the language.
+
+
+```
+julia> s = "\u2200 x \u2203 y"
+"∀ x ∃ y"
+
+julia> s[prevind(s, end, 2)]
+'∃': Unicode U+2203 (category Sm: Symbol, math)
+
+julia> prevind(s, end, 2)
+ERROR: syntax: unexpected "end"
+Stacktrace:
+ [1] top-level scope at REPL[58]:0
+```
 
 
 ## `zero` function
