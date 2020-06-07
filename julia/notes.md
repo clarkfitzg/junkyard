@@ -12,7 +12,6 @@ Perhaps I should move it somewhere else._
 I've been curious about the Julia programming language for many years, and have decided to sit down and actually start learning it.
 These are my notes as I read the [official documentation](https://docs.julialang.org/en/v1/).
 
-TODO: Attempt to fix `ans =` in [string docs](https://docs.julialang.org/en/v1/manual/strings/#man-characters-1)
 
 ## Questions
 
@@ -103,26 +102,26 @@ Here's what I immediately noticed was missing.
 - Cannot [access the source code from the REPL](https://github.com/JuliaLang/julia/issues/2625#issuecomment-498840808), so when I'm experimenting with minor variations of a function I have to take the extra step of saving them in a text file.
 
 
-## What's strange
+## Keyword Expansion
 
-The following example shows how `prevind(s, end, 2)` works when indexing into a string using `[`, but not on its own.
+From [Unicode and UTF-8](https://docs.julialang.org/en/v1/manual/strings/#Unicode-and-UTF-8-1).
+
+> The correct way for this case is using `prevind(s, lastindex(s), 2)` or, if you're using that value to index into `s` you can write `s[prevind(s, end, 2)]` and `end` expands to `lastindex(s)`.
+
 This makes some sense, if you're indexing into `x` using `[`, then you have a context for what `end` means: the last element of `x`.
-On the other hand, it means the subexpression `prevind(s, end, 2)` is not valid when not inside `[`.
-I can accept this, because `end` is a keyword in the language.
+On the other hand, the function call `prevind(s, end, 2)` is not valid when not inside `[`.
+I can accept this, because `end` is a keyword in the language, and the semantics seem reasonable.
 
+This keyword expansion brings up a number of questions.
+How does it handle nesting, for example, `x[y[end]]`?
+How general is this expansion into a function call?
+Is it extensible by users?
+Can it apply to symbols that are not keywords?
+Is the syntactic convenience worth the complexity?
 
-```
-julia> s = "\u2200 x \u2203 y"
-"∀ x ∃ y"
+When R uses nonstandard evaluation, any symbol can have any semantics.
+This means the user must carefully read and understand the documentation.
 
-julia> s[prevind(s, end, 2)]
-'∃': Unicode U+2203 (category Sm: Symbol, math)
-
-julia> prevind(s, end, 2)
-ERROR: syntax: unexpected "end"
-Stacktrace:
- [1] top-level scope at REPL[58]:0
-```
 
 
 ## `zero` function
