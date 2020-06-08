@@ -24,6 +24,7 @@ These are my notes as I read the [official documentation](https://docs.julialang
 
 - [Arithmetic overflows wrap around](https://docs.julialang.org/en/v1/manual/integers-and-floating-point-numbers/#Overflow-behavior-1), like in C.
 
+I'm noticing many similarities to Python: tuple unpacking syntax, raw strings prefaced with "r".
 
 # What I Like
 
@@ -40,6 +41,25 @@ help?> ÷
 The very first line of the documentation tells how to type it on the REPL.
 This ease of use makes me think I could actually start using Unicode symbols in my code.
 
+
+### Easy string maniuplation
+
+Here's an example of using a regular expression with the `x` flag to ignore whitespace and comments prefaced by `#`. 
+I like comments in nontrivial regexes, because it helps me remember what they do.
+
+```
+julia> r1 = r"
+       a  # first letter
+       b  # second letter
+       "x
+r"
+a  # first letter
+b  # second letter
+"x
+
+julia> match(r1, "abcd").match
+"ab"
+```
 
 ### Easy access to low level details
 
