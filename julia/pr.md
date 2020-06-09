@@ -13,3 +13,5 @@ I did read the [Getting Started](https://docs.julialang.org/en/v1/manual/getting
 Why make something potentially confusing the first thing that a new user sees in the manual?
 
 For the integers and floating point numbers, continually reassigning the variable `x` with objects of different types reinforces that Julia is dynamically typed, which is a core feature of the language.
+
+It seems that the doctests are failing locally 

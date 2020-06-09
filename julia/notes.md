@@ -1,16 +1,14 @@
----
-layout: post
-title: notes as I start to learn Julia
-date: 2020-06-04 10:20
-comments: false
-categories: julia
----
-
-_This seems to be morphing into a story about moving to Julia from R.
-Perhaps I should move it somewhere else._
+_This seems to be morphing into a story about moving to Julia from R._
 
 I've been curious about the Julia programming language for many years, and have decided to sit down and actually start learning it.
 These are my notes as I read the [official documentation](https://docs.julialang.org/en/v1/).
+
+
+## Community
+
+I found the modern social stack (Slack, discord, and Github) supporting the software stack friendly and helpful.
+I've already decided that I want to commit to being involved with the language and software development, so I took the time to make a pull request to improve the documentation.
+It was painless.
 
 
 ## Questions
@@ -64,7 +62,7 @@ julia> match(r1, "abcd").match
 ### Easy access to low level details
 
 `bitstring` provides easy access to the binary representation of numbers.
-For example, here's the binary representation of π:
+For example, here's the binary representation of floating point π:
 
 ```
 julia> bitstring(Float64(π))
