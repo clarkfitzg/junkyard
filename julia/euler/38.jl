@@ -34,7 +34,7 @@ end
 
 
 
-largest_pandigital = function(n = 2, old_product = 1, largest_known = 918273645, upper_bound = 1e10)
+largest_pandigital = function(n = 2, old_product = 1, largest_known = 918273645, upper_bound = 987654321)
     @info n
     product = n * old_product
 
@@ -48,8 +48,10 @@ largest_pandigital = function(n = 2, old_product = 1, largest_known = 918273645,
 
     largest_known = find_largest(lower, upper, product, largest_known)
 
-    largest_pandigital(n = n + 1, old_product = product, largest_known = largest_known)
+    largest_pandigital(n + 1, product, largest_known, upper_bound)
 end
 
 
 @code_warntype largest_pandigital()
+
+largest_pandigital()
