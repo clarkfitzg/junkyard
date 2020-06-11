@@ -1,9 +1,16 @@
 using Logging
 
-is_9pandigital = function(x)::Bool
+is_9pandigital = function(x)
     # Maybe this Set is messing things up?
-    digits = Set(string(x))
-    length(digits) == 9
+    #digits = Set(string(x))
+    #length(digits) == 9
+    xs = string(x)
+    for l in "123456789"
+        if !occursin(l, xs)
+            return false
+        end
+    end
+    true
 end
 
 
@@ -19,10 +26,9 @@ end
 
 
 # Appears type safe
-# Doesn't work anymore?
 @code_warntype is_9pandigital(123)
 
-
+# Why does this is_9pandigital line have type Any?
 @code_warntype find_largest(100, 200, 3, 101)
 
 
