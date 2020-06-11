@@ -1,12 +1,16 @@
-using Logging
+#using Logging
 
-is_9pandigital = function(x)
-    # Maybe this Set is messing things up?
-    #digits = Set(string(x))
-    #length(digits) == 9
-    xs = string(x)
+"""
+Does x contain all the digits 1 through 9?
+
+```julia-repl
+julia> contains1to9("192384576")
+true
+```
+"""
+contains1to9 = function(x)
     for l in "123456789"
-        if !occursin(l, xs)
+        if !occursin(l, x)
             return false
         end
     end
@@ -14,44 +18,19 @@ is_9pandigital = function(x)
 end
 
 
-find_largest = function(lower, upper, product, largest_known)
-    for i in lower:upper
-        candidate = i * product
-        if is_9pandigital(candidate)
-            largest_known = max(candidate, largest_known)
-        end
-    end
-    largest_known
+"""
+Multiply x with integers 1:n and concatenate resulting string.
+
+```julia-repl
+julia> concat_prod(192, 3)
+"192384576"
+```
+"""
+concat_prod = function(x, n)
+    p = x * Array(1:n)
+    p = map(string, p)
+    *(p...)
 end
 
+@code_warntype concat_prod(192, 3)
 
-# Appears type safe
-@code_warntype is_9pandigital(123)
-
-# Why does this is_9pandigital line have type Any?
-@code_warntype find_largest(100, 200, 3, 101)
-
-
-
-
-largest_pandigital = function(n = 2, old_product = 1, largest_known = 918273645, upper_bound = 987654321)
-    @info n
-    product = n * old_product
-
-    # We only need to search between largest_known and upper_bound
-    lower = Integer(ceil(largest_known / product))
-    upper = Integer(floor(upper_bound / product))
-
-    if upper <= lower
-        return largest_known
-    end
-
-    largest_known = find_largest(lower, upper, product, largest_known)
-
-    largest_pandigital(n + 1, product, largest_known, upper_bound)
-end
-
-
-@code_warntype largest_pandigital()
-
-largest_pandigital()
