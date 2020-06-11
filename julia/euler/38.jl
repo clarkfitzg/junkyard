@@ -1,4 +1,5 @@
 #using Logging
+using Debugger
 
 """
 Does x contain all the digits 1 through 9?
@@ -32,5 +33,34 @@ concat_prod = function(x, n)
     *(p...)
 end
 
-@code_warntype concat_prod(192, 3)
 
+largest_pandigital = function(largest_known = 918273645)
+    for x in 1:Int(1e4)
+    #for x in 1:1e4
+        for n in 2:9
+            candidate = concat_prod(x, n)
+            l = length(candidate)
+            if l < 9
+                continue
+            end
+            if 9 < l
+                # Larger values of n will also have too many characters
+                break
+            end
+            # It's 9 characters:
+            if contains1to9(candidate)
+                pd = parse(Int, candidate)
+                #@bp
+                largest_known = max(pd, largest_known)
+            end
+        end
+    end
+    largest_known
+end
+
+
+@code_warntype largest_pandigital()
+
+@time largest_pandigital()
+
+#@run largest_pandigital()
