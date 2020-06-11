@@ -17,6 +17,20 @@ It was painless.
 - What is a `do` block?
     The example in setting numeric precision appears to be making a temporary change in how a computation happens.
 
+---
+
+When can I redefine a function?
+
+```
+julia> g = isequal(2)
+(::Base.Fix2{typeof(isequal),Int64}) (generic function with 1 method)
+
+julia> g(x) = x + 2
+ERROR: cannot define function g; it already has a value
+```
+
+---
+
 
 ## Things to be aware of
 
@@ -38,6 +52,12 @@ help?> ÷
 ```
 The very first line of the documentation tells how to type it on the REPL.
 This ease of use makes me think I could actually start using Unicode symbols in my code.
+
+
+## Similarities to Python
+
+I found the following concepts familiar from Python:
+tuples, tuple unpacking, named tuples, string manipulation
 
 
 ### Easy string maniuplation
@@ -139,6 +159,25 @@ Is the syntactic convenience worth the complexity?
 
 When R uses nonstandard evaluation, any symbol can have any semantics.
 This means the user must carefully read and understand the documentation.
+
+
+## Differences in parsing from R
+
+In Julia, `a + b + c` is parsed as a single function call to `+`.
+In R, this would be two function calls.
+I wonder what are the implications of this difference?
+I don't yet have the knowledge of Julia to explore it.
+
+```
+julia> e1 = :(a + b + c)
+:(a + b + c)
+
+julia> e2 = :(+(a, b, c))
+:(a + b + c)
+
+julia> e1 == e2
+true
+```
 
 
 
