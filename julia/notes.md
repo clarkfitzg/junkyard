@@ -125,6 +125,20 @@ julia> @. a^2 + 1
  10
 ```
 
+### Helpful Error Messages
+
+Here `x` and `loc` are both arrays, and `d` is a number.
+
+```
+julia>     x[loc] = d
+ERROR: ArgumentError: indexed assignment with a single value to many locations is not supported; perhaps use broadcasting `.=` instead?
+```
+
+This error message is excellent.
+It saw exactly what I tried to do, and told me how to correct it.
+The alternative syntax, `.=` for broadcasted assignment, is more explicit with what's happening, and I prefer it.
+
+
 
 ----
 
