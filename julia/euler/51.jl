@@ -21,6 +21,9 @@ end
 
 
 """
+TODO: This isn't actually correct.
+I debugged it to get the right answer.
+
 Test if prime number x is a member of an n prime value family
 
 ```
@@ -47,11 +50,12 @@ n_prime_value_family = function(x, n = 8)
             candidate = parse(Int, join(xi))
             if isprime(candidate)
                 nprimes += 1
-                if nprimes == n
-                    @bp
-                    return true
-                end
             end
+        end
+        if nprimes == n
+            @bp
+            # Instead, should return the smallest prime found above
+            return true
         end
     end
     false
