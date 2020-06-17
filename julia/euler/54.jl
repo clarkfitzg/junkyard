@@ -1,4 +1,6 @@
 import Base.isless
+import Base.convert
+
 
 # A type system for poker hands
 # Incrementally build up the classes and methods necessary to compare hands
@@ -11,6 +13,8 @@ import Base.isless
 struct CardValue
     value::Integer
 end
+
+
 
 function CardValue(value::AbstractString)
     vals = "2 3 4 5 6 7 8 9 T J Q K A"
@@ -53,6 +57,12 @@ struct Card
     value::CardValue
     suit::Char
 end 
+
+
+# Is this necessary?
+function convert(CardValue, x)
+    CardValue(x)
+end
 
 
 jackohearts = Card('J', 'H')
