@@ -1,3 +1,8 @@
+if false
+    using Revise: includet
+    includet("54.jl")
+end
+
 import Base.isless
 import Base.convert
 
@@ -15,11 +20,13 @@ struct CardValue
 end
 
 
-
-function CardValue(value::AbstractString)
+# Strings are conceptually different from CardValues.
+# According to the docs, I should use a Constructor rather than defining a convert method.
+# TODO: Revert to constructor
+function convert(CardValue, x::AbstractString)
     vals = "2 3 4 5 6 7 8 9 T J Q K A"
     val_order = split(vals)
-    idx = findfirst(x -> x == value, val_order)
+    idx = findfirst(z -> z == x, val_order)
     #@assert !isnothing(idx)
     CardValue(idx)
 end
@@ -28,14 +35,13 @@ end
 # I expected AbstractChar and AbstractString to share a common supertype
 supertype(AbstractChar)
 
-function CardValue(value::AbstractChar)
-    vs = string(value)
-    CardValue(vs)
+function convert(CardValue, x::AbstractChar)
+    CardValue(string(x))
 end
 
 
-# Should see some methods now
-methods(CardValue)
+## Should see some methods now
+#methods(CardValue)
 
 # Try out the newly defined constructors
 jack = CardValue("J")
@@ -60,9 +66,9 @@ end
 
 
 # Is this necessary?
-function convert(CardValue, x)
-    CardValue(x)
-end
+#function convert(CardValue, x)
+#    CardValue(x)
+#end
 
 
 jackohearts = Card('J', 'H')
@@ -72,11 +78,11 @@ function Card(x)
 end
 
 
+# Hands
+# ============================================================
 
 abstract type Hand end
 
 struct Pair <: Hand
     card::Card
 end
-
-

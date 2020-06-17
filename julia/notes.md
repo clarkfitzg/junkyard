@@ -11,6 +11,20 @@ I've already decided that I want to commit to being involved with the language a
 It was painless.
 
 
+## Suggestions For Documentation
+
+Julia's official docs are excellent.
+They don't shy away from mentioning the mathematical motivations and origins of the language, or the relevant computer science topics.
+
+Julia is very appealing for new users coming from R and Python.
+As a member of that population, I have some ideas on how to make the transition easier by making the package documentation as friendly as possible.
+These suggestions may be relevant for packages that end users will want to jump in and use right away.
+In particular, overviews, introductory examples, and quick start sections.
+
+- Start with minimal working examples.
+- Stick with the familiar, unless the goal is to introduce a new and unique feature of the software.
+
+
 ## Questions
 
 - What is a "first-class type"?
