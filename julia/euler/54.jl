@@ -4,7 +4,6 @@ if false
 end
 
 import Base.isless
-import Base.convert
 
 
 # A type system for poker hands
@@ -22,33 +21,34 @@ end
 
 # Strings are conceptually different from CardValues.
 # According to the docs, I should use a Constructor rather than defining a convert method.
-# TODO: Revert to constructor
-function convert(CardValue, x::AbstractString)
+function CardValue(value::AbstractString)
     vals = "2 3 4 5 6 7 8 9 T J Q K A"
     val_order = split(vals)
-    idx = findfirst(z -> z == x, val_order)
+    idx = findfirst(z -> z == value, val_order)
     #@assert !isnothing(idx)
     CardValue(idx)
+end
+
+
+function CardValue(value::AbstractChar)
+    vs = string(value)
+    CardValue(vs)
 end
 
 # Surprising that this is Any.
 # I expected AbstractChar and AbstractString to share a common supertype
 supertype(AbstractChar)
 
-function convert(CardValue, x::AbstractChar)
-    CardValue(string(x))
-end
-
 
 ## Should see some methods now
-#methods(CardValue)
+methods(CardValue)
 
 # Try out the newly defined constructors
 jack = CardValue("J")
 three = CardValue('3')
 
 
-function isless(x::CardValue, y::CardValue)
+function Base.isless(x::CardValue, y::CardValue)
     x.value < y.value
 end
 
