@@ -41,3 +41,23 @@ end
 
 # All of these numbers are pairs
 @time pairs = build_pairs()
+
+# This is an undirected graph, where the nodes are the primes and the edges represent the prime concatenation property.
+# The next step is to find all the fully connected subgraphs with 5 nodes.
+# I wish there was an easy off the shelf implementation for this.
+# Probably won't be too difficult to do the nongeneral case though.
+
+# Is it possible to reuse this data structure?
+# I think so.
+# Let p0 be the candidate prime, connected to p1, ..., pn
+# To see if pk can possibly be in a fully connected 5 group with p0, no, I see a better way.
+
+# There aren't very many numbers to check.
+# sum(map(length, values(pairs)))
+# 18176
+
+# All those that have fewer than 4 elements cannot be in this set.
+
+# Suppose we represent the graph with a (sparse) matrix.
+# To find the fully connected subcomponents, we just need to get the graph into a form with diagonal blocks:
+# AD, where A is a permutation matrix.
