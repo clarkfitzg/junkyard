@@ -52,6 +52,7 @@ ERROR: cannot define function g; it already has a value
 
 I'm noticing many similarities to Python: tuple unpacking syntax, raw strings prefaced with "r".
 
+
 # What I Like
 
 [Numeric literals for multiplication](https://docs.julialang.org/en/v1/manual/integers-and-floating-point-numbers/#man-numeric-literal-coefficients-1) is nice syntax: `2x` rather than `2*x`.
@@ -68,10 +69,28 @@ The very first line of the documentation tells how to type it on the REPL.
 This ease of use makes me think I could actually start using Unicode symbols in my code.
 
 
+# Keyword Arguments
+
+Programmers cannot use keywords for positional function arguments, for example:
+
+```julia
+julia> log(10, 100)
+2.0
+
+julia> log(b = 10, x = 100)
+ERROR: MethodError: no method matching log(; b=10, x=100)
+```
+
+Passing explicit argument names often makes code more readable and prevents errors.
+In the example of `log`, it's not obvious to me the the base should be the first argument, so I don't know what `log(10, 100)` actually does until I read the documentation or test it.
+
+This turns out to be a [thorny issue that people have debated since 2017](https://discourse.julialang.org/t/allow-use-of-named-argument-syntax-for-positional-arguments/5287).
+
+
 ## Similarities to Python
 
 I found the following concepts familiar from Python:
-tuples, tuple unpacking, named tuples, string manipulation
+tuples, tuple unpacking, named tuples, string manipulation, iterators module
 
 
 ### Easy string maniuplation
@@ -234,3 +253,5 @@ function f3(x)
 
 When I benchmark, for example, with `@benchmark f1(0.0)`, I find `f1(0.0)` is fast at 0.03 ns, while `f2(0.0)` and `f3(0.0)` both take around 18ns.
 This means that the compiler treats `zero(Float64)` differently.
+
+
