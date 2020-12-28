@@ -1,20 +1,27 @@
-using Base.Iterators: peel
-
+# Iteration interface
+# https://docs.julialang.org/en/v1/manual/interfaces/#man-interface-iteration
+#
 # What is going on here?
 # https://mikeinnes.github.io/2020/06/04/iterate.html
-# The author calims that you can't have infinite functional data structures.
 #
 # iterate(x) returns the next element in x, and the new iteration state.
 # iterate(x, curstate) returns the next element in x, and the new iteration state, starting from `curstate` as the state.
 # 
-# For the alternate implementation to work, iterate(x) should return the next element in x, and a new iterator that knows what the next element should be.
-# In other words, the current state (`curstate` above) is part of the iterator.
+# For the alternate iteration protocol to work, iterate(x) should return the next element in x, and a new iterator that knows what the next element should be.
+# In other words, the current state (`curstate` above) is part of the iterator itself, so both implementations require you to maintain the current state somewhere.
+# Maintaining the current state inside the iterator itself requires a more complex stateful object, which seems like a disadvantage compared to the current iteration protocol which doesn't require anything from the objects.
 #
-# How does the alternate iteration protocol prevent memory leaks?
-# Both implementations require you to maintain the current state.
-# Is it somehow easier for 
+# The easiest way I can imagine to leak memory is to store too much state, for example, by appending each element to a list.
+# Both the current and alternate iteration protocol require the implementor to manage and maintain state, so how does the alternate iteration protocol prevent memory leaks?
+#
+# The author cites the case of a linked list, which I don't understand.
+# If you begin with a linked list, then you're already using the memory.
+# The current state will be the address of the next element.
+# 
+#
 
 # This is relevant to developers implementing the iteration protocol, particularly if they are worried about memory efficiency.
+# Is memory efficiency of any concern to end users?
 #
 # As an end user I would iterate over a data structure `xlazy`, and expect it to use O(1) memory:
 #
@@ -37,7 +44,7 @@ iterate(xlazy)
 iterate(xlazy)
 
 # Iterating over Iterators.countfrom returns to the first element every time.
-# In other words, `iterate(xlazy)` does not mutate `xlazy`, which appears more like functional programming to me as an end user.
+# This means that `iterate(xlazy)` does not mutate `xlazy`, which appears more like functional programming to me as an end user.
 #
 # In contrast to Julia's The second way only uses the one argument call to 
 #
